@@ -5,20 +5,18 @@ import { AdminLoginData } from "../../../types/adminTypes";
 import { notify , ToastContainer } from "../../../utils/notificationUtils";
 import { useNavigate } from "react-router-dom";
 import { loginValidationSchema } from "../../../validations/auth/authValidation";
+import { useDispatch } from "react-redux";
+import { setToken } from "../../../redux/reducers/authSlice";
 
 const AdminLoginPage : React.FC = () =>{
   const navigate = useNavigate();
-
+  const dispatch = useDispatch()
   const handleLoginSubmit = async (adminInfo: AdminLoginData) =>{
     try{
         const response = await adminLogin(adminInfo);
-        if(response?.data.admin){
-          localStorage.setItem("adminToken",response.data.token)
-        }
+        dispatch(setToken({adminToken : response.data.token}))
+        navigate('/admin/dashboard')  
         notify("Login Success",'success')
-        setTimeout(()=>{
-          navigate('/admin')
-        },1500)
     }catch(error){
       console.error(error);
     }

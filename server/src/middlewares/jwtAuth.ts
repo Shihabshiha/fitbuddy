@@ -21,11 +21,15 @@ const extractTokenFromHeader = (req: CustomRequest): string | null => {
   return null;
 };
 
+
+
+
 const verifyToken = async (token: string): Promise<any> => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     return decoded;
-  } catch (error) {
+  } catch (error:any) {
+    console.error("Token Verification Error:", error.message);
     throw error;
   }
 };
@@ -36,16 +40,17 @@ export const authenticateJwtToken = async (
   next: NextFunction
 ) => {
   try {
+   
     const token = extractTokenFromHeader(req);
-
+    
     if (!token) {
       throw new Error("Token not found");
     }
-
+    
     const payload: any = await verifyToken(token);
     req.person = payload;
-
     const role = payload.role;
+    
     if(role == 'user'){
       const userId = payload.id;
       const user = await UserModel.findById(userId)

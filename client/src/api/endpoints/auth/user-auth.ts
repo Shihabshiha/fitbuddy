@@ -1,5 +1,5 @@
 import END_POINTS from "../../../constants/endpoints";
-import { register , login , sendOtp , verifyOtp} from "../../services/auth/user-auth-services";
+import { register , login , sendOtp , verifyOtp, googleLoginUser} from "../../services/auth/user-auth-services";
 import { UserData } from "../../../types/userType";
 import { UserLoginData } from "../../../types/userType";
 
@@ -18,4 +18,8 @@ export const registerUser = (userData : UserData ) =>{
 
 export const loginUser = (userData : UserLoginData ) =>{
   return login(END_POINTS.LOGIN_USER,userData)
+}
+
+export const googleLogin = (credential : string ) => {
+  return googleLoginUser(END_POINTS.GOOGLE_LOGIN_USER,credential)
 }

@@ -5,6 +5,7 @@ import { verifyOtpOfMail } from "../../api/endpoints/auth/user-auth";
 import { registerUser } from "../../api/endpoints/auth/user-auth";
 import { UserData } from "../../types/userType";
 import { notify, ToastContainer } from "../../utils/notificationUtils";
+import { AxiosError } from "axios";
 
 const OtpVerifyComponent: React.FC = () => {
   const navigate = useNavigate();
@@ -33,9 +34,13 @@ const OtpVerifyComponent: React.FC = () => {
         return true;
       }
       return false;
-    } catch (error:any) {
-      console.log(error);
-      notify(error.response?.data?.error, "error");
+    } catch (error: unknown) {
+      console.error("Error during registration:", error);
+      if (error instanceof AxiosError && error.response?.data?.error) {
+        notify(error.response.data.error, "error");
+      } else {
+        notify("An error occurred during verification.", "error");
+      }
     }
   };
 

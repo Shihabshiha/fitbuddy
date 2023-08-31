@@ -1,59 +1,43 @@
-import { useNavigate, Link } from "react-router-dom";
-import { AxiosError } from "axios";
-import React from "react";
-import { useDispatch } from "react-redux";
+import React , {useState} from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useState , useEffect } from "react";
-import { UserLoginData } from "../../../types/userType";
-import { loginUser } from "../../../api/endpoints/auth/user-auth";
 import { notify , ToastContainer } from "../../../utils/notificationUtils";
-import "react-toastify/dist/ReactToastify.css";
 import { loginValidationSchema } from "../../../validations/auth/authValidation";
-import { setUser } from "../../../redux/reducers/userSlice";
-import GoogleAuthComponent from "../../common/google-auth-component";
+import { Link , useNavigate } from "react-router-dom";
+import { trainerLogin } from "../../../api/endpoints/auth/trainer-auth";
+import { TrainerLoginData } from "../../../types/trainerTypes";
+import { AxiosError } from "axios";
+import VerificationPendingModal from "../../common/verification-pending-modal";
 
-const UserLoginPage : React.FC = () =>{
 
-  const dispatch = useDispatch()
-  const [isLoggedIn , setIsLoggedIn] = useState<boolean>()
+const TrainerLogin : React.FC = () => {
   const navigate = useNavigate()
-  const token = localStorage.getItem("token");
-
-  const loginCheck = (): void => {
-    token ? setIsLoggedIn(true) : setIsLoggedIn(false);
-  };
-
-  useEffect(()=>{
-    loginCheck()
-  })
-
-  const handleLoginSubmit = async (userInfo: UserLoginData) =>{
+  const [verificationModalOpen, setVerificationModalOpen] = useState(false);
+  const handleLoginSubmit = async (trainerInfo : TrainerLoginData) =>{
     try{
-        const response = await loginUser(userInfo);
-        const userDetails = response?.data.user 
-        if(userDetails){
-          localStorage.setItem("userToken",response.data.token)
-        }
-        notify("Login Success",'success')
-        dispatch(setUser(userDetails))
-        setTimeout(()=>{
-          navigate('/')
-        },1500)
+      const response = await trainerLogin(trainerInfo);
+      // const trainerDetails = response?.data?.trainer;
+      const trainerToken = response?.data?.token;
+      if(trainerToken){
+        localStorage.setItem("trainerToken",trainerToken)
+      }
+      notify("Login Success",'success')
+      setTimeout(()=>{navigate('/trainer')})
     }catch(error:unknown){
-      console.error("Error during registration:", error);
+      console.error("Error during login:", error);  
       if (error instanceof AxiosError && error.response?.data?.error) {
-        notify(error.response.data.error, "error");
+        if(error.response.data.error == 'Verification pending'){
+          setVerificationModalOpen(true);
+        }else{
+          notify(error.response.data.error, "error");
+        }   
       } else {
         notify("An error occurred during login.", "error");
       }
     }
   }
 
-  if(isLoggedIn){
-    navigate('/')
-  }else{
-    return (
-      <div className="flex min-h-[75vh] justify-center px-6 py-12 lg:px-8">
+  return(
+    <div className="flex min-h-[75vh] justify-center px-6 py-12 lg:px-8">
         <div className="flex flex-col items-center sm:w-full sm:max-w-md">
           <div className="mb-6">
             <img
@@ -63,7 +47,7 @@ const UserLoginPage : React.FC = () =>{
             />
           </div>
           <h2 className="text-center text-2xl font-bold leading-9 text-gray-900">
-            Login to your account.
+            Login to Trainer account.
           </h2>
           <div className="mt-10 sm:w-full sm:max-w-xs">
             <Formik
@@ -124,32 +108,29 @@ const UserLoginPage : React.FC = () =>{
                     type="submit"
                     className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
-                    Sign in
+                    Log in
                   </button>
                 </div>
               </Form>
             </Formik>
-            <div className="mt-4 border-t border-gray-300"></div>
-            <div className="mt-4">
-            <GoogleAuthComponent />
-            </div>
-          
+            <VerificationPendingModal
+              isOpen={verificationModalOpen}
+              onRequestClose={() => setVerificationModalOpen(false)}
+            />
             <p className="mt-10 text-center text-sm text-gray-500">
-              Don't have an account?
+              Don't have an account? 
               <Link
-                to="/signup"
+                to="/trainer/register"
                 className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
-              >
-                Signup
+              > 
+                 Register
               </Link>
             </p>
           </div>
         </div>
         <ToastContainer />
       </div>
-    )
-  }
-
+  )
 }
 
-export default UserLoginPage
+export default TrainerLogin

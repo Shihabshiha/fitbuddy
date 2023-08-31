@@ -6,4 +6,6 @@ export interface Trainer extends Document {
   email: string;
   password: string;
   isBlocked : boolean;
+  isVerified :string;
+  certificates : string[];
 }

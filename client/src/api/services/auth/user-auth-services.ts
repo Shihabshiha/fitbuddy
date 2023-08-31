@@ -67,3 +67,20 @@ export const verifyOtp = async (
     throw error;
   }
 }
+
+export const googleLoginUser = async (
+  endpoint : string,
+  credential : string,
+) => {
+  const data = {credential}
+  try{
+    const response = await axios.post(
+      `${BASE_URL}/${endpoint}`,
+      data
+    );
+    return response
+  }catch(error){
+    console.error('Error during registration:', error);
+    throw error; 
+  }
+}
