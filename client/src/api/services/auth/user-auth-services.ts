@@ -72,11 +72,11 @@ export const googleLoginUser = async (
   endpoint : string,
   credential : string,
 ) => {
-  const data = {credential}
+  const data = credential
   try{
     const response = await axios.post(
       `${BASE_URL}/${endpoint}`,
-      data
+      {data}
     );
     return response
   }catch(error){

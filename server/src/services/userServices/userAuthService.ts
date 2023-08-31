@@ -4,6 +4,7 @@ import { generateJwtToken } from "../../middlewares/jwtAuth";
 import nodemailer, { Transporter } from 'nodemailer';
 import config from "../../config/config";
 import { log } from "console";
+import { GoogleUserPayload , User } from "../../types/userTypes";
 
 const SALT_ROUNDS = 10;
 
@@ -98,19 +99,43 @@ const createAuthService = ()=>{
   const verifyOtp = async (enteredOtp : string) => {
     try{
       if(enteredOtp === otp){
-        console.log('enterddd',enteredOtp)
-        console.log('otpppp',otp)
-        console.log('verifiedddd')
         return {message:'OTP verified'}
       }else if( otp === null){
-        console.log('nulled')
         return {message: 'OTP expired'}
       }else{
-        console.log('inavlidddd')
         return {message: 'Invalid OTP'}
       }
     }catch(error:any){
       throw new Error(error.message);
+    }
+  }
+
+  interface GoogleLoginResult {
+    user: User;
+    token: string;
+  }
+
+  const googleLogin = async (userData:GoogleUserPayload): Promise<GoogleLoginResult> => {
+    try{
+      const { given_name, family_name, email } = userData;
+      let user = await UserModel.findOne({ email });
+
+      if(!user){
+        const newUser = await UserModel.create({
+          firstName : given_name,
+          lastName : family_name,
+          email : email,
+          isBlocked : false,
+        })
+        const token = generateJwtToken({ id: newUser._id.toString(), role: 'user' });
+        console.log('new user')
+        return { token, user: newUser };
+      }
+      console.log('old user')
+      const token = generateJwtToken({ id: user._id.toString() , role:'user' });
+      return { token, user}
+    }catch(error:any){
+      throw error
     }
   }
 
@@ -122,7 +147,8 @@ const createAuthService = ()=>{
     userSignup,
     userLogin,
     sendOtp,
-    verifyOtp
+    verifyOtp,
+    googleLogin,
   }
   
 }

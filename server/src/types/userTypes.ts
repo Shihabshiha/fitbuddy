@@ -7,3 +7,9 @@ export interface User extends Document {
   password: string;
   isBlocked: boolean;
 }
+
+export interface GoogleUserPayload {
+  given_name: string;
+  family_name: string;
+  email: string;
+}

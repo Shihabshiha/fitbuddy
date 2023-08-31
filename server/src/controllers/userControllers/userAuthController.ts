@@ -3,6 +3,7 @@ import createAuthService from "../../services/userServices/userAuthService";
 import { SignupRequestBody, LoginRequestBody } from "../../types/commonTypes";
 import config from "../../config/config";
 import { OAuth2Client } from 'google-auth-library';
+import { GoogleUserPayload } from "../../types/userTypes";
 
 const authService = createAuthService();
 
@@ -62,6 +63,7 @@ export const googleAuthController = async(req:Request , res:Response) => {
     
   try{
     const { data } = req.body
+    console.log('req body',data)
     const googleClientId = config.GOOGLE_CLIENT_ID as string
     const client = new OAuth2Client(googleClientId);
 
@@ -69,10 +71,11 @@ export const googleAuthController = async(req:Request , res:Response) => {
       idToken: data,
       audience: googleClientId,
     });
-
-    const payload = ticket.getPayload();
-    console.log('Decoded Google JWT:', payload);
-
+    
+    const payload:GoogleUserPayload = ticket.getPayload() as GoogleUserPayload
+    console.log('payyyload',payload)
+    const {token,user} = await authService.googleLogin(payload)
+    res.status(200).json({ message: "User login successful", token, user });
   }catch(error:any){
     res.status(400).json({ error:error.message });
   }
