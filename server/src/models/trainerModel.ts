@@ -8,6 +8,13 @@ const trainerSchema = new Schema<Trainer>({
   lastName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  isBlocked: { type: Boolean, default: false },
+  isVerified: {
+    type: String, 
+    enum: ['not_verified', 'verified', 'rejected'],
+    default: 'not_verified',
+  }, 
+  certificates : [{ type: String }],
 });
 
 const TrainerModel = mongoose.model<Trainer>('Trainer', trainerSchema);

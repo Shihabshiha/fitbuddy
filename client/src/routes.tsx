@@ -3,6 +3,10 @@ import UserSignupPage from "./components/pages/user-pages/user-signup"
 import UserLoginPage from "./components/pages/user-pages/user-login"
 import { Admin } from "./App"
 import OtpVerifyComponent from "./components/common/otp-verify-component"
+import AdminHomePage from "./components/pages/admin-pages/adminHome"
+import TrainerRegister from "./components/pages/trainer-pages/trainer-register"
+import TrainerLogin from "./components/pages/trainer-pages/trainer-login"
+import PendingTrainersTable from "./components/admin/pendingTrainerVerification"
 
 const AppRouter = createBrowserRouter([
   // {
@@ -32,14 +36,23 @@ const AppRouter = createBrowserRouter([
     element :<Admin />,
     children: [
       {
-        
+        path: "dashboard",
+        element :<AdminHomePage />
+      },
+      {
+        path: "trainers-requests",
+        element :<PendingTrainersTable />
       }
     ]
   },
-  // {
-  //   path: "/trainer/register",
-  //   element :<TrainerRegisterPage />
-  // }
+  {
+    path: "/trainer/register",
+    element :<TrainerRegister />
+  },
+  {
+    path : "/trainer/login",
+    element :<TrainerLogin />
+  }
 ])
 
 export default AppRouter

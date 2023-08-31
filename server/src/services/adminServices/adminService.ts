@@ -2,6 +2,10 @@ import AdminModel from "../../models/adminModel";
 import UserModel from "../../models/userModel";
 import { User } from "../../types/userTypes";
 import { generateJwtToken } from "../../middlewares/jwtAuth";
+import TrainerModel from "../../models/trainerModel";
+import transporter from "../../config/nodeMailerConfig";
+import config from "../../config/config";
+
 
 const createAdminServices = () => {
   const adminLogin = async (email: string, password: string) => {
@@ -33,9 +37,67 @@ const createAdminServices = () => {
     }
   }
 
+  const getPendingVerificationList = async() => {
+    try{
+      const trainers = await TrainerModel.find({ isVerified: 'not_verified' });
+      return trainers
+    }catch(error:any){
+      throw error
+    }
+  }
+
+  const sendAcceptanceMail = async (email:string) => {
+    try{
+      const mailOptions = {
+        from: config.EMAIL_NODE_MAILER, 
+        to: email, 
+        subject: 'Your Request Has Been Accepted',
+        text: 'Congratulations! Your request for Trainer has been accepted.now you can login to your account',
+      };
+      const result = await transporter.sendMail(mailOptions) 
+
+      if (result.accepted.length > 0) {
+        await TrainerModel.updateOne({ email }, { $set: { isVerified: 'verified' } });
+      }
+      return result
+    }catch(error:any){
+      throw error
+    }
+  }
+
+  const sendRejectedMail = async (email:string, reason:string) => {
+    try{
+      const mailOptions = {
+        from: config.EMAIL_NODE_MAILER,
+        to: email,
+        subject: 'Your Request Has Been Rejected',
+        html: `
+          <p style="font-size: 14px; color: #333;">Dear recipient,</p>
+          <p style="font-size: 16px; color: #333;">
+            Your request has been rejected with the following reason:
+          </p>
+          <p style="font-size: 16px; font-weight: bold; color: #FF0000;">
+            ${reason}
+          </p>
+          <p style="font-size: 14px; color: #333;">Thank you.</p>
+        `
+      };   
+      const result = await transporter.sendMail(mailOptions)
+      if (result.accepted.length > 0) {
+        await TrainerModel.updateOne({ email }, { $set: { isVerified: 'rejected' } });
+      }
+      return result
+    }catch(error:any){
+      throw error
+    }
+  }
+
   return {
     adminLogin,
-    getAllUsers
+    getAllUsers,
+    getPendingVerificationList,
+    sendAcceptanceMail,
+    sendRejectedMail,
   }
 }
 

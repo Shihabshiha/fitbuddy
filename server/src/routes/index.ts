@@ -4,7 +4,7 @@ import userRoutes from './userRoutes'
 import adminRoutes from './adminRoutes'
 const router = express.Router()
 
-router.use('/api/trainers', trainerRoutes);
+router.use('/api/trainer', trainerRoutes);
 router.use('/api/user',userRoutes)
 router.use('/api/admin',adminRoutes)
 

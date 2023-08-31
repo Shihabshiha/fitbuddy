@@ -4,17 +4,12 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { userRegistrationValidationSchema } from "../../../validations/auth/authValidation";
 import { UserData } from "../../../types/userType";
 import { sendOtpToMail } from "../../../api/endpoints/auth/user-auth";
-import { ToastContainer, toast } from "react-toastify";
+import { notify , ToastContainer } from "../../../utils/notificationUtils";
 
 const UserSignupPage: React.FC = () => {
   const navigate = useNavigate();
 
-  const notify = (msg: string, type: string) => {
-    type === "error"
-      ? toast.error(msg, { position: toast.POSITION.TOP_RIGHT })
-      : toast.success(msg, { position: toast.POSITION.TOP_RIGHT });
-  };
-
+ 
   const handleSubmit = async (userInfo: UserData) => {
     try {
       const email = userInfo.email
