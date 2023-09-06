@@ -1,20 +1,23 @@
 import { useNavigate, Link } from "react-router-dom";
-import React from "react";
+import React , { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { userRegistrationValidationSchema } from "../../../validations/auth/authValidation";
 import { UserData } from "../../../types/userType";
 import { sendOtpToMail } from "../../../api/endpoints/auth/user-auth";
 import { notify , ToastContainer } from "../../../utils/notificationUtils";
+import { ScaleLoader } from "react-spinners";
 
 const UserSignupPage: React.FC = () => {
   const navigate = useNavigate();
-
+  const [loading,setLoading] = useState(false)
  
   const handleSubmit = async (userInfo: UserData) => {
     try {
+      setLoading(true);
       const email = userInfo.email
       console.log('useerr mail',email)
       const res = await sendOtpToMail(email)
+      setLoading(false)
       if(res?.status == 200){
         notify('Otp sent to the email for verification','success')
       }
@@ -39,6 +42,11 @@ const UserSignupPage: React.FC = () => {
   return (
     <div className="flex min-h-[75vh] justify-center px-6 py-12 lg:px-8">
       <div className="flex flex-col items-center sm:w-full sm:max-w-md">
+        {loading && (
+          <div className="fixed inset-0 flex justify-center items-center bg-opacity-50 bg-white">
+            <ScaleLoader color="#007BFF" loading={true} />
+          </div>
+        )}
         <div className="mb-6">
           <img
             className="h-16 w-auto"

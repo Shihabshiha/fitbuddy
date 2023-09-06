@@ -1,3 +1,4 @@
+import React , {useState} from "react";
 import { AxiosError } from "axios";
 import { TrainerFormData } from "../../../types/trainerTypes";
 import { useNavigate, Link } from "react-router-dom";
@@ -5,13 +6,14 @@ import { Formik, Form, Field, ErrorMessage  } from "formik";
 import { notify , ToastContainer } from "../../../utils/notificationUtils";
 import { TrainerRegisterValidationSchema } from "../../../validations/auth/authValidation";
 import { registerTrainer } from "../../../api/endpoints/auth/trainer-auth";
-
+import { ScaleLoader } from "react-spinners";
 
 const  TrainerRegister : React.FC = () => {
-
+  const [loading,setLoading] = useState(false)
   const navigate = useNavigate();
   const handleSubmit = async (values : TrainerFormData) => {
     try {
+      setLoading(true);
       const { firstName, lastName, email, password, confirmPassword, certificates } = values;
       const formData = new FormData();
       formData.append("firstName", firstName);
@@ -23,7 +25,7 @@ const  TrainerRegister : React.FC = () => {
         formData.append('certificates', certificates[i]);
       }
       const response = await registerTrainer(formData);
-  
+      setLoading(false);
       if (response.status === 201) {
         notify("Registration successful! Admin will verify shortly", "success");
         setTimeout(()=>{navigate('/trainer/login')},3000)
@@ -53,6 +55,11 @@ const  TrainerRegister : React.FC = () => {
   return (
     <div className="flex min-h-[75vh] justify-center px-6 py-12 lg:px-8">
       <div className="flex flex-col items-center sm:w-full sm:max-w-md">
+        {loading && (
+          <div className="fixed inset-0 flex justify-center items-center bg-opacity-50 bg-white">
+            <ScaleLoader color="#007BFF" loading={true} />
+          </div>
+        )}
         <div className="mb-6">
           <img
             className="h-16 w-auto"

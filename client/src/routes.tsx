@@ -7,6 +7,9 @@ import AdminHomePage from "./components/pages/admin-pages/adminHome"
 import TrainerRegister from "./components/pages/trainer-pages/trainer-register"
 import TrainerLogin from "./components/pages/trainer-pages/trainer-login"
 import PendingTrainersTable from "./components/admin/pendingTrainerVerification"
+import TrainerDashboard from "./components/pages/trainer-pages/dashboard"
+import DashboardLayout from "./components/trainer/dashboardLayout"
+import CoursesTable from "./components/pages/trainer-pages/my-courses"
 
 const AppRouter = createBrowserRouter([
   // {
@@ -52,6 +55,21 @@ const AppRouter = createBrowserRouter([
   {
     path : "/trainer/login",
     element :<TrainerLogin />
+  },
+  {
+    path : "/trainer",
+    element: <DashboardLayout />,
+    children : [
+      {
+        path : "",
+        element: <TrainerDashboard />
+      },
+      {
+        path: "my-courses",
+        element: <CoursesTable />
+      }
+      
+    ]
   }
 ])
 
