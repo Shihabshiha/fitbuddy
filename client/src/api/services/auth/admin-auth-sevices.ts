@@ -1,6 +1,6 @@
-import axios from 'axios'
 import { BASE_URL } from "../../../constants/common";
 import { AdminLoginData } from '../../../types/adminTypes';
+import axios from "axios";
 
 
 export const login = async (

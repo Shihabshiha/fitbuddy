@@ -20,3 +20,20 @@ export interface TrainerDetails {
   isVerified: boolean;
   certificates: string[];
 }
+
+export interface CourseData {
+  courseName: string;
+  description: string;
+  thumbnail: File | null;
+  duration: number;
+  category: string;
+  level: string;
+  price: number;
+  isPaid: boolean;
+}
+
+export interface AddCourseModalProps {
+  isOpen: boolean;
+  onRequestClose: () => void;
+  onAddCourse: (newCourse: CourseData) => void;
+}

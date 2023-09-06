@@ -24,7 +24,7 @@ export const Admin: React.FC = () => {
     <div className="flex h-screen">
       {isLoggedIn ? (
         <>
-          <div className="w-[268px]   h-full  top-10 left-0">
+          <div className="w-[268px]  h-full  top-10 left-0">
             <SideBar />
           </div>
           <div className="flex flex-col flex-grow">
@@ -40,5 +40,7 @@ export const Admin: React.FC = () => {
     </div>
   );
 };
+
+
 
 

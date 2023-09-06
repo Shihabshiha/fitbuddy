@@ -1,11 +1,12 @@
-import React from "react";
+
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState, ChangeEvent } from "react";
+import React , { useState, ChangeEvent } from "react";
 import { verifyOtpOfMail } from "../../api/endpoints/auth/user-auth";
 import { registerUser } from "../../api/endpoints/auth/user-auth";
 import { UserData } from "../../types/userType";
 import { notify, ToastContainer } from "../../utils/notificationUtils";
 import { AxiosError } from "axios";
+import { ScaleLoader } from "react-spinners";
 
 const OtpVerifyComponent: React.FC = () => {
   const navigate = useNavigate();
@@ -13,10 +14,13 @@ const OtpVerifyComponent: React.FC = () => {
   const [error, setError] = useState("");
   const location = useLocation();
   const userInfo = location.state;
+  const [loading,setLoading] = useState(false)
 
   const handleOtpVerification = async (otp: string) => {
     try {
+      setLoading(true);
       const otpResponse = await verifyOtpOfMail(otp);
+      setLoading(false)
       return otpResponse?.data.message;
     } catch (error) {
       console.error(error);
@@ -27,8 +31,9 @@ const OtpVerifyComponent: React.FC = () => {
 
   const handleUserRegistration = async (userInfo: UserData) => {
     try {
+      setLoading(true);
       const registerResponse = await registerUser(userInfo);
-
+      setLoading(false);
       if (registerResponse?.data.message === "User signup successful") {
         notify("User registered successfully!", "success");
         return true;
@@ -75,6 +80,11 @@ const OtpVerifyComponent: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
+      {loading && (
+        <div className="fixed inset-0 flex justify-center items-center bg-opacity-50 bg-white">
+          <ScaleLoader color="#007BFF" loading={true} />
+        </div>
+      )}
       <h1 className="text-2xl font-semibold mb-4">Email OTP Verification</h1>
       <form className="flex flex-col items-center" onSubmit={handleSubmit}>
         <label htmlFor="otpInput" className="mb-2">

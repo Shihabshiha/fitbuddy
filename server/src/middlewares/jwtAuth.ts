@@ -1,6 +1,6 @@
 
 import jwt from "jsonwebtoken";
-import { Response, NextFunction } from "express";
+import { Response, NextFunction , RequestHandler} from "express";
 import { CustomRequest } from "../types/custom-request";
 import { JwtPayload } from "jsonwebtoken";
 import config from "../config/config";
@@ -34,11 +34,12 @@ const verifyToken = async (token: string): Promise<any> => {
   }
 };
 
-export const authenticateJwtToken = async (
+export const authenticateJwtToken 
+ = async (
   req: CustomRequest,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
    
     const token = extractTokenFromHeader(req);
@@ -51,7 +52,7 @@ export const authenticateJwtToken = async (
     req.person = payload;
     const role = payload.role;
     
-    if(role == 'user'){
+    if(role === 'user'){
       const userId = payload.id;
       const user = await UserModel.findById(userId)
       if(user && user.isBlocked){
@@ -65,6 +66,7 @@ export const authenticateJwtToken = async (
         res.status(403).json({ error: "Blocked Trainer" });
         return;
       }
+      console.log('non blocked trainer')
     }
     
     next();

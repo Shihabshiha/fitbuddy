@@ -3,6 +3,7 @@ import createAdminServices from "../../services/adminServices/adminService";
 import { LoginRequestBody } from "../../types/commonTypes";
 import transporter from "../../config/nodeMailerConfig";
 import config from "../../config/config";
+import { CustomRequest } from "../../types/custom-request";
 
 
 const adminService = createAdminServices();
@@ -18,7 +19,7 @@ export const adminLoginController = async (req: Request, res: Response) => {
   }
 };
 
-export const getAllUserController = async (req: Request, res: Response) => {
+export const getAllUserController = async (req: CustomRequest, res: Response) => {
   try {
     const users = await adminService.getAllUsers();
     console.log("userrrr", users);

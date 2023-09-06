@@ -1,11 +1,11 @@
-import axios from 'axios'
 import { BASE_URL } from '../../constants/common';
+import adminApi from '../interceptors/adminInterceptor';
 
 export const getPendingVerificationList = async (
   endpoint : string
 ) =>{
   try{
-    const response = axios.get(
+    const response = adminApi.get(
       `${BASE_URL}/${endpoint}`
     );
     return response
@@ -20,8 +20,7 @@ export const sendAcceptanceMail = async (
   email : string,
 ) =>{
   try{
-    console.log('mail to axios',email)
-    const response = axios.post(
+    const response = adminApi.post(
       `${BASE_URL}/${endpoint}`,
       { email }
     );
@@ -38,8 +37,7 @@ export const sendRejectedMail = async (
   reason : string,
 ) =>{
   try{
-    console.log('mail to axios',email)
-    const response = axios.post(
+    const response = adminApi.post(
       `${BASE_URL}/${endpoint}`,
       { email , reason }
     );

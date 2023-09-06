@@ -10,6 +10,7 @@ const END_POINTS = {
   SEND_ACCEPTANCE_MAIL: 'api/admin/sent-accepted-mail',
   SEND_REJECTED_MAIL : 'api/admin/send-rejected-mail',
   GOOGLE_LOGIN_USER : 'api/user/login-with-google',
+  ADD_COURSE : 'api/trainer/add-course'
 }
 
 export default END_POINTS

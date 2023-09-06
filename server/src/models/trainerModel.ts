@@ -1,7 +1,5 @@
-// src/models/trainerModel.ts
-import mongoose, { Document, Schema } from 'mongoose';
-import { Trainer } from '../types/trainerTypes';
-
+import mongoose, { Schema } from "mongoose";
+import { Trainer } from "../types/trainerTypes";
 
 const trainerSchema = new Schema<Trainer>({
   firstName: { type: String, required: true },
@@ -10,13 +8,13 @@ const trainerSchema = new Schema<Trainer>({
   password: { type: String, required: true },
   isBlocked: { type: Boolean, default: false },
   isVerified: {
-    type: String, 
-    enum: ['not_verified', 'verified', 'rejected'],
-    default: 'not_verified',
-  }, 
-  certificates : [{ type: String }],
+    type: String,
+    enum: ["not_verified", "verified", "rejected"],
+    default: "not_verified",
+  },
+  certificates: [{ type: String }],
 });
 
-const TrainerModel = mongoose.model<Trainer>('Trainer', trainerSchema);
+const TrainerModel = mongoose.model<Trainer>("Trainer", trainerSchema);
 
 export default TrainerModel;

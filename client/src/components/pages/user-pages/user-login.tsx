@@ -1,9 +1,8 @@
 import { useNavigate, Link } from "react-router-dom";
 import { AxiosError } from "axios";
-import React from "react";
 import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useState , useEffect } from "react";
+import React ,{ useState , useEffect } from "react";
 import { UserLoginData } from "../../../types/userType";
 import { loginUser } from "../../../api/endpoints/auth/user-auth";
 import { notify , ToastContainer } from "../../../utils/notificationUtils";
@@ -11,9 +10,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { loginValidationSchema } from "../../../validations/auth/authValidation";
 import { setUser } from "../../../redux/reducers/userSlice";
 import GoogleAuthComponent from "../../common/google-auth-component";
+import { ScaleLoader } from "react-spinners";
 
 const UserLoginPage : React.FC = () =>{
 
+  const [loading,setLoading] = useState(false)
   const dispatch = useDispatch()
   const [isLoggedIn , setIsLoggedIn] = useState<boolean>()
   const navigate = useNavigate()
@@ -29,6 +30,7 @@ const UserLoginPage : React.FC = () =>{
 
   const handleLoginSubmit = async (userInfo: UserLoginData) =>{
     try{
+        setLoading(true);
         const response = await loginUser(userInfo);
         const userDetails = response?.data.user 
         if(userDetails){
@@ -36,6 +38,7 @@ const UserLoginPage : React.FC = () =>{
         }
         notify("Login Success",'success')
         dispatch(setUser(userDetails))
+        setLoading(false)
         setTimeout(()=>{
           navigate('/')
         },1500)
@@ -55,6 +58,11 @@ const UserLoginPage : React.FC = () =>{
     return (
       <div className="flex min-h-[75vh] justify-center px-6 py-12 lg:px-8">
         <div className="flex flex-col items-center sm:w-full sm:max-w-md">
+          {loading && (
+            <div className="fixed inset-0 flex justify-center items-center bg-opacity-50 bg-white">
+              <ScaleLoader color="#007BFF" loading={true} />
+            </div>
+          )}
           <div className="mb-6">
             <img
               className="h-16 w-auto"
