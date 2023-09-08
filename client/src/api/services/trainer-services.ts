@@ -1,16 +1,21 @@
 import { BASE_URL } from "../../constants/common";
-import { CourseData } from "../../types/trainerTypes";
 import trainerApi from "../interceptors/trainerInterceptor";
 
 
 export const addCourse = async (
   endpoint : string,
-  newCourse : CourseData
+  newCourse : FormData
 ) =>{
   try{
+
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
     const response = trainerApi.post(
       `${BASE_URL}/${endpoint}`,
-      { newCourse }
+       newCourse ,config
     );
     return response
   }catch(error){

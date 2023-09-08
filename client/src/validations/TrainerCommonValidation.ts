@@ -13,5 +13,4 @@ export const addCourseValidationSchema = Yup.object({
     .required('Price is required')
     .min(0, 'Price must be greater than or equal to 0'),
   isPaid: Yup.boolean().required('Please indicate if the course is paid or not.'),
-  about: Yup.string().required('About is required'),
 });

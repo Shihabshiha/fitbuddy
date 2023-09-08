@@ -10,6 +10,7 @@ import PendingTrainersTable from "./components/admin/pendingTrainerVerification"
 import TrainerDashboard from "./components/pages/trainer-pages/dashboard"
 import DashboardLayout from "./components/trainer/dashboardLayout"
 import CoursesTable from "./components/pages/trainer-pages/my-courses"
+import AddCoursePage from "./components/pages/trainer-pages/add-course"
 
 const AppRouter = createBrowserRouter([
   // {
@@ -67,6 +68,10 @@ const AppRouter = createBrowserRouter([
       {
         path: "my-courses",
         element: <CoursesTable />
+      },
+      {
+        path: "add-course",
+        element: <AddCoursePage />
       }
       
     ]
