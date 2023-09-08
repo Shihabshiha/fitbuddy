@@ -1,10 +1,6 @@
 import React , { useState } from 'react';
-import { Link } from 'react-router-dom'; // Assuming you're using React Router
-import AddCourseModal from '../../modals/add-course-modal';
-import { CourseData } from '../../../types/trainerTypes';
-import { addNewCourse } from '../../../api/endpoints/trainer';
+import { Link, useNavigate } from 'react-router-dom'; 
 import { notify , ToastContainer } from '../../../utils/notificationUtils';
-import { AxiosError } from 'axios';
 import { ScaleLoader } from 'react-spinners';
 
 interface Course {
@@ -18,46 +14,22 @@ interface Course {
 }
 
 const CoursesTable: React.FC = () => {
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
   const [loading,setLoading] = useState(false)
 
   const courses: Course[] = [
-    // {
-    //   id: 1,
-    //   courseName: 'Course 1',
-    //   createdDate: '2023-09-01',
-    //   subscribers: 50,
-    //   chapters: 10,
-    //   editLink: '/edit-course/1', // Replace with the actual edit link
-    //   thumbnail: 'course1.jpg', // Replace with the actual thumbnail URL
-    // },
+    {
+      id: 1,
+      courseName: 'Course 1',
+      createdDate: '2023-09-01',
+      subscribers: 50,
+      chapters: 10,
+      editLink: '/edit-course/1', // Replace with the actual edit link
+      thumbnail: 'course1.jpg', // Replace with the actual thumbnail URL
+    },
     // Add more courses as needed
   ];
 
-  const HandleAddCourse = async (newCourse:CourseData) => {
-    try{
-      setLoading(true);
-      const response = await addNewCourse(newCourse)
-      setLoading(false)
-      console.log(response)
-    }catch(error:unknown){
-      console.error("Error during registration:", error);
-      if (error instanceof AxiosError && error.response?.data?.error) {
-        notify(error.response.data.error, "error");
-      } else {
-        notify("An error occurred during registration.", "error");
-      }
-    }
-  } 
-
-    const openModal = () => {
-      setIsModalOpen(true);
-    };
-  
-    const closeModal = () => {
-      setIsModalOpen(false);
-    };
 
   return (
     <div>
@@ -68,7 +40,9 @@ const CoursesTable: React.FC = () => {
       )}
       <div className="flex justify-end mb-4">
       <button
-        onClick={openModal}
+        onClick={()=>{
+          navigate('/trainer/add-course')
+        }}
         className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
       >
         Add Course
@@ -122,11 +96,6 @@ const CoursesTable: React.FC = () => {
           </tbody>
         </table>
       )}
-       <AddCourseModal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        onAddCourse={HandleAddCourse}
-      />
       <ToastContainer />
     </div>
   );

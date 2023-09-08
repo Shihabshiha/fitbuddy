@@ -1,4 +1,4 @@
-import { CourseAttributes } from "../types/trainerTypes";
+import { CourseAttributes } from "../types/courseTypes";
 
 import mongoose, { Schema } from 'mongoose';
 
@@ -46,9 +46,9 @@ const courseSchema = new Schema<CourseAttributes>({
       type: String, 
       required: true,
     },
-    isVerified: {
+    isListed: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   
   },
