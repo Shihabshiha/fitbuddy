@@ -1,28 +1,28 @@
 import { Request, Response } from "express";
 import { CustomRequest } from "../../types/custom-request";
 import courseService from "../../services/trainerServices/trainerCourseService";
-import cloudinary from "../../config/cloudinaryConfig";
+
 
 
 const courseControllerFunctions = () =>{
 
   const trainerCourseService = courseService()
+
   const addCourse = async (req:Request , res:Response) => {
     try{
       
       const trainerId = (req as CustomRequest).person?.id;
-      console.log('trainerrr',trainerId);
       
       if (!trainerId) {
         return res.status(400).json({ error: "Trainer ID is missing or invalid" });
       }
-      console.log(req.files)
+      
       const thumbnailFile = req.files as Express.Multer.File[];
       
       if (!thumbnailFile) {
         return res.status(400).json({ error: 'Thumbnail image is missing' });
       }
-      console.log('request body',req.body)
+      
       const newCourse  = req.body;
       const {
         courseName,
@@ -48,15 +48,29 @@ const courseControllerFunctions = () =>{
         duration,
       }, trainerId, thumbnailFile);
 
-      res.status(200).json({ result });
+       res.status(200).json({ result });
     }catch(error:any){
       console.error(error);
       res.status(400).json({ error:error.message });
     }
   }
 
+  const getAllCourses = async ( req:Request, res:Response) => {
+    try{
+      const trainerId = (req as CustomRequest).person?.id;
+      if (!trainerId) {
+        return res.status(400).json({ error: "Trainer ID is missing or invalid" });
+      }
+      const result = await trainerCourseService.getAllCourse(trainerId)
+      res.status(200).json({result})
+    }catch(error:any){
+      res.status(400).json({error:error.message})
+    }
+  }
+
   return {
-    addCourse
+    addCourse,
+    getAllCourses
   }
 }
 
