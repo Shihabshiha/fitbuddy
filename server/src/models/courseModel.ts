@@ -1,9 +1,9 @@
-import { CourseAttributes } from "../types/courseTypes";
+import { CourseInterface } from "../types/courseTypes";
 
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema  } from 'mongoose';
 
 
-const courseSchema = new Schema<CourseAttributes>({
+const courseSchema = new Schema<CourseInterface>({
     courseName: {
       type: String,
       required: true,
@@ -29,7 +29,7 @@ const courseSchema = new Schema<CourseAttributes>({
     },
     price: {
       type: Number,
-      required: function (this:CourseAttributes){
+      required: function (this:CourseInterface){
         return this.isPaid
       },
       min : 0,
@@ -50,6 +50,12 @@ const courseSchema = new Schema<CourseAttributes>({
       type: Boolean,
       default: true,
     },
+    subscribedUsers: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'users', 
+      },
+    ],
   
   },
   {
@@ -57,6 +63,6 @@ const courseSchema = new Schema<CourseAttributes>({
   }
 );
 
-const CourseModel = mongoose.model<CourseAttributes>('Course', courseSchema);
+const CourseModel = mongoose.model<CourseInterface>('Course', courseSchema);
 
 export default CourseModel;

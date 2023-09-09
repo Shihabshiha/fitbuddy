@@ -1,4 +1,4 @@
-import React , { useState } from 'react';
+import React , { useEffect, useState  } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; 
 import { notify , ToastContainer } from '../../../utils/notificationUtils';
 import { ScaleLoader } from 'react-spinners';
@@ -29,6 +29,12 @@ const CoursesTable: React.FC = () => {
     },
     // Add more courses as needed
   ];
+
+  useEffect(()=>{
+    
+  })
+
+
 
 
   return (
