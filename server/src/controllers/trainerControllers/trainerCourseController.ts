@@ -60,7 +60,7 @@ const courseControllerFunctions = () =>{
       const trainerId = (req as CustomRequest).person?.id;
       if (!trainerId) {
         return res.status(400).json({ error: "Trainer ID is missing or invalid" });
-      }
+      } 
       const result = await trainerCourseService.getAllCourse(trainerId)
       res.status(200).json({result})
     }catch(error:any){
@@ -68,9 +68,27 @@ const courseControllerFunctions = () =>{
     }
   }
 
+  const updateCourseStatus = async (req:Request,res:Response) => {
+    const courseId = req.params.courseId;
+    const { isListed } = req.body;
+    console.log('satausss',isListed)
+    console.log('courseid',courseId)
+    try{
+      const updatedCourse = await trainerCourseService.updateCourseStatus(courseId,isListed)
+      res.status(200).json(updatedCourse)
+    }catch(error:any){
+      if (error.message === 'Course not found') {
+        res.status(404).json({ error: 'Course not found' });
+      } else {
+        res.status(500).json({ error:error.message });
+      }
+    }
+  }
+
   return {
     addCourse,
-    getAllCourses
+    getAllCourses,
+    updateCourseStatus,
   }
 }
 

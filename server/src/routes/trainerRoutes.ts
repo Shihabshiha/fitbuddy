@@ -11,11 +11,14 @@ const courseController = courseControllerFunction()
 
 const router = express.Router();
 
-
+//auth management
 router.post('/register', CertificateUpload, trainerRegistrationValidationCheck , signupTrainerController);
 router.post('/login', loginValidationCheck , loginTrainerController)
+
+//course management
 router.get('/getAll-courses',authenticateJwtToken,courseController.getAllCourses)
 router.post('/add-course',uploadThumbnail,authenticateJwtToken,courseController.addCourse)
+router.put('/update-courseList-status/:courseId',authenticateJwtToken,courseController.updateCourseStatus)
 
  
 

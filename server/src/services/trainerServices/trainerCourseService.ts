@@ -4,6 +4,7 @@ import cloudinary from "../../config/cloudinaryConfig";
 import { CourseAttributes, CourseInterface } from "../../types/courseTypes";
 
 const courseService = () => {
+  
   const addCourse = async (
     newCourse: CourseData,
     trainerId: string,
@@ -62,10 +63,35 @@ const courseService = () => {
     }
   };
 
+  const updateCourseStatus = async (courseId:string, isListed:boolean) => {
+    try{
+  
+      const update = { isListed: isListed };
+      const options = { new: true };
+  
+      const updatedCourse = CourseModel.findByIdAndUpdate(
+        courseId,
+        update,
+        options,
+      )
+  
+      if (!updatedCourse) {
+        throw new Error('Course not found'); 
+      }
+  
+      return updatedCourse
+    }catch(error:any){
+      throw error
+    }
+  }
+
   return {
     addCourse,
     getAllCourse,
+    updateCourseStatus,
   };
 };
+
+
 
 export default courseService;
