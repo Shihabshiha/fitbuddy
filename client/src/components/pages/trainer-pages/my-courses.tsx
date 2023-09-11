@@ -38,8 +38,8 @@ const CoursesTable: React.FC = () => {
 
   const handleUpdatedCourse = (updatedCourse: Course) => {
     setCourses((prevCourses) =>
-      prevCourses.map((c) =>
-        c._id === updatedCourse._id ? updatedCourse : c
+      prevCourses.map((course) =>
+        course._id === updatedCourse._id ? updatedCourse : course
       )
     );
   };
