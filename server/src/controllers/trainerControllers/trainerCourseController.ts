@@ -85,10 +85,29 @@ const courseControllerFunctions = () =>{
     }
   }
 
+  const deleteCourse = async (req:Request,res:Response) => {
+    const courseId = req.params.courseId;
+    try{
+      const result = await trainerCourseService.deleteCourse(courseId)
+      res.status(200).json(result)
+    }catch(error:any){
+      if (error.message === 'Course not found') {
+        res.status(404).json({ error: 'Course not found' });
+      } else {
+        res.status(500).json({ error:error.message });
+      }
+    }
+  }
+
+
+
+
+
   return {
     addCourse,
     getAllCourses,
     updateCourseStatus,
+    deleteCourse,
   }
 }
 

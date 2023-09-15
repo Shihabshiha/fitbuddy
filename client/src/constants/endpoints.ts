@@ -12,7 +12,9 @@ const END_POINTS = {
   GOOGLE_LOGIN_USER : 'api/user/login-with-google',
   ADD_COURSE : 'api/trainer/add-course',
   GET_ALL_COURSES : 'api/trainer/getAll-courses',
-  LIST_UNLIST : 'api/trainer/update-courseList-status'
+  LIST_UNLIST : 'api/trainer/update-courseList-status',
+  DELETE_COURSE: 'api/trainer/delete-course',
+  ADD_CHAPTER: 'api/trainer/add-chapter',
 }
 
 export default END_POINTS
