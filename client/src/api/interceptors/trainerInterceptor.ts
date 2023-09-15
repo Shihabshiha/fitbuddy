@@ -4,6 +4,7 @@ import { BASE_URL } from "../../constants/common";
 
 const trainerApi : AxiosInstance = axios.create({
   baseURL: BASE_URL,
+  
 })
 
 trainerApi.interceptors.request.use(

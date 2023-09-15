@@ -11,6 +11,9 @@ import TrainerDashboard from "./components/pages/trainer-pages/dashboard"
 import DashboardLayout from "./components/trainer/dashboardLayout"
 import CoursesTable from "./components/pages/trainer-pages/my-courses"
 import AddCoursePage from "./components/pages/trainer-pages/add-course"
+import AddChapterPage from "./components/pages/trainer-pages/add-chapter"
+import CourseManagement from "./components/pages/trainer-pages/course-management"
+
 
 const AppRouter = createBrowserRouter([
   // {
@@ -72,6 +75,14 @@ const AppRouter = createBrowserRouter([
       {
         path: "add-course",
         element: <AddCoursePage />
+      },
+      {
+        path: "course/add-chapter/:courseId",
+        element: <AddChapterPage />
+      },
+      {
+        path:"course/:courseId",
+        element: <CourseManagement />
       }
       
     ]

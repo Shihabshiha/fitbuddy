@@ -15,9 +15,6 @@ const ListUnlistButton: React.FC<ListUnlistButtonProps> = ({ course, onUpdateCou
   const handleButtonClick = async () => {
     try {
       setLoading(true);
-      // const updatedCourse = await axios.post(`/api/update-list-status/${course._id}`, {
-      //   isListed: !course.isListed,
-      // });
       const updatedCourse = await listUnlist(course._id, !course.isListed)
 
       // Call the onUpdateCourse callback to update the course in the parent component

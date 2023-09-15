@@ -14,3 +14,13 @@ export const addCourseValidationSchema = Yup.object({
     .min(0, 'Price must be greater than or equal to 0'),
   isPaid: Yup.boolean().required('Please indicate if the course is paid or not.'),
 });
+
+export const addChapterValidationSchema = Yup.object().shape({
+  caption: Yup.string()
+    .required('Caption is required')
+    .max(100, 'Caption must be at most 100 characters'),
+  order: Yup.number()
+    .required('Order is required')
+    .integer('Order must be an integer')
+    .min(1, 'Order must be at least 1'),
+})

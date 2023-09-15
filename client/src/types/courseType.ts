@@ -13,3 +13,16 @@ export interface Course {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface ChapterData {
+  caption: string;
+  order: number;
+  videoFile: File[] 
+}
+
+export interface Chapter{
+  _id:string;
+  caption:string;
+  order: number;
+  videoUrl: string;
+}

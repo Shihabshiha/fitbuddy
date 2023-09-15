@@ -52,7 +52,44 @@ export const doListUnlist = async (
     );
     return response
   }catch(error){
-    console.error('Error during fetching courses:', error);
+    console.error('Error during changing the list status courses:', error);
+    throw error; 
+  }
+}
+
+export const doDelete = async (
+  endpoint : string,
+  courseId : string,
+) =>{
+  try{
+    const response = trainerApi.delete(
+      `${BASE_URL}/${endpoint}/${courseId}`,
+    );
+    return response
+  }catch(error){
+    console.error('Error during deleting courses:', error);
+    throw error; 
+  }
+}
+
+export const addChapter = async (
+  endpoint : string,
+  chapterData: FormData,
+  courseId : string,
+) =>{
+  try{
+
+    const response = trainerApi.post(
+      `${BASE_URL}/${endpoint}/${courseId}`,
+      chapterData
+    , {
+      Headers:{
+        "Content-type": "multipart/form-data"
+      }
+    });
+    return response
+  }catch(error){
+    console.error('Error during deleting courses:', error);
     throw error; 
   }
 }

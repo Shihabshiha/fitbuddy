@@ -1,16 +1,19 @@
-import React from 'react';
+import React ,{useState} from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { addCourseValidationSchema } from '../../../validations/TrainerCommonValidation';
 import { CourseData } from '../../../types/trainerTypes';
 import { addNewCourse } from '../../../api/endpoints/trainer';
-
-
+import { notify , ToastContainer } from '../../../utils/notificationUtils';
+import { ScaleLoader } from 'react-spinners';
+import { AxiosError } from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AddCoursePage: React.FC = () => {
- 
+  const [isLoading,setIsLoading] = useState(false)
+  const navigate = useNavigate()
   const handleSubmit = async (values:CourseData) => {
     try {
-      
+      setIsLoading(true)
       // Create a new FormData object
       const formData = new FormData();
   
@@ -27,12 +30,16 @@ const AddCoursePage: React.FC = () => {
       if (values.isPaid) {
         formData.append('price', String(values.price)); 
       }
-      console.log(formData)
-      const response = await addNewCourse(formData); 
-      // Handle the response as needed
-      console.log('Response:', response);
-    } catch (error) {
-      console.error('Error during form submission:', error);
+      await addNewCourse(formData); 
+      setIsLoading(false)
+      notify("Course added successfully" , "success")
+      navigate('/trainer/my-courses')
+    } catch (error:unknown) {
+      if (error instanceof AxiosError && error.response?.data?.error) {
+        notify(error.response.data.error, "error");
+      } else {
+        notify("An error occurred in adding the course.", "error");
+      } 
     }
   };
 
@@ -50,6 +57,11 @@ const AddCoursePage: React.FC = () => {
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md">
+      {isLoading && (
+          <div className="fixed inset-0 flex justify-center items-center bg-opacity-50 bg-white">
+            <ScaleLoader color="#007BFF" loading={true} />
+          </div>
+       )}
       <h2 className="text-2xl font-semibold mb-4">Add a New Course</h2>
       <Formik
         initialValues={initialValues}
@@ -162,7 +174,7 @@ const AddCoursePage: React.FC = () => {
                 }}
               />
             </div>
-            <div className="block  w-full">
+            <div className="block  w-full px-4">
               <button
                 type="submit"
                 className="bg-blue-500 text-white px-4 py-2 rounded-md"
@@ -173,6 +185,7 @@ const AddCoursePage: React.FC = () => {
           </Form>
         )}
       </Formik>
+      <ToastContainer />
     </div>
   );
 };
