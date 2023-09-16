@@ -4,6 +4,7 @@ import s3 from "../../config/awsConfig";
 import config from "../../config/config";
 import { IChapter } from "../../models/chapterModel";
 import ChapterModel from "../../models/chapterModel"
+import crypto from 'crypto'
 
 const chapterService = () => {
 
@@ -16,7 +17,8 @@ const chapterService = () => {
     try{
       console.log('video file ',videoFile)
       const { caption , order } = chapterDetails;
-      const key = `videos/${Date.now()}_${videoFile.originalname}`;
+      const randomImageName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex');
+      const key = randomImageName()
       const file = videoFile;
       const params = {
         Bucket: config.AWS_BUCKET_NAME,
@@ -26,6 +28,7 @@ const chapterService = () => {
       };
 
       const command = new PutObjectCommand(params); 
+      
       await s3.send(command);
 
       const cloudfrontDomain = config.CLOUDFRONT_DOMAIN;
