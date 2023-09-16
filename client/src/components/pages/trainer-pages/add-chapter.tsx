@@ -5,13 +5,14 @@ import { addChapterValidationSchema } from '../../../validations/TrainerCommonVa
 import { notify, ToastContainer } from '../../../utils/notificationUtils';
 import { ScaleLoader } from 'react-spinners';
 import { AxiosError } from 'axios';
-import { useParams } from 'react-router-dom'; 
+import { useParams , useNavigate} from 'react-router-dom'; 
 import { addNewChapter } from '../../../api/endpoints/trainer';
 
 
 const AddChapterPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { courseId } = useParams();
+  const navigate = useNavigate()
 
   const handleSubmit = async (values: ChapterData) => {
     try {
@@ -32,6 +33,7 @@ const AddChapterPage: React.FC = () => {
         await addNewChapter( formData , courseId);
         setIsLoading(false);
         notify('Chapter added successfully', 'success');
+        navigate('/trainer/course/:courseId')
       }else{
         notify('Error in adding chapter',"error")
       }

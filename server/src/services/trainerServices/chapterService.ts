@@ -15,7 +15,9 @@ const chapterService = () => {
     trainerId :string,
   ) => {
     try{
-      console.log('video file ',videoFile)
+      if(!videoFile){
+        throw new Error ("Video file missing")
+      }
       const { caption , order } = chapterDetails;
       const randomImageName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex');
       const key = randomImageName()
@@ -28,13 +30,13 @@ const chapterService = () => {
       };
 
       const command = new PutObjectCommand(params); 
-      
+
       await s3.send(command);
 
       const cloudfrontDomain = config.CLOUDFRONT_DOMAIN;
 
       const cloudfrontUrl = `https://${cloudfrontDomain}/${key}`
-      console.log('urlllll',cloudfrontUrl)
+      
       
       const newChapter : ChaperData = {
         caption: caption,
@@ -52,8 +54,21 @@ const chapterService = () => {
     }
   }
 
+  const getChapterByCourseId = async (courseId:string ) => {
+    try{
+      if(!courseId){
+        throw new Error ("Course not found")
+      }
+      const chapters = await ChapterModel.find( { courseId : courseId} )
+      return chapters;
+    }catch(error:any){
+      throw error
+    }
+  }
+
   return {
     addChapter,
+    getChapterByCourseId,
   }
 }
 

@@ -7,7 +7,6 @@ export const register = async (
   trainerData: FormData
 ) => {
   try {
-    console.log('call done')
     const response = await axios.post(
       `${BASE_URL}/${endpoint}`,
       trainerData

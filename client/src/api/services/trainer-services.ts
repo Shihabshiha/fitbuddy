@@ -82,14 +82,25 @@ export const addChapter = async (
     const response = trainerApi.post(
       `${BASE_URL}/${endpoint}/${courseId}`,
       chapterData
-    , {
-      Headers:{
-        "Content-type": "multipart/form-data"
-      }
-    });
+    );
     return response
   }catch(error){
     console.error('Error during deleting courses:', error);
+    throw error; 
+  }
+}
+
+export const getChapters = async (
+  endpoint : string,
+  courseId : string,
+) =>{
+  try{
+    const response = trainerApi.get(
+      `${BASE_URL}/${endpoint}/${courseId}`,
+    );
+    return response
+  }catch(error){
+    console.error('Error during fetching courses:', error);
     throw error; 
   }
 }
