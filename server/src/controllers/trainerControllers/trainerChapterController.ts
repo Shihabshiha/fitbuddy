@@ -15,17 +15,35 @@ const trainerChapterFunction = () => {
       const courseId = req.params.courseId;
       const videoFile = req.file as Express.Multer.File;
       const { caption , order } = req.body;
-      console.log(req.file)
-      console.log('filesss',req.files)
       const result = await trainerChapterService.addChapter({caption,order},courseId,videoFile,trainerId)
       res.status(200).json(result)
     }catch(error:any){
-      res.status(400).json({ error:error.message });
+      if (error.message === 'Video file missing') {
+        res.status(404).json({ error: 'Video file missing' });
+      } else {
+        res.status(500).json({ error:error.message });
+      }
+    }
+  }
+
+  const getChapterByCourseId = async (req:Request, res:Response ) => {
+    try{
+      const courseId : string  = req.params.courseId;
+      const result = await trainerChapterService.getChapterByCourseId(courseId)
+      console.log('chapterss',result)
+      res.status(200).json({result})
+    }catch(error:any){
+      if (error.message === 'Course not found') {
+        res.status(404).json({ error: 'Course not found' });
+      } else {
+        res.status(500).json({ error:error.message });
+      }
     }
   }
 
   return {
     addChapter,
+    getChapterByCourseId,
   }
 }
 

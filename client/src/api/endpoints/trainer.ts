@@ -5,6 +5,7 @@ import {
   doListUnlist,
   doDelete,
   addChapter,
+  getChapters
 } from "../services/trainer-services";
 
 export const addNewCourse = (newCourse: FormData) => {
@@ -26,3 +27,7 @@ export const deleteCourse = (courseId: string) => {
 export const addNewChapter = (chapterData: FormData, courseId: string) => {
   return addChapter(END_POINTS.ADD_CHAPTER, chapterData, courseId);
 };
+
+export const getChaptersByCourseId = (courseId:string) => {
+  return getChapters(END_POINTS.GET_CHAPTER_BY_COURSE_ID, courseId)
+}

@@ -15,6 +15,7 @@ const END_POINTS = {
   LIST_UNLIST : 'api/trainer/update-courseList-status',
   DELETE_COURSE: 'api/trainer/delete-course',
   ADD_CHAPTER: 'api/trainer/add-chapter',
+  GET_CHAPTER_BY_COURSE_ID: 'api/trainer/get-chapter-by-courseId',
 }
 
 export default END_POINTS

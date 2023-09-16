@@ -3,7 +3,6 @@ import { TrainerLoginData } from "../../../types/trainerTypes";
 import { register , login } from "../../services/auth/trainer-auth-services";
 
 export const registerTrainer = (trainerData : FormData) =>{
-  console.log('axios data ',trainerData)
   return register(END_POINTS.REGISTER_TRAINER,trainerData)
 }
 
