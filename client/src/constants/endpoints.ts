@@ -19,6 +19,8 @@ const END_POINTS = {
   GET_CHAPTER_BY_COURSE_ID: 'api/trainer/get-chapter-by-courseId',
   DELETE_CHAPTER_BY_ID : 'api/trainer/delete-chapterById',
   BLOCK_UNBLOCK_USER : 'api/admin/user-block-unblock',
+  GET_ALL_COURSES_ADMIN : 'api/admin/get-all-courses',
+  LIST_UNLIST_COURSE_ADMIN : 'api/admin/list-unlist-course',
 }
 
 export default END_POINTS

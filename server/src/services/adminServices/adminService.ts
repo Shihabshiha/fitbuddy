@@ -5,6 +5,7 @@ import { generateJwtToken } from "../../middlewares/jwtAuth";
 import TrainerModel from "../../models/trainerModel";
 import transporter from "../../config/nodeMailerConfig";
 import config from "../../config/config";
+import CourseModel from "../../models/courseModel";
 
 
 const createAdminServices = () => {
@@ -112,6 +113,16 @@ const createAdminServices = () => {
     }
   }
 
+  const getAllCourses = async () => {
+    try{
+      const courses = await CourseModel.find()
+      return courses
+    }catch(error:any){
+      throw error
+    }
+  }
+
+
   return {
     adminLogin,
     getAllUsers,
@@ -119,6 +130,7 @@ const createAdminServices = () => {
     sendAcceptanceMail,
     sendRejectedMail,
     blockUnblockUser,
+    getAllCourses,
   }
 }
 

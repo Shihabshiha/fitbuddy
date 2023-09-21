@@ -6,9 +6,13 @@ import {
   sendAcceptedMailController,
   sendRejectedMailController,
   blockUnblockUserController,
+  getAllCoursesController,
+  listUnlistController,
 } from "../controllers/adminControllers/adminController";
 import { authenticateJwtToken } from "../middlewares/jwtAuth";
 import { adminRoleChecking } from "../middlewares/roleCheck";
+
+
 
 
 
@@ -28,15 +32,41 @@ router.put(
   authenticateJwtToken,
   adminRoleChecking,
   blockUnblockUserController
-  )
+);
 
 router.get(
   "/get-pending-trainer-verification",
+  authenticateJwtToken,
+  adminRoleChecking,
   getPendingTrainerVerificationController
 );
 
-router.post("/sent-accepted-mail", sendAcceptedMailController);
+router.post(
+  "/sent-accepted-mail", 
+  authenticateJwtToken,
+  adminRoleChecking,
+  sendAcceptedMailController,
+);
 
-router.post("/send-rejected-mail", sendRejectedMailController);
+router.post(
+  "/send-rejected-mail", 
+  authenticateJwtToken,
+  adminRoleChecking,
+  sendRejectedMailController,
+);
+
+router.get(
+  "/get-all-courses",
+  authenticateJwtToken,
+  adminRoleChecking,
+  getAllCoursesController
+)
+
+router.patch(
+  "/list-unlist-course/:courseId",
+  authenticateJwtToken,
+  adminRoleChecking,
+  listUnlistController,
+)
 
 export default router;

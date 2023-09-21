@@ -4,9 +4,10 @@ import { LoginRequestBody } from "../../types/commonTypes";
 import transporter from "../../config/nodeMailerConfig";
 import config from "../../config/config";
 import { CustomRequest } from "../../types/custom-request";
-
+import courseService from "../../services/trainerServices/trainerCourseService";
 
 const adminService = createAdminServices();
+const adminCourseService = courseService();
 
 export const adminLoginController = async (req: Request, res: Response) => {
   try {
@@ -80,6 +81,31 @@ export const blockUnblockUserController = async (req:Request,res:Response) => {
       res.status(404).json( { error: 'User not found'} )
     }else{
       res.status(500).json({error:"Internal server error"})
+    }
+  }
+}
+
+export const getAllCoursesController = async (req: CustomRequest, res: Response) => {
+  try {
+    const result = await adminService.getAllCourses();
+    res.status(200).json({result});
+  } catch (error: any) {
+    console.error(error);
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export const listUnlistController = async (req:Request,res:Response) => {
+  const courseId = req.params.courseId;
+  const { isListed } = req.body;
+  try{
+    const updatedCourse = await adminCourseService.updateCourseStatus(courseId,isListed)
+    res.status(200).json(updatedCourse)
+  }catch(error:any){
+    if (error.message === 'Course not found') {
+      res.status(404).json({ error: 'Course not found' });
+    } else {
+      res.status(500).json({ error:error.message });
     }
   }
 }

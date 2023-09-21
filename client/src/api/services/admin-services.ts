@@ -78,3 +78,35 @@ export const blockUnblockUser = async (
     throw error; 
   }
 }
+
+export const getCourses = async (
+  endpoint : string
+) =>{
+  try{
+    const response = adminApi.get(
+      `${BASE_URL}/${endpoint}`
+    );
+    return response
+  }catch(error){
+    console.error('Error during fetching Courses:', error);
+    throw error; 
+  }
+}
+
+export const listUnlistCourses = async (
+  endpoint : string,
+  courseId : string,
+  isListed : boolean
+) =>{
+  try{
+    const response = adminApi.patch(
+      `${BASE_URL}/${endpoint}/${courseId}`,{
+        isListed : isListed
+      }
+    );
+    return response
+  }catch(error){
+    console.error('Error during changing the list status of course:', error);
+    throw error; 
+  }
+}
