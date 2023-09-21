@@ -2,9 +2,9 @@ import { ChaperData } from "../../types/chpterTypes";
 import {  PutObjectCommand } from '@aws-sdk/client-s3';
 import s3 from "../../config/awsConfig";
 import config from "../../config/config";
-import { IChapter } from "../../models/chapterModel";
 import ChapterModel from "../../models/chapterModel"
 import crypto from 'crypto'
+
 
 const chapterService = () => {
 
