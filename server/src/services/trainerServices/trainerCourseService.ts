@@ -88,7 +88,6 @@ const courseService = () => {
   const deleteCourse = async (courseId:string) => {
     try{
       const deletedCourse =await CourseModel.findByIdAndDelete(courseId)
-      console.log(deletedCourse)
       if (!deletedCourse) {
         throw new Error("Course not found");
       }

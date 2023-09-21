@@ -12,6 +12,7 @@ const initialState : userData = {
     lastName : "",
     _id : "",
     email : "",
+    isBlocked : false,
     phoneNumber : '',
   }
 }

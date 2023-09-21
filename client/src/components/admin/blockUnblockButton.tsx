@@ -1,16 +1,17 @@
 import { BeatLoader } from 'react-spinners';
 import React, { useState } from 'react';
-import { listUnlist } from '../../api/endpoints/trainer';
-import { Course } from '../../types/courseType';
+import { blockUnblock } from '../../api/endpoints/admin';
+import { userDetails } from '../../types/userType'
 import ReactModal from 'react-modal';
 import { notify , ToastContainer} from '../../utils/notificationUtils';
+import { Button } from "@material-tailwind/react";
 
-interface ListUnlistButtonProps {
-  course: Course;
-  onUpdateCourse: (updatedCourse: Course) => void;
+interface BlockUnblockButtonProps {
+  user: userDetails;
+  onBlockUnblockUser: (updatedUser: userDetails) => void;
 }
 
-const ListUnlistButton: React.FC<ListUnlistButtonProps> = ({ course, onUpdateCourse }) => {
+const BlockUnblockButton: React.FC<BlockUnblockButtonProps> = ({ user, onBlockUnblockUser }) => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -18,8 +19,8 @@ const ListUnlistButton: React.FC<ListUnlistButtonProps> = ({ course, onUpdateCou
     setIsModalOpen(false)
     try {
       setLoading(true);
-      const updatedCourse = await listUnlist(course._id, !course.isListed)
-      onUpdateCourse(updatedCourse.data);
+      const result = await blockUnblock(user._id,!user.isBlocked)
+      onBlockUnblockUser(result.data.updatedUser);
       setLoading(false);
     } catch (error) {
       notify("An error occured during list/unlist","error")
@@ -29,19 +30,15 @@ const ListUnlistButton: React.FC<ListUnlistButtonProps> = ({ course, onUpdateCou
 
   return (
     <>
-      <button
-        onClick={()=>setIsModalOpen(true)}
-        className={`${
-          loading
-            ? 'bg-gray-400 cursor-not-allowed'
-            : course.isListed
-            ? 'bg-red-500 hover:bg-red-600'
-            : 'bg-green-500 hover:bg-green-600'
-        } text-white px-4 py-1 rounded-md focus:outline-none focus:ring focus:ring-blue-300`}
+      <Button
+        onClick={() => setIsModalOpen(true)}
+        color={loading ? "gray" : user.isBlocked ? "green" : "red"}
+        ripple={false}
+        className="text-white px-4 py-2 rounded-md focus:outline-none focus:ring focus:ring-blue-300"
         disabled={loading}
       >
-        {loading ? <BeatLoader size={8} color="white" /> : course.isListed ? 'Unlist' : 'List'}
-      </button>
+        {loading ? <BeatLoader size={8} color="white" /> : user.isBlocked ? 'Unblock' : 'Block'}
+      </Button>
       
       <ToastContainer />
 
@@ -52,16 +49,16 @@ const ListUnlistButton: React.FC<ListUnlistButtonProps> = ({ course, onUpdateCou
         overlayClassName="fixed inset-0 flex items-center justify-center bg-opacity-30 bg-gray-900"
       >
         <h2 className="text-xl font-semibold mb-4">
-          Confirm {course.isListed ? 'Unlisting' : 'Listing'}?
+          Confirm {user.isBlocked ? 'Unblock' : 'block'}?
         </h2>
         <p className="text-gray-700 mb-6">
-          Are you sure you want to {course.isListed ? 'unlist' : 'list'} this course?
+          Are you sure you want to {user.isBlocked ? 'unblock' : 'block'} , {user.firstName}?
         </p>
         <div className="flex justify-end">
           <button
             onClick={handleConfirmation}
             className={`${
-              course.isListed
+              user.isBlocked
                 ? 'bg-red-500 hover:bg-red-700'
                 : 'bg-green-500 hover:bg-green-700'
             } text-white font-semibold px-2 py-1 rounded mr-2`}
@@ -80,4 +77,4 @@ const ListUnlistButton: React.FC<ListUnlistButtonProps> = ({ course, onUpdateCou
   );
 };
 
-export default ListUnlistButton;
+export default BlockUnblockButton;

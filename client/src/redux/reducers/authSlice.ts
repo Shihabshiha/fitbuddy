@@ -20,12 +20,8 @@ const authSlice = createSlice({
       state,
       action: PayloadAction<{ adminToken: string}>
     ) {
-      localStorage.setItem(
-        "adminToken",
-        JSON.stringify({
-          adminToken: action.payload.adminToken,
-        })
-      )
+      const adminToken = action.payload.adminToken
+      localStorage.setItem("adminToken",adminToken)
       state.data = {
         adminToken: action.payload.adminToken,
       };

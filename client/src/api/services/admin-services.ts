@@ -47,3 +47,34 @@ export const sendRejectedMail = async (
     throw error; 
   }
 }
+
+export const getUsersList = async (
+  endpoint : string
+) =>{
+  try{
+    const response = adminApi.get(
+      `${BASE_URL}/${endpoint}`
+    );
+    return response
+  }catch(error){
+    console.error('Error during fetching Users list:', error);
+    throw error; 
+  }
+}
+
+export const blockUnblockUser = async (
+  endpoint : string,
+  userId : string,
+  isBlocked: boolean,
+) =>{
+  try{
+    const response = adminApi.put(
+      `${BASE_URL}/${endpoint}/${userId}`,
+      {isBlocked:isBlocked}
+    );
+    return response
+  }catch(error){
+    console.error('Error during block/unblock user:', error);
+    throw error; 
+  }
+}

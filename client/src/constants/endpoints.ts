@@ -9,6 +9,7 @@ const END_POINTS = {
   GET_TRAINERS_VERIFICATION_LIST : 'api/admin/get-pending-trainer-verification',
   SEND_ACCEPTANCE_MAIL: 'api/admin/sent-accepted-mail',
   SEND_REJECTED_MAIL : 'api/admin/send-rejected-mail',
+  GET_USERS_LIST : 'api/admin/get-all-users',
   GOOGLE_LOGIN_USER : 'api/user/login-with-google',
   ADD_COURSE : 'api/trainer/add-course',
   GET_ALL_COURSES : 'api/trainer/getAll-courses',
@@ -16,6 +17,8 @@ const END_POINTS = {
   DELETE_COURSE: 'api/trainer/delete-course',
   ADD_CHAPTER: 'api/trainer/add-chapter',
   GET_CHAPTER_BY_COURSE_ID: 'api/trainer/get-chapter-by-courseId',
+  DELETE_CHAPTER_BY_ID : 'api/trainer/delete-chapterById',
+  BLOCK_UNBLOCK_USER : 'api/admin/user-block-unblock',
 }
 
 export default END_POINTS

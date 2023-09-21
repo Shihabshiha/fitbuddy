@@ -16,6 +16,7 @@ export interface userDetails {
   lastName: string;
   email: string;
   _id : string;
+  isBlocked : boolean;
   phoneNumber : string;
 }
 

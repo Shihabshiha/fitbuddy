@@ -92,12 +92,33 @@ const createAdminServices = () => {
     }
   }
 
+  const blockUnblockUser = async (userId:string,isBlocked:boolean) => {
+    try{
+      const update = { isBlocked : isBlocked };
+      const options = { new: true };
+
+      const updatedUser = UserModel.findByIdAndUpdate(
+        userId,
+        update,
+        options
+      )
+
+      if(!updatedUser){
+        throw new Error("User not found")
+      }
+      return updatedUser
+    }catch(error:any){
+      throw error
+    }
+  }
+
   return {
     adminLogin,
     getAllUsers,
     getPendingVerificationList,
     sendAcceptanceMail,
     sendRejectedMail,
+    blockUnblockUser,
   }
 }
 

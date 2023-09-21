@@ -13,7 +13,7 @@ import CoursesTable from "./components/pages/trainer-pages/my-courses"
 import AddCoursePage from "./components/pages/trainer-pages/add-course"
 import AddChapterPage from "./components/pages/trainer-pages/add-chapter"
 import CourseManagement from "./components/pages/trainer-pages/course-management"
-
+import UsersListPage from "./components/pages/admin-pages/users-list"
 
 const AppRouter = createBrowserRouter([
   // {
@@ -49,6 +49,10 @@ const AppRouter = createBrowserRouter([
       {
         path: "trainers-requests",
         element :<PendingTrainersTable />
+      },
+      {
+        path: "users-list",
+        element: <UsersListPage />
       }
     ]
   },

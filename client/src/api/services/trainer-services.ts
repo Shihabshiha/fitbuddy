@@ -44,7 +44,6 @@ export const doListUnlist = async (
   isListed : boolean
 ) =>{
   try{
-    console.log('status ',isListed)
     const response = trainerApi.put(
       `${BASE_URL}/${endpoint}/${courseId}`,{
         isListed : isListed
@@ -101,6 +100,21 @@ export const getChapters = async (
     return response
   }catch(error){
     console.error('Error during fetching courses:', error);
+    throw error; 
+  }
+}
+
+export const deleteChapter = async (
+  endpoint : string,
+  chapterId : string,
+) =>{
+  try{
+    const response = trainerApi.delete(
+      `${BASE_URL}/${endpoint}/${chapterId}`,
+    );
+    return response
+  }catch(error){
+    console.error('Error during deleting chapter:', error);
     throw error; 
   }
 }

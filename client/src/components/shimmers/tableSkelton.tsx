@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CourseTableShimmer: React.FC = () => {
+const TableSkeltonShimmer: React.FC = () => {
   // Define the number of shimmer rows you want
   const shimmerRows = [1, 2, 3, 4, 5]; // You can adjust the number of rows as needed
 
@@ -29,4 +29,4 @@ const CourseTableShimmer: React.FC = () => {
   );
 };
 
-export default CourseTableShimmer;
+export default TableSkeltonShimmer;

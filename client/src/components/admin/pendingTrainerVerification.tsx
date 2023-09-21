@@ -8,6 +8,8 @@ import AcceptanceModal from '../modals/acceptTrainerModal';
 import { AxiosError } from 'axios';
 import { sendRequestAcceptedMail } from '../../api/endpoints/admin';
 import { sendRequestRejectedMail } from '../../api/endpoints/admin';
+import TableSkeltonShimmer from '../shimmers/tableSkelton'
+
 
 const PendingTrainersTable: React.FC = () => {
   const [pendingTrainers, setPendingTrainers] = useState<TrainerDetails[]>([]);
@@ -17,6 +19,8 @@ const PendingTrainersTable: React.FC = () => {
   const [selectedTrainerForAccept, setSelectedTrainerForAccept] = useState<TrainerDetails | null>(null);
   const [showRejectionModal, setShowRejectionModal] = useState(false);
   const [selectedTrainerForRejection, setSelectedTrainerForRejection] = useState<TrainerDetails | null>(null);
+  const [isLoading,setIsLoading] = useState(true)
+  
 
 
   useEffect(() => {
@@ -24,12 +28,14 @@ const PendingTrainersTable: React.FC = () => {
       try {
         const response = await getTrainerVerificationList();
         setPendingTrainers(response.data.pendingList);
+        setIsLoading(false)
       } catch (error:unknown) {
+        setIsLoading(false)
         console.error("Error during fetching trainers data:", error);
         if (error instanceof AxiosError && error.response?.data?.error) {
           notify(error.response.data.error, "error");
         } else {
-          notify("An error occured in fetching trainers data.", "error");
+          notify("An error occured in fetching trainers data.", "error"); 
         }
       }
     };
@@ -60,6 +66,7 @@ const PendingTrainersTable: React.FC = () => {
 
   const handleAcceptConfirmation = async () => {
     try{
+      setLoading(true)
       if (selectedTrainerForAccept?.email) {
         
         await sendRequestAcceptedMail(selectedTrainerForAccept.email);
@@ -68,12 +75,15 @@ const PendingTrainersTable: React.FC = () => {
         setPendingTrainers(prevTrainers =>
           prevTrainers.filter(trainer => trainer._id !== selectedTrainerForAccept?._id)
         );
+        setLoading(false)
         setShowAcceptModal(false);
       } else {
+        setLoading(false)
         notify("Email address not available for selected trainer.", "error")
         setShowAcceptModal(false);
       }
     }catch(error:unknown){
+      setLoading(false)
       console.error("Error during sending mail:", error);
         if (error instanceof AxiosError && error.response?.data?.error) {
           notify(error.response.data.error, "error");
@@ -85,18 +95,22 @@ const PendingTrainersTable: React.FC = () => {
 
   const handleRejectConfirmation = async (reason: string) => {
     try {
+      setLoading(true)
       if (selectedTrainerForRejection?.email) {
         await sendRequestRejectedMail(selectedTrainerForRejection.email, reason);
         notify("Trainer rejected and mail sent successfully", "success");
         setPendingTrainers(prevTrainers =>
           prevTrainers.filter(trainer => trainer._id !== selectedTrainerForRejection?._id)
         );
+        setLoading(false)
         setShowRejectionModal(false);
       } else {
+        setLoading(false)
         notify("Email address not available for selected trainer.", "error");
         setShowRejectionModal(false);
       }
     } catch (error: unknown) {
+      setLoading(false)
       console.error("Error during sending rejection mail:", error);
       if (error instanceof AxiosError && error.response?.data?.error) {
         notify(error.response.data.error, "error");
@@ -109,6 +123,12 @@ const PendingTrainersTable: React.FC = () => {
   return (
     <div className="container mx-auto mt-8">
       <h1 className="text-2xl font-bold mb-4">Pending Trainer Verification</h1>
+      {isLoading ? (
+        <>
+          <TableSkeltonShimmer />
+        </>
+      ):(
+
       <table className="w-full border">
         <thead>
           <tr className="bg-gray-200">
@@ -154,6 +174,7 @@ const PendingTrainersTable: React.FC = () => {
           ))}
         </tbody>
       </table>  
+      )}
       <CertificateModal
         isOpen={selectedTrainer !== null}
         certificates={selectedTrainer?.certificates || []}

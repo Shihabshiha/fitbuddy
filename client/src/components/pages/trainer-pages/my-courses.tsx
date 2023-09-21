@@ -4,7 +4,7 @@ import { notify , ToastContainer } from '../../../utils/notificationUtils';
 import { AxiosError } from 'axios';
 import { getAllCourses } from '../../../api/endpoints/trainer';
 import { Course } from '../../../types/courseType';
-import CourseTableShimmer from '../../shimmers/course-table-shimmer';
+import TableSkeltonShimmer from '../../shimmers/tableSkelton';
 import ListUnlistButton from '../../common/list-unlist-button';
 import CourseActionMenu from '../../trainer/course-action-menu';
 import DeleteConfirmationModal from '../../modals/course-delete-confirmation';
@@ -16,7 +16,6 @@ const CoursesTable: React.FC = () => {
   const [courses,setCourses] = useState<Course[]>([])
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [courseIdToDelete, setCourseIdToDelete] = useState<string | null>(null);
-
   const [currentPage, setCurrentPage] = useState<number>(0);
   const itemsPerPage : number = 4; 
   const pageCount : number = Math.ceil(courses.length / itemsPerPage);
@@ -94,7 +93,7 @@ const CoursesTable: React.FC = () => {
     <div >
       {loading && (
         <>
-          <CourseTableShimmer />
+          <TableSkeltonShimmer />
         </>
       )}
 

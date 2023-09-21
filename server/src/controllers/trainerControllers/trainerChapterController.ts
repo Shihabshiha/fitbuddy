@@ -30,7 +30,6 @@ const trainerChapterFunction = () => {
     try{
       const courseId : string  = req.params.courseId;
       const result = await trainerChapterService.getChapterByCourseId(courseId)
-      console.log('chapterss',result)
       res.status(200).json({result})
     }catch(error:any){
       if (error.message === 'Course not found') {
@@ -41,9 +40,25 @@ const trainerChapterFunction = () => {
     }
   }
 
+  const deleteChapterById = async (req:Request , res:Response) => {
+    const chapterId = req.params.chapterId;
+    console.log(chapterId)
+    try{
+      const result = await trainerChapterService.deleteChapter(chapterId)
+      res.status(200).json(result)
+    }catch(error:any){
+      if (error.message === 'Chapter not found') {
+        res.status(404).json({ error:error.message });
+      } else {
+        res.status(500).json({ error:error.message });
+      }
+    }
+  }
+
   return {
     addChapter,
     getChapterByCourseId,
+    deleteChapterById,
   }
 }
 
