@@ -66,9 +66,22 @@ const chapterService = () => {
     }
   }
 
+  const deleteChapter = async (chapterId:string) => {
+    try{
+      const deletedChapter = ChapterModel.findByIdAndDelete(chapterId)
+      if(!deletedChapter){
+        throw new Error ("Chapter not found")
+      }
+      return deletedChapter
+    }catch(error:any){
+      throw error
+    }
+  }
+
   return {
     addChapter,
     getChapterByCourseId,
+    deleteChapter,
   }
 }
 

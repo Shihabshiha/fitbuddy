@@ -22,8 +22,7 @@ export const adminLoginController = async (req: Request, res: Response) => {
 export const getAllUserController = async (req: CustomRequest, res: Response) => {
   try {
     const users = await adminService.getAllUsers();
-    console.log("userrrr", users);
-    res.status(200).json(users);
+    res.status(200).json({users});
   } catch (error: any) {
     console.error(error);
     res.status(400).json({ error: error.message });
@@ -66,6 +65,22 @@ export const sendRejectedMailController = async(req:Request, res:Response) =>{
   }catch(error:any){
     console.error('Error sending email:', error);
     res.status(500).json({ error: 'An error occurred while sending the email' });
+  }
+}
+
+export const blockUnblockUserController = async (req:Request,res:Response) => {
+  try{
+    const userId :string = req.params.userId;
+    console.log(userId)
+    const { isBlocked }  = req.body;
+    const updatedUser = await adminService.blockUnblockUser(userId,isBlocked);
+    res.status(200).json({updatedUser})
+  }catch(error:any){
+    if(error.message == "User not found"){
+      res.status(404).json( { error: 'User not found'} )
+    }else{
+      res.status(500).json({error:"Internal server error"})
+    }
   }
 }
 

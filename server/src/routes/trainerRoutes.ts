@@ -28,7 +28,7 @@ router.delete('/delete-course/:courseId',authenticateJwtToken,courseController.d
 //chapter managment
 router.post('/add-chapter/:courseId', upload.single('videoFile') , authenticateJwtToken , chapterController.addChapter )
 router.get('/get-chapter-by-courseId/:courseId', authenticateJwtToken, chapterController.getChapterByCourseId )
-
+router.delete('/delete-chapterById/:chapterId',authenticateJwtToken,chapterController.deleteChapterById)
 
 export default router;
 

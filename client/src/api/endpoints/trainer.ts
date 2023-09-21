@@ -5,7 +5,8 @@ import {
   doListUnlist,
   doDelete,
   addChapter,
-  getChapters
+  getChapters,
+  deleteChapter,
 } from "../services/trainer-services";
 
 export const addNewCourse = (newCourse: FormData) => {
@@ -30,4 +31,8 @@ export const addNewChapter = (chapterData: FormData, courseId: string) => {
 
 export const getChaptersByCourseId = (courseId:string) => {
   return getChapters(END_POINTS.GET_CHAPTER_BY_COURSE_ID, courseId)
+}
+
+export const deleteChapterById = (chapterId:string) => {
+  return deleteChapter(END_POINTS.DELETE_CHAPTER_BY_ID,chapterId)
 }

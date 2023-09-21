@@ -4,8 +4,9 @@ import { notify, ToastContainer } from '../../../utils/notificationUtils';
 import { AxiosError } from 'axios';
 import { getChaptersByCourseId } from '../../../api/endpoints/trainer';
 import { Chapter } from '../../../types/courseType';
-import CourseTableShimmer from '../../shimmers/course-table-shimmer';
 import { Button } from "@material-tailwind/react";
+import TableSkeltonShimmer from '../../shimmers/tableSkelton';
+import DeleteChapterModal from '../../modals/chapter-delete-confirmation';
 
 const CourseManagement: React.FC = () => {
   const { courseId } = useParams();
@@ -14,6 +15,8 @@ const CourseManagement: React.FC = () => {
   const courseData = location.state?.course
   const [loading, setLoading] = useState(false);
   const [chapters, setChapters] = useState<Chapter[]>([]); 
+  const [chapterIdToDelete , setChapterIdToDelete] = useState<string | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -40,12 +43,29 @@ const CourseManagement: React.FC = () => {
   }, [courseId]);
 
   const handleAddChapter = () => {
-    navigate(`/trainer/course/add-chapter/${courseId}`);
+    navigate(`/trainer/course/add-chapter/${courseId}`,{ state : {course : courseData}});
   };
 
-  // Render loading state
+  const handleChapterDelete = (chapterId : string) => {
+    setIsModalOpen(true)
+    setChapterIdToDelete(chapterId)
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setChapterIdToDelete(null); 
+  };
+
+  const handleOnDelete = (deletedChapterId:string) => {
+    setIsModalOpen(false)
+    const updatedChapters = chapters.filter((chapter) => chapter._id !== deletedChapterId);
+    setChapters(updatedChapters)
+    setChapterIdToDelete(null)
+  }
+
+
   if (loading) {
-    return <CourseTableShimmer />;
+    return <TableSkeltonShimmer />;
   }
 
   // Render course details and chapters when chapters data is available
@@ -80,20 +100,32 @@ const CourseManagement: React.FC = () => {
         <table className="min-w-full border divide-y divide-gray-200 mt-4">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SL No</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Caption</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SL No</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Caption</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Video Link</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {chapters.map((chapter, index) => (
               <tr key={chapter._id}>
-                <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
-                <td className="px-6 py-4 whitespace-nowrap">{chapter.caption}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                <td className="px-4 py-2 whitespace-nowrap">{index + 1}</td>
+                <td className="px-4 py-2 whitespace-nowrap">{chapter.caption}</td>
+                <td className="px-4 py-2 whitespace-nowrap">
+                  <a
+                    href={chapter.videoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:underline"
+                  >
+                    Link
+                  </a>
+                </td>
+                <td className="px-4 py-2 whitespace-nowrap">
                   <Button
-                    onClick={handleAddChapter}
+                    onClick={()=>handleChapterDelete(chapter._id)}
                     color='red'
+                    className="text-xs px-2 py-1"
                   >
                     Delete
                   </Button>
@@ -108,7 +140,12 @@ const CourseManagement: React.FC = () => {
           <p className="text-gray-500 text-lg">Click "Add Chapter" to create a new chapter.</p>
         </div>
       )}
-
+      <DeleteChapterModal
+      isOpen = {isModalOpen}
+      onClose= {handleCloseModal}
+      onDelete= {handleOnDelete}
+      chapterIdToDelete= {chapterIdToDelete}
+      />
       <ToastContainer />
     </div>
   );

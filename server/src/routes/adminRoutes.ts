@@ -5,9 +5,12 @@ import {
   getPendingTrainerVerificationController,
   sendAcceptedMailController,
   sendRejectedMailController,
+  blockUnblockUserController,
 } from "../controllers/adminControllers/adminController";
 import { authenticateJwtToken } from "../middlewares/jwtAuth";
 import { adminRoleChecking } from "../middlewares/roleCheck";
+
+
 
 const router = express.Router();
 
@@ -19,6 +22,13 @@ router.get(
   adminRoleChecking,
   getAllUserController
 );
+
+router.put(
+  '/user-block-unblock/:userId',
+  authenticateJwtToken,
+  adminRoleChecking,
+  blockUnblockUserController
+  )
 
 router.get(
   "/get-pending-trainer-verification",
