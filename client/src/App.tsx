@@ -4,18 +4,20 @@ import AdminLoginPage from "./components/pages/admin-pages/admin-login";
 import Header from "./components/admin/header";
 import SideBar from "./components/admin/sidebar";
 import { useSelector } from "react-redux/es/hooks/useSelector";
-import { selectIsLoggedIn } from "./redux/reducers/authSlice";
+import { selectIsLoggedIn } from "./redux/reducers/adminAuthSlice";
+import UserHeader from "./components/user/userHeader";
 
+export const User : React.FC = () =>{
 
-// export const user : React.FC = () =>{
+  return (
+  <>
+    <UserHeader />
+    <Outlet />
+    {/* <UserFooter /> */}
+  </>
+  )
 
-//   <>
-//     <UserHeader />
-//     <Outlet />
-//     <UserFooter />
-//   </>
-
-// }
+}
 
 export const Admin: React.FC = () => {
   

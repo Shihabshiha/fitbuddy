@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom"
 import UserSignupPage from "./components/pages/user-pages/user-signup"
 import UserLoginPage from "./components/pages/user-pages/user-login"
-import { Admin } from "./App"
+import { Admin , User} from "./App"
 import OtpVerifyComponent from "./components/common/otp-verify-component"
 import AdminHomePage from "./components/pages/admin-pages/adminHome"
 import TrainerRegister from "./components/pages/trainer-pages/trainer-register"
@@ -18,16 +18,16 @@ import AllCoursePage from "./components/pages/admin-pages/all-courses"
 
 
 const AppRouter = createBrowserRouter([
-  // {
-  //   path: "/",
-  //   element: <user />, 
-  //   children:[
-  //     {
-  //       path : "/",
-  //       element: <UserHomePage />,
-  //     }
-  //   ]
-  // },
+  {
+    path: "/",
+    element: <User />, 
+    // children:[
+    //   {
+    //     path : "/",
+    //     element: <UserHomePage />,
+    //   }
+    // ]
+  },
   {
     path : "/register-otp-verify",
     element :<OtpVerifyComponent />

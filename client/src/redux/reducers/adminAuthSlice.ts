@@ -46,6 +46,7 @@ export const selectadminToken = (state:RootState)=> {
   const adminToken = JSON.parse(adminTokenString ?? "")?.adminToken || "";
   return adminToken;
 }
+
 export const selectIsLoggedIn = () => {
   const  adminToken = localStorage.getItem("adminToken");
   return adminToken ? true : false;

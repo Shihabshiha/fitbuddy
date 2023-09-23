@@ -3,18 +3,11 @@ import { RootState } from "../store";
 import { userDetails } from "../../types/userType";
 
 interface userData {
-  user : userDetails
+  userDetails : userDetails | null;
 }
 
 const initialState : userData = {
-  user : {
-    firstName : "",
-    lastName : "",
-    _id : "",
-    email : "",
-    isBlocked : false,
-    phoneNumber : '',
-  }
+  userDetails : null,
 }
 
 const userSlice = createSlice({
@@ -22,10 +15,10 @@ const userSlice = createSlice({
   initialState,
   reducers : {
     setUser(state, action : PayloadAction <userDetails>){
-      state.user = action.payload
+      state.userDetails = action.payload
     },
     clearUser(state){
-      state.user = initialState.user
+      state.userDetails = initialState.userDetails
     }
   }
 })
@@ -33,5 +26,10 @@ const userSlice = createSlice({
 export const { setUser , clearUser } = userSlice.actions
 
 export const selectUser = (state : RootState ) => state.user
+
+export const selectIsLoggedIn = () => {
+  const  userToken = localStorage.getItem("userToken");
+  return userToken ? true : false;
+};
 
 export const userReducer = userSlice.reducer;
