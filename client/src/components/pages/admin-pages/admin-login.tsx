@@ -6,7 +6,7 @@ import { notify , ToastContainer } from "../../../utils/notificationUtils";
 import { useNavigate } from "react-router-dom";
 import { loginValidationSchema } from "../../../validations/auth/authValidation";
 import { useDispatch } from "react-redux";
-import { setToken } from "../../../redux/reducers/authSlice";
+import { setToken } from "../../../redux/reducers/adminAuthSlice";
 
 const AdminLoginPage : React.FC = () =>{
   const navigate = useNavigate();

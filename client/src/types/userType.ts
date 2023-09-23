@@ -18,5 +18,6 @@ export interface userDetails {
   _id : string;
   isBlocked : boolean;
   phoneNumber : string;
+  profileImage: string;
 }
 

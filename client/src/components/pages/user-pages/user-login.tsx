@@ -18,7 +18,7 @@ const UserLoginPage : React.FC = () =>{
   const dispatch = useDispatch()
   const [isLoggedIn , setIsLoggedIn] = useState<boolean>()
   const navigate = useNavigate()
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("userToken");
 
   const loginCheck = (): void => {
     token ? setIsLoggedIn(true) : setIsLoggedIn(false);
@@ -43,7 +43,6 @@ const UserLoginPage : React.FC = () =>{
           navigate('/')
         },1500)
     }catch(error:unknown){
-      console.error("Error during registration:", error);
       if (error instanceof AxiosError && error.response?.data?.error) {
         notify(error.response.data.error, "error");
       } else {
