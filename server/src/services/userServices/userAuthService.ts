@@ -117,7 +117,7 @@ const createAuthService = ()=>{
 
   const googleLogin = async (userData:GoogleUserPayload): Promise<GoogleLoginResult> => {
     try{
-      const { given_name, family_name, email } = userData;
+      const { given_name, family_name, email , picture } = userData;
       let user = await UserModel.findOne({ email });
 
       if(!user){
@@ -126,6 +126,7 @@ const createAuthService = ()=>{
           lastName : family_name,
           email : email,
           isBlocked : false,
+          profileImage : picture,
         })
         const token = generateJwtToken({ id: newUser._id.toString(), role: 'user' });
         console.log('new user')

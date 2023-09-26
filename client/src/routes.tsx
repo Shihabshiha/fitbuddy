@@ -15,18 +15,18 @@ import AddChapterPage from "./components/pages/trainer-pages/add-chapter"
 import CourseManagement from "./components/pages/trainer-pages/course-management"
 import UsersListPage from "./components/pages/admin-pages/users-list"
 import AllCoursePage from "./components/pages/admin-pages/all-courses"
-
+import UserHomePage from "./components/pages/user-pages/user-HomePage"
 
 const AppRouter = createBrowserRouter([
   {
     path: "/",
     element: <User />, 
-    // children:[
-    //   {
-    //     path : "/",
-    //     element: <UserHomePage />,
-    //   }
-    // ]
+    children:[
+      {
+        path : "/",
+        element: <UserHomePage />,
+      }
+    ]
   },
   {
     path : "/register-otp-verify",

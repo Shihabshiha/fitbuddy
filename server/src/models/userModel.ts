@@ -7,7 +7,8 @@ const userSchema = new Schema<User>({
   lastName : { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String },
-  isBlocked: {type: Boolean, required: true}
+  isBlocked: {type: Boolean, required: true},
+  profileImage : {type : String}
 });
 
 const UserModel = mongoose.model<User>('User', userSchema);

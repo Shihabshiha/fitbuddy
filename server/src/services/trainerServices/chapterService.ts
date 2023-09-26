@@ -4,6 +4,7 @@ import s3 from "../../config/awsConfig";
 import config from "../../config/config";
 import ChapterModel from "../../models/chapterModel"
 import crypto from 'crypto'
+import mongoose from "mongoose";
 
 
 const chapterService = () => {
@@ -37,12 +38,14 @@ const chapterService = () => {
 
       const cloudfrontUrl = `https://${cloudfrontDomain}/${key}`
       
-      
+      const courseObjectId = new mongoose.Types.ObjectId(courseId)
+      const trainerObjectId = new mongoose.Types.ObjectId(trainerId)
+
       const newChapter : ChaperData = {
         caption: caption,
         order : order,
-        trainerId: trainerId,
-        courseId: courseId,
+        trainerId: trainerObjectId,
+        courseId: courseObjectId,
         videoUrl: cloudfrontUrl
       }
 
@@ -59,7 +62,8 @@ const chapterService = () => {
       if(!courseId){
         throw new Error ("Course not found")
       }
-      const chapters = await ChapterModel.find( { courseId : courseId} )
+      const courseObjectId = new mongoose.Types.ObjectId(courseId)
+      const chapters = await ChapterModel.find( { courseId : courseObjectId} )
       return chapters;
     }catch(error:any){
       throw error

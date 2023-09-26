@@ -5,8 +5,8 @@ export interface IChapter extends Document {
   caption: string;
   order: number;
   videoUrl: string;
-  trainerId: string;
-  courseId:string;
+  trainerId: mongoose.Types.ObjectId;
+  courseId:mongoose.Types.ObjectId;
 }
 
 const chapterSchema = new Schema({
@@ -23,11 +23,13 @@ const chapterSchema = new Schema({
       required:true,
     },
     trainerId : {
-      type:String,
+      type:Schema.Types.ObjectId,
+      ref: 'trainers',
       required:true,
     },
     courseId : {
-      type:String,
+      type:Schema.Types.ObjectId,
+      ref: 'courses',
       required:true,
     }
   },

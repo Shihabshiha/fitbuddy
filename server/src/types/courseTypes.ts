@@ -1,4 +1,5 @@
 import { Schema, Document } from "mongoose";
+import mongoose from "mongoose";
 
 export interface CourseAttributes {
   courseName: string;
@@ -10,7 +11,7 @@ export interface CourseAttributes {
   duration: number;
   thumbnailUrl: string;
   isListed: boolean;
-  trainerId: string;
+  trainerId: mongoose.Types.ObjectId ;
 }
 
 export interface CourseInterface extends Document{
@@ -23,7 +24,7 @@ export interface CourseInterface extends Document{
   duration: number;
   thumbnailUrl: string;
   isListed: boolean;
-  trainerId: string;
+  trainerId: mongoose.Types.ObjectId;
   subscribedUsers: Schema.Types.ObjectId[];
 }
 
