@@ -11,7 +11,8 @@ const courseSchema = new Schema<CourseInterface>({
       maxlength: 100
     },
     trainerId: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'trainers',
       required: true,
     },
     duration: {

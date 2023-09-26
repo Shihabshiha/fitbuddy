@@ -26,3 +26,19 @@ export interface Chapter{
   order: number;
   videoUrl: string;
 }
+
+export interface ProgramApiResponse {
+  _id: string;
+  courseName: string;
+  trainerId: string;
+  duration: number;
+  category: string;
+  level: string;
+  price: number;
+  isPaid: boolean;
+  description: string;
+  thumbnailUrl: string;
+  createdAt: string;
+  trainerProfileUrl:string;
+  trainerName : string;
+}

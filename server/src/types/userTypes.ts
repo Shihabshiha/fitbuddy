@@ -6,10 +6,12 @@ export interface User extends Document {
   email: string;
   password: string;
   isBlocked: boolean;
+  profileImage: string;
 }
 
 export interface GoogleUserPayload {
   given_name: string;
   family_name: string;
   email: string;
+  picture :string;
 }

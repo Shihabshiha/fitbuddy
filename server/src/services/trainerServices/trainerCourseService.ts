@@ -2,6 +2,7 @@ import { CourseData } from "../../types/trainerTypes";
 import CourseModel from "../../models/courseModel";
 import cloudinary from "../../config/cloudinaryConfig";
 import { CourseAttributes, CourseInterface } from "../../types/courseTypes";
+import mongoose from 'mongoose';
 
 const courseService = () => {
   
@@ -31,6 +32,8 @@ const courseService = () => {
         }
       );
       const imageUrl = uploadResponse.secure_url;
+      const trainerObjectId = new mongoose.Types.ObjectId(trainerId)
+      
 
       const newCourse: CourseAttributes = {
         courseName: courseName,
@@ -39,7 +42,7 @@ const courseService = () => {
         level: level,
         price: price,
         isPaid: isPaid,
-        trainerId: trainerId,
+        trainerId: trainerObjectId,
         duration: duration,
         thumbnailUrl: imageUrl,
         isListed: true,

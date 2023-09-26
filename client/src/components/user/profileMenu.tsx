@@ -23,7 +23,7 @@ const ProfileMenu : React.FC = () => {
     clearUser()
     notify("logged out successfully","success")
     setTimeout(()=>{
-      navigate('/')  
+      window.location.reload()
     },1500)
   }
 

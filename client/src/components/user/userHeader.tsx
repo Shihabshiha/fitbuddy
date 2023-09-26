@@ -1,8 +1,7 @@
 import React, {  useState  } from 'react'
 import { Disclosure } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, BellIcon, XMarkIcon , PlusCircleIcon } from '@heroicons/react/24/outline'
 import ProfileMenu from './profileMenu'
-import { Button } from '@material-tailwind/react'
 import { useNavigate } from 'react-router-dom'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,7 +31,7 @@ const UserHeader : React.FC = () => {
 
 
   return (
-    <Disclosure as="nav" className="bg-gray-700">
+    <Disclosure as="nav" className="fixed top-0 left-0 right-0 bg-gray-700 z-50">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -86,16 +85,66 @@ const UserHeader : React.FC = () => {
                 </button>
 
                 {/* Profile dropdown */}
+               <div className="sm:hidden ml-2">
                 {isLoggedIn ? (
                   <ProfileMenu />
-                ):(
-                  <Button
-                  className='px-3 py-2 ml-2'
-                  onClick={()=> navigate('/login')}
-                  >
-                  login
-                  </Button>
-                )}
+                ) : (
+                    <Disclosure>
+                      {({ open }) => (
+                        <>
+                          <Disclosure.Button
+                            className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                          >
+                            <span className="sr-only">Open user menu</span>
+                            {open ? (
+                               <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
+                            ):(
+                              <PlusCircleIcon className="block h-6 w-6" aria-hidden="true" />
+                            )}
+                          </Disclosure.Button>
+
+                          <Disclosure.Panel className="origin-top-right absolute z-10 right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <div className="py-1">
+                              <a
+                                href="/login"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-900"
+                              >
+                                Login
+                              </a>
+                              <a
+                                href="/trainer/login"
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-900"
+                              >
+                                Trainer login
+                              </a>
+                            </div>
+                          </Disclosure.Panel>
+                        </>
+                      )}
+                    </Disclosure>
+                  )}
+              </div>
+
+                <div className="hidden sm:block">
+                  {isLoggedIn ? (
+                    <ProfileMenu />
+                  ) : (
+                    <>
+                      <a
+                        href="/login"
+                        className="px-3 py-2 ml-2 text-sm font-medium text-gray-300 hover:bg-gray-900 hover:text-white rounded-md"
+                      >
+                        Login
+                      </a>
+                      <a
+                        href="/trainer/login"
+                        className="px-3 py-2 ml-2 text-sm font-medium text-gray-300 hover:bg-gray-900 hover:text-white rounded-md"
+                      >
+                        Trainer Login
+                      </a>
+                    </>
+                  )}
+                </div>
               </div>
             </div>
           </div>

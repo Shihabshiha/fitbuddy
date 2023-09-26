@@ -21,6 +21,7 @@ const END_POINTS = {
   BLOCK_UNBLOCK_USER : 'api/admin/user-block-unblock',
   GET_ALL_COURSES_ADMIN : 'api/admin/get-all-courses',
   LIST_UNLIST_COURSE_ADMIN : 'api/admin/list-unlist-course',
+  GET_WEIGHT_GAIN_PROGRAMS : 'api/user/get-weight-gain-programs',
 }
 
 export default END_POINTS
