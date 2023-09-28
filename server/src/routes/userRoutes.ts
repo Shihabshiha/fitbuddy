@@ -16,6 +16,6 @@ router.post('/login', loginValidationCheck ,userLoginController)
 router.post('/login-with-google', googleAuthController)
 
 router.get('/get-weight-gain-programs', programController.getWeightGainPrograms)
-
+router.get('/get-programDetailsById/:programId',programController.getProgramDetails)
 
 export default router;

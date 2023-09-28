@@ -16,6 +16,7 @@ import CourseManagement from "./components/pages/trainer-pages/course-management
 import UsersListPage from "./components/pages/admin-pages/users-list"
 import AllCoursePage from "./components/pages/admin-pages/all-courses"
 import UserHomePage from "./components/pages/user-pages/user-HomePage"
+import ProgramDetailPage from "./components/pages/user-pages/program-datails"
 
 const AppRouter = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const AppRouter = createBrowserRouter([
       {
         path : "/",
         element: <UserHomePage />,
+      },
+      {
+        path : "/program/:programId",
+        element : <ProgramDetailPage />
       }
     ]
   },

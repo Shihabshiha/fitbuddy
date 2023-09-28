@@ -20,6 +20,7 @@ const AddCoursePage: React.FC = () => {
       // Append your form fields to the formData object
       formData.append('courseName', values.courseName);
       formData.append('description', values.description);
+      formData.append('about', values.about)
       formData.append('duration', values.duration.toString());
       formData.append('category', values.category);
       formData.append('level', values.level);
@@ -46,6 +47,7 @@ const AddCoursePage: React.FC = () => {
   const initialValues: CourseData = {
     courseName: '',
     description: '',
+    about: '',
     duration: 0,
     category: '',
     level: '',
@@ -93,6 +95,18 @@ const AddCoursePage: React.FC = () => {
                 className="form-textarea h-16"
               />
               <ErrorMessage name="description" component="div" className="text-red-500" />
+            </div>
+            <div className="mb-4 px-4 w-1/2">
+              <label htmlFor="about" className="block text-sm font-medium text-gray-700">
+                About
+              </label>
+              <Field
+                as="textarea"
+                id="about"
+                name="about"
+                className="form-textarea h-24"
+              />
+              <ErrorMessage name="about" component="div" className="text-red-500" />
             </div>
             {/* Add other form fields using the same structure */}
             <div className="mb-4 px-4 w-1/2">

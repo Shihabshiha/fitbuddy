@@ -2,7 +2,7 @@ import { ChaperData } from "../../types/chpterTypes";
 import {  PutObjectCommand } from '@aws-sdk/client-s3';
 import s3 from "../../config/awsConfig";
 import config from "../../config/config";
-import ChapterModel from "../../models/chapterModel"
+import ChapterModel, { IChapter } from "../../models/chapterModel"
 import crypto from 'crypto'
 import mongoose from "mongoose";
 
@@ -19,7 +19,7 @@ const chapterService = () => {
       if(!videoFile){
         throw new Error ("Video file missing")
       }
-      const { caption , order } = chapterDetails;
+      const { caption , order , description } = chapterDetails;
       const randomImageName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex');
       const key = randomImageName()
       const file = videoFile;
@@ -44,6 +44,7 @@ const chapterService = () => {
       const newChapter : ChaperData = {
         caption: caption,
         order : order,
+        description : description,
         trainerId: trainerObjectId,
         courseId: courseObjectId,
         videoUrl: cloudfrontUrl

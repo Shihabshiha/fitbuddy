@@ -8,4 +8,4 @@ router.use('/api/trainer', trainerRoutes);
 router.use('/api/user',userRoutes)
 router.use('/api/admin',adminRoutes)
 
-export default router;
+export default router; 

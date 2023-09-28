@@ -15,6 +15,7 @@ export interface CourseData {
   description: string;
   category: string;
   duration: number;
+  about:string;
   level:string;
   price: number;
   isPaid: boolean;

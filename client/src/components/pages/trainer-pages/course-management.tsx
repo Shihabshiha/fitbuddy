@@ -25,7 +25,6 @@ const CourseManagement: React.FC = () => {
         if(courseId){
           const response = await getChaptersByCourseId(courseId);
           const chaptersData = response?.data.result; 
-          console.log('chapter data',chaptersData)
           setChapters(chaptersData || []);
         }
       } catch (error: unknown) {
@@ -102,6 +101,7 @@ const CourseManagement: React.FC = () => {
             <tr>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SL No</th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Caption</th>
+              <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Video Link</th>
               <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
             </tr>
@@ -111,6 +111,7 @@ const CourseManagement: React.FC = () => {
               <tr key={chapter._id}>
                 <td className="px-4 py-2 whitespace-nowrap">{index + 1}</td>
                 <td className="px-4 py-2 whitespace-nowrap">{chapter.caption}</td>
+                <td className="px-4 py-2 ">{chapter.description}</td>
                 <td className="px-4 py-2 whitespace-nowrap">
                   <a
                     href={chapter.videoUrl}

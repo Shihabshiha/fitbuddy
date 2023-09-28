@@ -2,20 +2,26 @@ import React , { useState , useEffect} from 'react'
 import { Typography } from '@material-tailwind/react';
 import { ProgramApiResponse } from '../../types/courseType';
 import { AxiosError } from 'axios';
-import { getWeightGainPrograms } from '../../api/endpoints/user';
 import { notify,ToastContainer } from '../../utils/notificationUtils';
 import ProgramCard from '../common/programCard';
 import { Link } from 'react-router-dom';
 import ProgramCardShimmer from '../shimmers/programCard';
+import { useDispatch , useSelector } from 'react-redux';
+import { selectCourse } from '../../redux/reducers/courseSlice';
+import { getAllProgram } from '../../api/endpoints/user';
+import { setCourse } from '../../redux/reducers/courseSlice';
 
 const WeightGainPrograms : React.FC = () => {
-  const [programs,setPrograms] = useState<ProgramApiResponse[]>();
   const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
+  const programs : ProgramApiResponse[] | null = useSelector(selectCourse)
+  console.log('programs',programs)
 
-  const fetchWeightGainPrograms = async () => {
+  const fetchAllPrograms = async () => {
     try{
-      const response = await getWeightGainPrograms()
-      setPrograms(response.data?.programs)
+      const response = await getAllProgram()
+      const course = response.data?.programs
+      dispatch(setCourse({course}))
       setIsLoading(false)
     }catch(error:unknown){
       setIsLoading(false)
@@ -27,8 +33,8 @@ const WeightGainPrograms : React.FC = () => {
     }
   }
 
-  useEffect(()=>{
-    fetchWeightGainPrograms()
+  useEffect(()=>{ 
+    fetchAllPrograms();
   },[])
 
   return (
@@ -41,7 +47,7 @@ const WeightGainPrograms : React.FC = () => {
         All Programs
       </Typography>
     </div>
-    <div className='flex items-center justify-between px-14 flex-wrap'>
+    <div className='grid ml-5 py-4 md:grid-cols-3 items-center px-10'>
       {isLoading ? (
         Array.from({ length: 4 }).map((_, index) => (
           <div key={index}>
@@ -51,15 +57,15 @@ const WeightGainPrograms : React.FC = () => {
         ):(
         programs?.map((program) => {
           return (
-            <div className='grid md:m-2 w-1/2 md:w-1/4 md:p-2  justify-center overflow-hidden text-center  rounded-lg transform-gpu transition-transform hover:scale-105' key={program._id}>
-              <Link key={program._id} to={`/programs/${program._id}`}>
+            <div className='md:p-3 w-full md:w-full  overflow-hidden text-center  rounded-lg transform-gpu transition-transform hover:scale-105' key={program._id}>
+              <Link key={program._id} to={`/program/${program._id}`}>
                 <ProgramCard programInfo={program} />
               </Link>
             </div>
           );
         })
       )}
-    </div>
+    </div> 
     <ToastContainer />
   </> 
   )

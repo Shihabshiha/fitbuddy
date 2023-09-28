@@ -43,6 +43,10 @@ const courseSchema = new Schema<CourseInterface>({
       type: String,
       required: true,
     },
+    about: {
+      type: String,
+      required: true,
+    },
     thumbnailUrl: {
       type: String, 
       required: true,
