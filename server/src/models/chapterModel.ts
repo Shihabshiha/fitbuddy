@@ -5,12 +5,17 @@ export interface IChapter extends Document {
   caption: string;
   order: number;
   videoUrl: string;
+  description:string;
   trainerId: mongoose.Types.ObjectId;
   courseId:mongoose.Types.ObjectId;
 }
 
 const chapterSchema = new Schema({
     caption: {
+      type:String,
+      required:true,
+    },
+    description:{
       type:String,
       required:true,
     },

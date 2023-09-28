@@ -1,6 +1,10 @@
 import END_POINTS from "../../constants/endpoints";
-import { getWeightgainPrograms } from "../services/user-services";
+import { getAllPrograms , getProgramById } from "../services/user-services";
 
-export const getWeightGainPrograms = () => {
-  return getWeightgainPrograms(END_POINTS.GET_WEIGHT_GAIN_PROGRAMS);
+export const getAllProgram = () => {
+  return getAllPrograms(END_POINTS.GET_ALL_PROGRAMS);
+}
+
+export const getProgramDetailById = (programId:string) => {
+  return getProgramById(END_POINTS.GET_PROGRAM_DETAILS_BY_ID,programId)
 }

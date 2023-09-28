@@ -17,7 +17,7 @@ const UserHeader : React.FC = () => {
   const [navigation, setNavigation] = useState([
     { name: 'Home', href: '#', current: true },
     { name: 'Trainers', href: '#trainer', current: false },
-    { name: 'Courses', href: '#course', current: false },
+    { name: 'Programs', href: '#program', current: false },
     { name: 'About', href: '#', current: false },
   ]);
 

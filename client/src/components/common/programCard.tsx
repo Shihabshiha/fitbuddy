@@ -19,14 +19,6 @@ const  ProgramCard : React.FC<programCardProps> = ({ programInfo }) => {
   const programThumbnail = programInfo.thumbnailUrl
   const trainerProfile = programInfo.trainerProfileUrl || USER_AVATHAR;
 
-  function formatDate(dateString:string) {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    });
-  }
-
   return (
     <Card className="max-w-[20rem] max-h-[25rem]  overflow-hidden hover:shadow-lg">
       <CardHeader
@@ -41,7 +33,7 @@ const  ProgramCard : React.FC<programCardProps> = ({ programInfo }) => {
           className="inset-0 w-full h-[200px] object-cover "
         />
       </CardHeader>
-      <CardBody className="shadow-md" style={{padding:"0.5rem"}}> 
+      <CardBody className="shadow-md bg-gray-50" style={{padding:"0.5rem"}}> 
         <Typography variant="h5" color="blue-gray" className="text-center font-mono">
           {programInfo.courseName}
         </Typography>
@@ -61,7 +53,7 @@ const  ProgramCard : React.FC<programCardProps> = ({ programInfo }) => {
             />
           </Tooltip>
         </div>
-        <Typography className="font-normal">{formatDate( programInfo.createdAt)}</Typography>
+        <Typography className="font-normal">By {programInfo.trainerName}</Typography>
       </CardFooter>
   </Card>
   

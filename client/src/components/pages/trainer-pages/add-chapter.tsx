@@ -23,9 +23,8 @@ const AddChapterPage: React.FC = () => {
       const formData = new FormData();
       formData.append('caption', values.caption);
       formData.append('order', values.order.toString());
+      formData.append('description',values.description)
       if(values.videoFile){
-        console.log(values.videoFile)
-        console.log('zeroth',values.videoFile[0])
         formData.append('videoFile',values.videoFile[0]); 
       }
       console.log(courseId)
@@ -50,6 +49,7 @@ const AddChapterPage: React.FC = () => {
 
   const initialValues: ChapterData = {
     caption: '',
+    description: '',
     order: 0,
     videoFile: [],
   };
@@ -78,6 +78,13 @@ const AddChapterPage: React.FC = () => {
               <ErrorMessage name="caption" component="div" className="text-red-500" />
             </div>
             <div className="mb-4 px-4 w-1/2">
+              <label htmlFor="description" className="flex text-sm font-medium text-gray-700">
+                Description
+              </label>
+              <Field type="text" id="description" name="description" className="form-textarea h-16" />
+              <ErrorMessage name="description" component="div" className="text-red-500" />
+            </div>
+            <div className="mb-4 px-4 w-1/2">
               <label htmlFor="order" className="block text-sm font-medium text-gray-700">
                 Order
               </label>
@@ -97,7 +104,6 @@ const AddChapterPage: React.FC = () => {
                 onChange={(event)=>{
                   if (event.currentTarget.files && event.currentTarget.files.length > 0) {
                     setFieldValue('videoFile', event.currentTarget.files);
-                    console.log(event.currentTarget.files[0])
                   }
                 }}
               />

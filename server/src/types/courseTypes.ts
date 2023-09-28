@@ -10,6 +10,7 @@ export interface CourseAttributes {
   isPaid: boolean;
   duration: number;
   thumbnailUrl: string;
+  about:string;
   isListed: boolean;
   trainerId: mongoose.Types.ObjectId ;
 }
@@ -23,6 +24,7 @@ export interface CourseInterface extends Document{
   isPaid: boolean;
   duration: number;
   thumbnailUrl: string;
+  about:string;
   isListed: boolean;
   trainerId: mongoose.Types.ObjectId;
   subscribedUsers: Schema.Types.ObjectId[];

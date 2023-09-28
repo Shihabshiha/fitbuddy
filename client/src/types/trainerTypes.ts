@@ -24,6 +24,7 @@ export interface TrainerDetails {
 export interface CourseData {
   courseName: string;
   description: string;
+  about:string;
   thumbnail: File[];
   duration: number;
   category: string;
