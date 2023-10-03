@@ -1,4 +1,4 @@
-import { Document } from "mongoose";
+import {Schema, Document } from "mongoose";
 
 export interface User extends Document {
   firstName: string;
@@ -7,6 +7,8 @@ export interface User extends Document {
   password: string;
   isBlocked: boolean;
   profileImage: string;
+  enrolledPrograms : Schema.Types.ObjectId;
+
 }
 
 export interface GoogleUserPayload {

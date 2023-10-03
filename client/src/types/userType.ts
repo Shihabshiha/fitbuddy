@@ -19,5 +19,6 @@ export interface userDetails {
   isBlocked : boolean;
   phoneNumber : string;
   profileImage: string;
+  enrolledPrograms : string[];
 }
 

@@ -6,17 +6,44 @@ import { USER_AVATHAR } from "../../../constants/common";
 import { getProgramDetailById } from "../../../api/endpoints/user";
 import ProgramDetailShimmer from "../../shimmers/programDetailPage";
 import { ProgramDetailInterface } from "../../../types/courseType";
+import { enrollCheckout } from "../../../api/endpoints/user";
+import LoginRequiredModal from "../../modals/loginRequiredModal";
+import { useSelector } from "react-redux";
+import { selectUser , enrollProgram } from "../../../redux/reducers/userSlice";
+import PaymentStatusModal from "../../modals/paymentStatusModal";
+import { useDispatch } from 'react-redux';
+import { fetchUserDetails } from "../../../utils/userUtils";
+import { selectIsLoggedIn } from "../../../redux/reducers/userSlice";
 
 const ProgramDetailPage: React.FC = () => {
   const params = useParams();
   const programId: string | undefined = params?.programId;
   const [program, setProgram] = useState<ProgramDetailInterface>();
   const [isLoading, setIsLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage , setModalMessage] = useState<string>('');
+  const [isEnrolling , setIsEnrolling] = useState(false);
+  const [isPaymentStatusModal , setIsPaymentStatusModal] = useState(false);
+  const [paymentModalMessage , setPaymentModalMessage ] = useState('')
+  const user = useSelector(selectUser);
+  console.log('userr',user)
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  console.log(isLoggedIn)
+
+  // const enrolledPrograms = user?.userDetails?.enrolledPrograms;
+  // const isEnrolled = enrolledPrograms?.includes(programId)
+
+  const isEnrolled =
+  user?.userDetails?.enrolledPrograms && programId
+    ? user.userDetails.enrolledPrograms.includes(programId)
+    : false;
+
+
 
   const fetchProgramDetails = async (programId: string) => {
     try {
       const response = await getProgramDetailById(programId);
-      console.log(response.data.program);
       setProgram(response.data.program);
       setIsLoading(false);
     } catch (error: unknown) {
@@ -30,10 +57,64 @@ const ProgramDetailPage: React.FC = () => {
   };
 
   useEffect(() => {
+    if(isLoggedIn) fetchUserDetails(dispatch); 
+    window.scrollTo(0, 0);
     if (programId !== undefined) {
       fetchProgramDetails(programId);
     }
-  }, [programId]);
+  }, [programId, dispatch , isLoggedIn]);
+
+  useEffect(()=>{
+    const urlParams = new URLSearchParams(window.location.search)
+    const resultParam = urlParams.get("result")
+    const programId = urlParams.get("courseId")
+    if (resultParam === 'success') {
+      if(programId) dispatch(enrollProgram(programId))
+      setIsPaymentStatusModal(true);
+      setPaymentModalMessage('success');
+    } else if (resultParam === 'cancel') {
+      setIsPaymentStatusModal(true);
+      setPaymentModalMessage('canceled');
+    }
+  },[])
+
+  const handleEnroll = async() =>{
+    try{   
+      if(programId !== undefined){
+        setIsEnrolling(true)
+        const response = await enrollCheckout(programId);
+        const redirectUrl = response.data?.url;
+        if(redirectUrl){
+          window.location.href = redirectUrl;
+        }
+      }   
+    }catch(error:unknown){
+      if (error instanceof AxiosError && error.response?.data?.error) {
+        const errorMessage = error.response.data.error;
+        if (errorMessage === "Authentication required") {
+          setIsModalOpen(true);
+          setModalMessage("For enrolling in the program, you need to log in first.");
+        }  else if (errorMessage === "Token has expired") {
+          setIsModalOpen(true);
+          setModalMessage("Your session has expired. Please log in again.")
+        } else {
+          notify(errorMessage, "error");
+        }
+        
+      } else {
+        notify("An error occurred fetching programs.","error");
+      }
+    }
+  }
+
+  const closeModal = () =>{
+    setIsModalOpen(false)
+    setIsEnrolling(false)
+  }
+
+  const closePaymentStatusModal = () => {
+    setIsPaymentStatusModal(false)
+  }
 
   return (
     <>
@@ -48,9 +129,24 @@ const ProgramDetailPage: React.FC = () => {
               <h1 className="text-3xl font-bold">{program?.courseName}</h1>
             </div>
             <div className="md:col-span-1 grid justify-center item-center">
-              <button className="bg-light-green-700 border border-light-green-700 hover:bg-white hover:text-light-green-700 py-1 px-8 rounded  font-semibold uppercase text-white shadow-lg">
+            {isEnrolling ? (
+              <button
+                className="bg-light-green-700 border border-light-green-700 hover:bg-white hover:text-light-green-700 py-1 px-8 rounded font-semibold uppercase text-white shadow-lg"
+              >
+                Loading..
+              </button>
+            ) : isEnrolled ? (
+              <p className="font-semibold text-white rounded bg-light-green-700 hover:text-light-green-800 px-4 py-2 hover:shadow-md hover:bg-white">
+                Enrolled
+              </p>
+            ) : (
+              <button
+                onClick={handleEnroll}
+                className="bg-light-green-700 border border-light-green-700 hover:bg-white hover:text-light-green-700 py-1 px-8 rounded font-semibold uppercase text-white shadow-lg"
+              >
                 Enroll
               </button>
+            )}
             </div>
           </div>
           <div className="grid md:grid-cols-2 md:gap-20">
@@ -75,7 +171,7 @@ const ProgramDetailPage: React.FC = () => {
                   </div>
                   <div className="flex items-center text-gray-800 justify-center gap-2">
                     <p className="text-lg font-sans">Enrolled :</p>
-                    <p className="text-sm"> 500 Students</p>
+                    <p className="text-sm">{program?.enrollmentCount} fellows</p>
                   </div>
                 </div>
                 <div className="flex border-b border-blue-gray-100 py-4 px-5 gap-3 items-center">
@@ -97,7 +193,7 @@ const ProgramDetailPage: React.FC = () => {
                   </div>
                   <div className="flex items-center text-gray-800 justify-center gap-2">
                     <p className="text-lg font-sans">Duration :</p>
-                    <p className="text-sm">{program?.duration}</p>
+                    <p className="text-sm">{program?.duration} hours</p>
                   </div>
                 </div>
                 <div className="flex border-b border-blue-gray-100 py-4 px-5 gap-3 items-center">
@@ -262,11 +358,13 @@ const ProgramDetailPage: React.FC = () => {
         </div>
         ):(
           <div className="text-center py-10 text-gray-800 mt-52">
-            <p className="text-2xl font-bold">Program Not Found ,Refresh the page !!</p>
+            <p className="text-2xl font-bold">Program Not Found ,go back to home !!</p>
           </div>
         )
       )}
       <ToastContainer />
+      <LoginRequiredModal isOpen={isModalOpen} onRequestClose={closeModal} message={modalMessage} />
+      <PaymentStatusModal isOpen={isPaymentStatusModal} onClose={closePaymentStatusModal} message={paymentModalMessage} />
     </>
   );
 };

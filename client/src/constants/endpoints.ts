@@ -22,7 +22,9 @@ const END_POINTS = {
   GET_ALL_COURSES_ADMIN : 'api/admin/get-all-courses',
   LIST_UNLIST_COURSE_ADMIN : 'api/admin/list-unlist-course',
   GET_ALL_PROGRAMS : 'api/user/get-weight-gain-programs',
-  GET_PROGRAM_DETAILS_BY_ID : 'api/user/get-programDetailsById'
+  GET_PROGRAM_DETAILS_BY_ID : 'api/user/get-programDetailsById',
+  CREATE_CHECKOUT_SESSION : 'api/user/create-checkout-session',
+  GET_USER_DETAILS_BY_TOKEN : 'api/user/get-user-deatilsByToken',
 }
 
 export default END_POINTS

@@ -11,6 +11,8 @@ export interface CourseAttributes {
   duration: number;
   thumbnailUrl: string;
   about:string;
+  stripePriceId : string;
+  stripeProductId : string;
   isListed: boolean;
   trainerId: mongoose.Types.ObjectId ;
 }
@@ -26,6 +28,9 @@ export interface CourseInterface extends Document{
   thumbnailUrl: string;
   about:string;
   isListed: boolean;
+  stripePriceId : string;
+  stripeProductId : string;
+  enrollmentCount : number;
   trainerId: mongoose.Types.ObjectId;
   subscribedUsers: Schema.Types.ObjectId[];
 }

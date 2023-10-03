@@ -12,6 +12,7 @@ import { setUser } from "../../../redux/reducers/userSlice";
 import GoogleAuthComponent from "../../common/google-auth-component";
 import { ScaleLoader } from "react-spinners";
 
+
 const UserLoginPage : React.FC = () =>{
 
   const [loading,setLoading] = useState(false)
@@ -36,13 +37,21 @@ const UserLoginPage : React.FC = () =>{
         if(userDetails){
           localStorage.setItem("userToken",response.data.token)
         }
-        notify("Login Success",'success')
         dispatch(setUser(userDetails))
+        const reffererUrl = localStorage.getItem("reffererUrl")
         setLoading(false)
         setTimeout(()=>{
+          notify("Login Success",'success')
+        },1000)
+        if(reffererUrl){
+          localStorage.removeItem("reffererUrl");
+          navigate(reffererUrl)
+        }else{
           navigate('/')
-        },1500)
+        }
+        
     }catch(error:unknown){
+      setLoading(false)
       if (error instanceof AxiosError && error.response?.data?.error) {
         notify(error.response.data.error, "error");
       } else {
