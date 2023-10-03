@@ -70,7 +70,7 @@ export interface ProgramDetailInterface {
   videos : Video[];
 }
 
-interface Video {
+export interface Video {
   caption: string;
   courseId: string;
   createdAt: string;
@@ -78,6 +78,7 @@ interface Video {
   trainerId: string;
   updatedAt: string;
   videoUrl: string;
+  description : string;
   __v: number;
   _id: string;
 }

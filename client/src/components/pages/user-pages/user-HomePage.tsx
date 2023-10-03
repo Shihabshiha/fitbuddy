@@ -13,7 +13,6 @@ const UserHomePage : React.FC = () => {
 
   useEffect(()=>{
     if(isLoggedIn) fetchUserDetails(dispatch);
-    
   },[dispatch,isLoggedIn])
 
   return (
