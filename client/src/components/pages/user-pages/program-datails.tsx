@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams , useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { notify, ToastContainer } from "../../../utils/notificationUtils";
 import { USER_AVATHAR } from "../../../constants/common";
@@ -14,8 +14,10 @@ import PaymentStatusModal from "../../modals/paymentStatusModal";
 import { useDispatch } from 'react-redux';
 import { fetchUserDetails } from "../../../utils/userUtils";
 import { selectIsLoggedIn } from "../../../redux/reducers/userSlice";
+import { Video } from "../../../types/courseType";
 
 const ProgramDetailPage: React.FC = () => {
+  const navigate = useNavigate();
   const params = useParams();
   const programId: string | undefined = params?.programId;
   const [program, setProgram] = useState<ProgramDetailInterface>();
@@ -114,6 +116,10 @@ const ProgramDetailPage: React.FC = () => {
 
   const closePaymentStatusModal = () => {
     setIsPaymentStatusModal(false)
+  }
+
+  const handleWatchClick = (videoData : Video, index:number) =>{
+    navigate(`/program/video/${index}`,{ state : { videoData } })
   }
 
   return (
@@ -336,20 +342,27 @@ const ProgramDetailPage: React.FC = () => {
             <ul className="mt-5 flex flex-col gap-2">
               {program?.videos.map((video, index) => {
                 return (
-                  <li className="flex md:flex-row gap-2 shadow justify-between items-center  bg-blue-gray-50 hover:bg-blue-gray-100 rounded px-3 py-2 md:py-5">
-                    <title className="flex items-center gap-3">
-                      <div className="cursor-default">
+                  <li
+                    key={index}
+                    className="flex flex-col md:flex-row gap-2 shadow justify-between items-center bg-blue-gray-50 hover:bg-blue-gray-100 rounded px-3 py-2 md:py-5"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="cursor-pointer">
                         <h1 className="text-xl font-bold">{index + 1}.</h1>
                       </div>
-                      <div className="cursor-default">
-                        <h4 className="text-sm md:text-xl font-medium">
-                          {video.caption}
-                        </h4>
+                      <div className="cursor-pointer">
+                        <h4 className="text-sm md:text-xl font-medium">{video.caption}</h4>
                       </div>
-                    </title>
-                    <button className=" block text-xs md:text-md font-bold shadow uppercase bg-red-500 text-white rounded border border-red-500 hover:bg-white hover:shadow-md hover:text-red-500  py-2 px-3">
-                      Watch Now
-                    </button>
+                    </div>
+                    {isEnrolled ? (
+                      <button onClick={()=> handleWatchClick(video,index+1)} className="block text-xs md:text-md font-bold shadow uppercase bg-red-500 text-white rounded border border-red-500 hover:bg-white hover:shadow-md hover:text-red-500 py-2 px-3">
+                        Watch Now
+                      </button>
+                    ) : (
+                      <span className="text-xs md:text-base font-medium capitalize bg-red-600 text-white rounded border py-2 px-3">
+                        Enroll to watch videos
+                      </span>
+                    )}
                   </li>
                 );
               })}
