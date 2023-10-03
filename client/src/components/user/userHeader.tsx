@@ -15,7 +15,7 @@ const UserHeader : React.FC = () => {
   const navigate = useNavigate()
 
   const [navigation, setNavigation] = useState([
-    { name: 'Home', href: '#', current: true },
+    { name: 'Home', href: '/', current: true },
     { name: 'Trainers', href: '#trainer', current: false },
     { name: 'Programs', href: '#program', current: false },
     { name: 'About', href: '#', current: false },
@@ -28,6 +28,11 @@ const UserHeader : React.FC = () => {
     }));
     setNavigation(updatedNavigation);
   };
+
+  const handleLogin = () => {
+    localStorage.setItem("reffererUrl",window.location.pathname)
+    navigate('/login')
+  }
 
 
   return (
@@ -105,12 +110,12 @@ const UserHeader : React.FC = () => {
 
                           <Disclosure.Panel className="origin-top-right absolute z-10 right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                             <div className="py-1">
-                              <a
-                                href="/login"
+                              <button
+                                onClick={handleLogin}
                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-900"
                               >
                                 Login
-                              </a>
+                              </button>
                               <a
                                 href="/trainer/login"
                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-900"
@@ -130,12 +135,12 @@ const UserHeader : React.FC = () => {
                     <ProfileMenu />
                   ) : (
                     <>
-                      <a
-                        href="/login"
+                      <button
+                        onClick={handleLogin}
                         className="px-3 py-2 ml-2 text-sm font-medium text-gray-300 hover:bg-gray-900 hover:text-white rounded-md"
                       >
                         Login
-                      </a>
+                      </button>
                       <a
                         href="/trainer/login"
                         className="px-3 py-2 ml-2 text-sm font-medium text-gray-300 hover:bg-gray-900 hover:text-white rounded-md"

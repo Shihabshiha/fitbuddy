@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
 import CourseModel from "../../models/courseModel";
+import stripeInstance , { StripePaymentIntent} from "../../config/stripeConfig";
+import EnrollmentModel from "../../models/enrollmentModel";
+import UserModel from "../../models/userModel";
+import { Session } from "inspector";
 
 
 const programService = () => {
@@ -80,6 +84,8 @@ const programService = () => {
             level   : 1,
             price : 1, 
             description: 1, 
+            enrollmentCount : 1,
+            stripePriceId: 1,
             thumbnailUrl: 1,
             about : 1,
             createdAt : 1,
@@ -97,16 +103,63 @@ const programService = () => {
       if(programDetails.length === 0 ){
         throw new Error('Program not found')
       }
-      console.log(programDetails)
       return programDetails[0]
     }catch(error){
       throw error
     }
   }
 
+  const getProgramById = async(programId:string) => {
+    try{
+      const program = await CourseModel.findById(programId)
+      return program
+    }catch(error:any){
+      throw error
+    }
+  }
+
+  const handlePaymentSuccess = async(paymentIntent: StripePaymentIntent) => {
+    
+      const programId : string = paymentIntent.metadata.programId;
+      const userId : string = paymentIntent.metadata.userId;
+
+      const programObjectId = new mongoose.Types.ObjectId(programId);
+      const userObjectId = new mongoose.Types.ObjectId(userId);
+
+      const session = await mongoose.startSession();
+      session.startTransaction();
+    try{
+      const enrollmentData = {
+        programId : programObjectId,
+        userId : userObjectId,
+        payment : {
+          amount : paymentIntent.amount / 100,
+          method : paymentIntent.payment_method_types[0],
+          date : new Date(paymentIntent.created * 1000)
+        }
+      }
+
+      await EnrollmentModel.create([enrollmentData],{session})
+
+      await UserModel.findByIdAndUpdate(userId,{ $push : { enrolledPrograms : programObjectId} } , { session });
+
+      await CourseModel.findByIdAndUpdate(programId,{ $inc : { enrollmentCount : 1} }, { session });
+
+      await session.commitTransaction();
+      session.endSession();
+
+    }catch(error:any){
+      await session.abortTransaction();
+      session.endSession();
+      throw error 
+    }
+  }
+
   return {
     getWeightGainPrograms,
     getProgramDetails,
+    getProgramById,
+    handlePaymentSuccess,
   }
 }
 

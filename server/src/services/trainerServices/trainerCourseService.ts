@@ -3,13 +3,15 @@ import CourseModel from "../../models/courseModel";
 import cloudinary from "../../config/cloudinaryConfig";
 import { CourseAttributes, CourseInterface } from "../../types/courseTypes";
 import mongoose from 'mongoose';
+import stripeInstance , { StripePrice, StripeProduct } from "../../config/stripeConfig";
+import { v4 as uuidv4 } from 'uuid';
 
 const courseService = () => {
   
   const addCourse = async (
     newCourse: CourseData,
     trainerId: string,
-    thumbnail: any
+    thumbnail: any,
   ): Promise<CourseAttributes> => {
     const {
       courseName,
@@ -34,6 +36,24 @@ const courseService = () => {
       );
       const imageUrl = uploadResponse.secure_url;
       const trainerObjectId = new mongoose.Types.ObjectId(trainerId)
+
+      const programId : string = uuidv4();
+      // Create a Product in Stripe for the course/program
+      const product : StripeProduct = await stripeInstance.products.create({
+        name: courseName, 
+        metadata: {
+          programId: programId, 
+          trainerId : trainerId,    
+        },
+        images: [imageUrl]
+      });
+      const productId : string = product.id;
+      const stripePrice: StripePrice = await stripeInstance.prices.create({
+        unit_amount: Math.round(price * 100), 
+        currency: 'inr', 
+        product: productId, 
+      });
+      const priceId : string = stripePrice.id;
       
 
       const newCourse: CourseAttributes = {
@@ -48,7 +68,11 @@ const courseService = () => {
         duration: duration,
         thumbnailUrl: imageUrl,
         isListed: true,
+        stripeProductId : productId,
+        stripePriceId : priceId,
       };
+
+      console.log(newCourse)
 
       const savedCourse = await CourseModel.create(newCourse);
       return savedCourse;

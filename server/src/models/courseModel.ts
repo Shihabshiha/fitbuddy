@@ -55,6 +55,17 @@ const courseSchema = new Schema<CourseInterface>({
       type: Boolean,
       default: true,
     },
+    stripePriceId : {
+      type : String,
+      required : true,
+    },
+    stripeProductId : {
+      type: String,
+    },
+    enrollmentCount : {
+      type : Number,
+      default : 0,
+    },
     subscribedUsers: [
       {
         type: Schema.Types.ObjectId,

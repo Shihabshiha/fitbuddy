@@ -2,7 +2,6 @@ import React  , { Fragment } from 'react'
 import { useSelector } from 'react-redux'
 import { selectUser } from '../../redux/reducers/userSlice'
 import {  Menu, Transition } from '@headlessui/react'
-import { useNavigate } from 'react-router-dom'
 import { clearUser } from '../../redux/reducers/userSlice'
 import { USER_AVATHAR } from '../../constants/common'
 import { notify , ToastContainer } from '../../utils/notificationUtils'
@@ -14,7 +13,6 @@ function classNames(...classes:any) {
 
 const ProfileMenu : React.FC = () => {
 
-  const navigate = useNavigate();
   const user = useSelector(selectUser)
   
 

@@ -3,7 +3,6 @@ import { CustomRequest } from "../../types/custom-request";
 import courseService from "../../services/trainerServices/trainerCourseService";
 
 
-
 const courseControllerFunctions = () =>{
 
   const trainerCourseService = courseService()
@@ -37,8 +36,7 @@ const courseControllerFunctions = () =>{
 
       const price = priceString ? parseFloat(priceString) : 0;
       const isPaid = isPaidString === 'true' ? true : isPaidString === 'false' ? false : false;
-
-
+    
       const result = await trainerCourseService.addCourse({
         courseName,
         description,

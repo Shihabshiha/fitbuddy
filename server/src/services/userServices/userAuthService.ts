@@ -140,6 +140,15 @@ const createAuthService = ()=>{
     }
   }
 
+  const getUserDetails = async(userId:string) => {
+    try{
+      const user = await UserModel.findById(userId);
+      return user;
+    }catch(error:any){
+      throw error
+    }
+  }
+
 
 
 
@@ -150,6 +159,7 @@ const createAuthService = ()=>{
     sendOtp,
     verifyOtp,
     googleLogin,
+    getUserDetails
   }
   
 }

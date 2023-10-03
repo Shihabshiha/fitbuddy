@@ -18,6 +18,8 @@ const config = {
   AWS_REGION: process.env.AWS_REGION as string,
   AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME as string,
   CLOUDFRONT_DOMAIN : process.env.CLOUDFRONT_DOMAIN,
+  STRIPE_API_SECRET_KEY : process.env.SRIPE_API_SECRET_KEY as string,
+  FRONT_END_BASE_URL : process.env.FRONT_END_URL,
 };
 
 export default config;

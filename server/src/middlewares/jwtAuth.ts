@@ -45,10 +45,18 @@ export const authenticateJwtToken
     const token = extractTokenFromHeader(req);
     
     if (!token) {
-      throw new Error("Token not found");
+      res.status(401).json({ error: 'Authentication required' });
+      return;
     }
     
     const payload: any = await verifyToken(token);
+
+    const currentTimestamp = Math.floor(Date.now() / 1000); 
+    if (payload.exp && payload.exp < currentTimestamp) {
+      res.status(401).json({ error: 'Token has expired' });
+      return;
+    }
+    
     req.person = payload;
     const role = payload.role;
     
@@ -66,7 +74,6 @@ export const authenticateJwtToken
         res.status(403).json({ error: "Blocked Trainer" });
         return;
       }
-      console.log('non blocked trainer')
     }
     
     next();

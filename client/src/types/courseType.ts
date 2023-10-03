@@ -40,6 +40,7 @@ export interface ProgramApiResponse {
   isPaid: boolean;
   description: string;
   thumbnailUrl: string;
+  stripePriceId:string;
   createdAt: string;
   trainerProfileUrl:string;
   trainerName : string;
@@ -56,8 +57,10 @@ export interface ProgramDetailInterface {
   isPaid: boolean;
   description: string;
   about:string;
+  enrollmentCount : number;
   thumbnailUrl: string;
   createdAt: string;
+  stripePriceId:string;
   trainerDetails : {
     _id : string;
     firstName: string;
