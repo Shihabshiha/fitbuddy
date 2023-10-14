@@ -29,7 +29,6 @@ const verifyToken = async (token: string): Promise<any> => {
     const decoded = jwt.verify(token, JWT_SECRET);
     return decoded;
   } catch (error:any) {
-    console.error("Token Verification Error:", error.message);
     throw error;
   }
 };
@@ -41,7 +40,7 @@ export const authenticateJwtToken
   next: NextFunction
 ): Promise<void> => {
   try {
-   
+   console.log('authentication called')
     const token = extractTokenFromHeader(req);
     
     if (!token) {
@@ -50,13 +49,7 @@ export const authenticateJwtToken
     }
     
     const payload: any = await verifyToken(token);
-
-    const currentTimestamp = Math.floor(Date.now() / 1000); 
-    if (payload.exp && payload.exp < currentTimestamp) {
-      res.status(401).json({ error: 'Token has expired' });
-      return;
-    }
-    
+ 
     req.person = payload;
     const role = payload.role;
     
@@ -79,6 +72,6 @@ export const authenticateJwtToken
     next();
   } catch (err) {
     console.error("JWT Auth Middleware - Error:", err);
-    res.status(401).json({ error: "Unauthorized User" });
+    res.status(401).json({ error: "Token not verified" });
   }
 };

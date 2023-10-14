@@ -25,6 +25,8 @@ const END_POINTS = {
   GET_PROGRAM_DETAILS_BY_ID : 'api/user/get-programDetailsById',
   CREATE_CHECKOUT_SESSION : 'api/user/create-checkout-session',
   GET_USER_DETAILS_BY_TOKEN : 'api/user/get-user-deatilsByToken',
+  GET_ENROLLED_PROGRAMS : 'api/user/get-enrolled-program',
+  CHANGE_PROFILE_IMAGE: 'api/user/change-profile-image',
 }
 
 export default END_POINTS

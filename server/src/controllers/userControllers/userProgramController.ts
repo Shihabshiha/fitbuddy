@@ -29,6 +29,7 @@ const programControllerFunction = () => {
     }
   }
 
+
   const handlePaymentSuccess = async( req:Request , res: Response ) => {
     try{
       const event = req.body;
@@ -79,11 +80,23 @@ const programControllerFunction = () => {
     }
   }
 
+  const getEnrolledProgram = async(req:Request,res:Response) => {
+    const userId : string = req.params.userId
+    try{
+      const enrolledPrograms = await programServices.getEnrolledPrograms(userId)
+      res.status(200).json({enrolledPrograms})
+    }catch(error:any){
+      res.status(500).json({error:"Internal Server Error"})
+    }
+
+  }
+
   return {
     getWeightGainPrograms,
     getProgramDetails,
     handlePaymentSuccess,
     createCheckoutSession,
+    getEnrolledProgram,
   }
 }
 

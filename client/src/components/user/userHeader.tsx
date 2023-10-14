@@ -56,7 +56,7 @@ const UserHeader : React.FC = () => {
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   <img
-                    className="h-10 w-auto"
+                    className="h-10 w-auto hover:cursor-pointer"
                     src="https://res.cloudinary.com/duuwbsmdu/image/upload/c_thumb,w_200,g_face/v1695378550/fitbuddy/fitbuddy-white-transparent_logo_c4peq4.svg"
                   />
                 </div>

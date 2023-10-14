@@ -155,11 +155,56 @@ const programService = () => {
     }
   }
 
+  const getEnrolledPrograms = async(userId:string) => {
+    try{
+      const user = await UserModel.findById(userId);
+      const enrolledPrograms = await CourseModel.aggregate([
+        {
+          $match:{
+            _id:{ $in: user?.enrolledPrograms}
+          },
+        },
+        {
+          $lookup:{
+            from:'trainers',
+            localField:'trainerId',
+            foreignField: '_id',
+            as:'trainerDetails'
+          }
+        },
+        {
+          $unwind:"$trainerDetails"
+        },
+        {
+          $project:{
+            _id: 1,
+            courseName: 1,
+            trainerId: 1,
+            duration: 1,
+            category: 1,
+            level: 1,
+            price: 1,
+            isPaid: 1,
+            description: 1,
+            thumbnailUrl: 1,
+            createdAt: 1,
+            trainerName: "$trainerDetails.firstName"
+          }
+        }
+      ])
+      return enrolledPrograms
+
+    }catch(error:any){
+      throw error
+    }
+  }
+
   return {
     getWeightGainPrograms,
     getProgramDetails,
     getProgramById,
     handlePaymentSuccess,
+    getEnrolledPrograms,
   }
 }
 

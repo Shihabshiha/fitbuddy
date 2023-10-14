@@ -10,12 +10,8 @@ const VideoPage : React.FC = () =>{
   console.log('video data',videoData)
   return (
     <>
-    <div className='pt-20 p-4 h-[20rem] w-[20rem]'>
+    <div className='pt-20 p-4'>
       <VideoPlayer videoData={videoData} />
-      
-    </div>
-    <div>
-      <p className='text-bold'>hi this is me </p>
     </div>
     </>
   )

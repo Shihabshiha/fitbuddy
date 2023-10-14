@@ -14,6 +14,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
+    "@iconscout/react-unicons": "^2.0.2",
     "@material-tailwind/react": "^2.1.0",
     "@mui/icons-material": "^5.14.7",
     "@mui/material": "^5.14.7",

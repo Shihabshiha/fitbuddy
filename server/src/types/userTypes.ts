@@ -7,7 +7,7 @@ export interface User extends Document {
   password: string;
   isBlocked: boolean;
   profileImage: string;
-  enrolledPrograms : Schema.Types.ObjectId;
+  enrolledPrograms : Schema.Types.ObjectId[];
 
 }
 

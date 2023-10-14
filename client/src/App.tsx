@@ -6,6 +6,7 @@ import SideBar from "./components/admin/sidebar";
 import { useSelector } from "react-redux/es/hooks/useSelector";
 import { selectIsLoggedIn } from "./redux/reducers/adminAuthSlice";
 import UserHeader from "./components/user/userHeader";
+import FooterComponent from "./components/user/footer";
 
 export const User : React.FC = () =>{
 
@@ -13,7 +14,7 @@ export const User : React.FC = () =>{
   <>
     <UserHeader />
     <Outlet />
-    {/* <UserFooter /> */}
+    <FooterComponent />
   </>
   )
 

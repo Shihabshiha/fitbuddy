@@ -19,4 +19,16 @@ userApi.interceptors.request.use(
   }
 )
 
+userApi.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async(error)=>{
+    console.log('erroo',error)
+    if(error.response.status === 401 && error.response.data.error ===  "Token not verified"){
+      localStorage.removeItem("userToken")
+    }
+  }
+)
+
 export default userApi
