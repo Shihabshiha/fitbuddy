@@ -12,7 +12,7 @@ export const getAllPrograms = async (
     );
     return response
   }catch(error){
-    console.error('Error during fetching courses:', error);
+    console.error('Error during fetching programs:', error);
     throw error; 
   }
 }
@@ -51,7 +51,6 @@ export const enrollCheckoutPayment  = async (
   programId : string,
 ) =>{
   try{
-    console.log('called')
     const response = userApi.post(
       `${BASE_URL}/${endpoint}`,
       {programId:programId}
@@ -62,3 +61,35 @@ export const enrollCheckoutPayment  = async (
     throw error; 
   }
 }
+
+export const getEnrolledProgramById = async (
+  endpoint : string,
+  userId :string,
+) =>{
+  try{
+    const response = axios.get(
+      `${BASE_URL}/${endpoint}/${userId}`,
+    );
+    return response
+  }catch(error){
+    console.error('Error during fetching Enrolled program:', error);
+    throw error; 
+  }
+}
+
+export const doChangeProfileImage  = async (
+  endpoint : string,
+  formData : FormData,
+) =>{
+  try{
+    const response =await userApi.patch(
+      `${BASE_URL}/${endpoint}`,
+      formData
+    );
+    return response
+  }catch(error){
+    console.error('Error during changing profile:', error);
+    throw error; 
+  }
+}
+
