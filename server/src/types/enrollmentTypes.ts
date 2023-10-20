@@ -8,4 +8,10 @@ export interface EnrollmentDocument extends Document {
     method: string;
     date: Date;
   };
+  videosProgress : [
+    {
+      videoId : string;
+      watched: boolean;
+    },
+  ]
 }

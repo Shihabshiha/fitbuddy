@@ -20,4 +20,15 @@ trainerApi.interceptors.request.use(
   }
 )
 
+trainerApi.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async(error)=>{
+    if(error.response.status === 401 && error.response.data.error === "Token has expired"){
+      localStorage.removeItem("trainerToken")
+    }
+  }
+)
+
 export default trainerApi

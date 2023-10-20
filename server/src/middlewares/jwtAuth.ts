@@ -40,11 +40,10 @@ export const authenticateJwtToken
   next: NextFunction
 ): Promise<void> => {
   try {
-   console.log('authentication called')
     const token = extractTokenFromHeader(req);
     
     if (!token) {
-      res.status(401).json({ error: 'Authentication required' });
+      res.status(401).json({ error:'Authentication required'});
       return;
     }
     
@@ -53,14 +52,14 @@ export const authenticateJwtToken
     req.person = payload;
     const role = payload.role;
     
-    if(role === 'user'){
+    if(role === 'users'){
       const userId = payload.id;
       const user = await UserModel.findById(userId)
       if(user && user.isBlocked){
         res.status(403).json({ error: "Blocked User" });
         return;
       }
-    }else if(role === 'trainer'){
+    }else if(role === 'trainers'){
       const trainerId = payload.id;
       const trainer = await TrainerModel.findById(trainerId)
       if(trainer && trainer.isBlocked){
@@ -71,7 +70,16 @@ export const authenticateJwtToken
     
     next();
   } catch (err) {
-    console.error("JWT Auth Middleware - Error:", err);
-    res.status(401).json({ error: "Token not verified" });
+    if (err instanceof jwt.TokenExpiredError) {
+      // Token has expired
+      res.status(401).json({ error: "Token has expired"});
+    } else if (err instanceof jwt.JsonWebTokenError) {
+      // Other JWT verification errors
+      res.status(401).json({ error: "Token verification failed" });
+    } else {
+      // Other unexpected errors
+      console.error("JWT Auth Middleware - Error:", err);
+      res.status(500).json({ error: "Internal server error" });
+    }
   }
 };

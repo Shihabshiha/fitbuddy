@@ -1,10 +1,12 @@
 import React  , { Fragment } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector , useDispatch } from 'react-redux'
 import { selectUser } from '../../redux/reducers/userSlice'
 import {  Menu, Transition } from '@headlessui/react'
 import { clearUser } from '../../redux/reducers/userSlice'
 import { USER_AVATHAR } from '../../constants/common'
 import { notify , ToastContainer } from '../../utils/notificationUtils'
+import { useNavigate } from 'react-router-dom'
+
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function classNames(...classes:any) {
@@ -14,14 +16,15 @@ function classNames(...classes:any) {
 const ProfileMenu : React.FC = () => {
 
   const user = useSelector(selectUser)
-  
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const handleSignOut = () => {
     localStorage.removeItem('userToken');
-    clearUser()
+    dispatch(clearUser()) 
     notify("logged out successfully","success")
     setTimeout(()=>{
-      window.location.reload()
+      navigate('/')
     },1500)
   }
 

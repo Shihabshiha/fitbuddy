@@ -93,3 +93,65 @@ export const doChangeProfileImage  = async (
   }
 }
 
+export const markVideoAsWatchedById  = async (
+  endpoint : string,
+  videoId : string,
+) =>{
+  try{
+    const response =await userApi.post(
+      `${BASE_URL}/${endpoint}`,
+      {videoId}
+    );
+    return response
+  }catch(error){
+    console.error('Error during marking video as watched:', error);
+    throw error; 
+  }
+}
+
+export const getProgramProgressDetails = async (
+  endpoint : string,
+) =>{
+  try{
+    const response =await userApi.get(
+      `${BASE_URL}/${endpoint}`,
+    );
+    return response
+  }catch(error){
+    console.error('Error during getting program progress:', error);
+    throw error; 
+  }
+}
+
+export const doPostNewComment = async (
+  endpoint : string,
+  videoId: string,
+  newComment : string,
+) =>{
+  try{
+    const response = userApi.post(
+      `${BASE_URL}/${endpoint}`,
+      {videoId , newComment}
+    );
+    return response
+  }catch(error){
+    console.error('Error during commenting:', error);
+    throw error; 
+  }
+}
+
+export const getAllCommentsByVideoId = async (
+  endpoint : string,
+  videoId : string,
+) =>{
+  try{
+    const response = userApi.get(
+      `${BASE_URL}/${endpoint}/${videoId}`
+    );
+    return response
+  }catch(error){
+    console.error('Error during fetching comments:', error);
+    throw error; 
+  }
+}
+
