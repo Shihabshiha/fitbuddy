@@ -1,8 +1,11 @@
 import React, {  useState  } from 'react'
 import { Disclosure } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon , PlusCircleIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, XMarkIcon , PlusCircleIcon } from '@heroicons/react/24/outline'
 import ProfileMenu from './profileMenu'
 import { useNavigate } from 'react-router-dom'
+import MyPrograms from './myPrograms'
+import { useSelector } from 'react-redux'
+import { selectUser } from '../../redux/reducers/userSlice'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function classNames(...classes:any) {
@@ -13,6 +16,10 @@ const UserHeader : React.FC = () => {
 
   const isLoggedIn =localStorage.getItem("userToken")
   const navigate = useNavigate()
+  const user = useSelector(selectUser)
+  const isEnrolledAnyProgram = user.userDetails?.enrolledPrograms?.length ?? 0 > 0;
+
+  
 
   const [navigation, setNavigation] = useState([
     { name: 'Home', href: '/', current: true },
@@ -80,14 +87,16 @@ const UserHeader : React.FC = () => {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button
+              
+                {/* <button
                   type="button"
                   className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 >
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
+                </button> */}
+                
 
                 {/* Profile dropdown */}
                <div className="sm:hidden ml-2">
@@ -132,7 +141,10 @@ const UserHeader : React.FC = () => {
 
                 <div className="hidden sm:block">
                   {isLoggedIn ? (
+                    <div className='flex justify-between items-center'>
+                    {isEnrolledAnyProgram ? <MyPrograms /> : null}
                     <ProfileMenu />
+                    </div>
                   ) : (
                     <>
                       <button

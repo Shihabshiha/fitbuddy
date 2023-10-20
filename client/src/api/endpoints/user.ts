@@ -6,6 +6,10 @@ import {
   getUserDeatils,
   getEnrolledProgramById,
   doChangeProfileImage,
+  markVideoAsWatchedById,
+  getProgramProgressDetails,
+  doPostNewComment,
+  getAllCommentsByVideoId,
 } from "../services/user-services";
 
 export const getUserDetailsbyToken = () => {
@@ -29,5 +33,21 @@ export const getEnrolledPrograms = (userId: string) => {
 };
 
 export const changeProfileImage = (formData:FormData) => {
-  return doChangeProfileImage(END_POINTS.CHANGE_PROFILE_IMAGE,formData)
+  return doChangeProfileImage(END_POINTS.CHANGE_PROFILE_IMAGE,formData);
+}
+
+export const markVideoAsWatched = (videoId:string) => {
+  return markVideoAsWatchedById(END_POINTS.MARK_VIDEO_AS_WATCHED,videoId);
+}
+
+export const getProgramProgress = () => {
+  return getProgramProgressDetails(END_POINTS.GET_PROGRAM_PROGRESS)
+}
+
+export const postNewComment = (videoId:string , newComment:string) => {
+  return doPostNewComment(END_POINTS.POST_NEW_COMMENT,videoId,newComment);
+}
+
+export const getAllCommentsById = (videoId:string) => {
+  return getAllCommentsByVideoId(END_POINTS.GET_ALL_COMMENTS , videoId);
 }

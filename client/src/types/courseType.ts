@@ -82,3 +82,32 @@ export interface Video {
   __v: number;
   _id: string;
 }
+
+export type ProgramProgress = {
+  programName : string;
+  progress: number;
+  programThumbnailUrl : string;
+  programId : string;
+}
+
+interface UserDetails {
+  email: string;
+  enrolledPrograms: string[];
+  firstName: string;
+  isBlocked: boolean;
+  lastName: string;
+  password: string;
+  profileImage: string;
+  _id: string;
+}
+
+export interface CommentType  {
+  authorId: string;
+  authorType: string;
+  content: string;
+  replies: string[]; 
+  userDetails: UserDetails[];
+  videoId: string;
+  createdAt : Date;
+  _id: string;
+}

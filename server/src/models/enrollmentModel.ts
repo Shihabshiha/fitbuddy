@@ -28,7 +28,19 @@ const enrollmentSchema = new Schema<EnrollmentDocument, EnrollmentModelType> ( {
       type: Date,
       required: true,
     }
-  }
+  },
+  videosProgress : [
+    {
+      videoId:{
+        type:Schema.Types.ObjectId,
+        ref: 'chapters',
+      },
+      watched : {
+        type:Boolean,
+        default:false,
+      },  
+    }  
+  ]
 })
 
 enrollmentSchema.index({ programId: 1, userId: 1 }, { unique: true });

@@ -24,9 +24,10 @@ userApi.interceptors.response.use(
     return response;
   },
   async(error)=>{
-    console.log('erroo',error)
-    if(error.response.status === 401 && error.response.data.error ===  "Token not verified"){
+    if(error.response.status === 401 && error.response.data.error ===  "Token has expired"){
       localStorage.removeItem("userToken")
+    }else {
+      throw error;
     }
   }
 )

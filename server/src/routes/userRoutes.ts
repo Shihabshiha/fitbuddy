@@ -51,4 +51,12 @@ router.get("/get-enrolled-program/:userId",programController.getEnrolledProgram)
 
 router.patch("/change-profile-image", authenticateJwtToken, upload.single('profileImage'), profileController.changeProfileImage)
 
+router.post("/mark-video-as-watched", authenticateJwtToken , programController.markVideoAsWatched)
+
+router.get("/get-program-progress", authenticateJwtToken , programController.getProgramProgress)
+
+router.post("/post-new-comment", authenticateJwtToken , programController.postNewComment)
+
+router.get("/get-all-comments-for-video/:videoId" , authenticateJwtToken , programController.getAllCommentsForVideo)
+
 export default router;

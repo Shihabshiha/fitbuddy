@@ -70,13 +70,20 @@ const ProgramDetailPage: React.FC = () => {
     const urlParams = new URLSearchParams(window.location.search)
     const resultParam = urlParams.get("result")
     const programId = urlParams.get("courseId")
+    const modalAlreadyShown = localStorage.getItem("paymentModalShown");
     if (resultParam === 'success') {
-      if(programId) dispatch(enrollProgram(programId))
-      setIsPaymentStatusModal(true);
-      setPaymentModalMessage('success');
+      if(!modalAlreadyShown){
+        if(programId) dispatch(enrollProgram(programId))
+        setIsPaymentStatusModal(true);
+        setPaymentModalMessage('success');
+        localStorage.setItem("paymentModalShown", "true");
+      }
     } else if (resultParam === 'cancel') {
-      setIsPaymentStatusModal(true);
-      setPaymentModalMessage('canceled');
+      if(!modalAlreadyShown){
+        setIsPaymentStatusModal(true);
+        setPaymentModalMessage('canceled');
+        localStorage.setItem("paymentModalShown", "true");
+      }
     }
   },[])
 
@@ -102,8 +109,8 @@ const ProgramDetailPage: React.FC = () => {
         } else {
           notify(errorMessage, "error");
         }
-        
       } else {
+        console.error('Error occured',error)
         notify("An error occurred fetching programs.","error");
       }
     }

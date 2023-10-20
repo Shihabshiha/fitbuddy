@@ -52,7 +52,7 @@ const createAuthService = ()=>{
         throw new Error("Invalid password");
       }
 
-      const token = generateJwtToken({ id: user._id.toString() , role:'user' });
+      const token = generateJwtToken({ id: user._id.toString() , role:'users' });
       return { token, user };
     } catch (error: any) {
       throw new Error(error.message);
@@ -128,12 +128,12 @@ const createAuthService = ()=>{
           isBlocked : false,
           profileImage : picture,
         })
-        const token = generateJwtToken({ id: newUser._id.toString(), role: 'user' });
+        const token = generateJwtToken({ id: newUser._id.toString(), role: 'users' });
         console.log('new user')
         return { token, user: newUser };
       }
       console.log('old user')
-      const token = generateJwtToken({ id: user._id.toString() , role:'user' });
+      const token = generateJwtToken({ id: user._id.toString() , role:'users' });
       return { token, user}
     }catch(error:any){
       throw error

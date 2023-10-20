@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose , { Document } from "mongoose";
 export interface ChaperData {
   caption : string;
   order : number;
@@ -7,3 +7,4 @@ export interface ChaperData {
   courseId:mongoose.Types.ObjectId;
   videoUrl:string;
 }
+

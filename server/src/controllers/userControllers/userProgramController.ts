@@ -91,12 +91,72 @@ const programControllerFunction = () => {
 
   }
 
+  const markVideoAsWatched = async(req:Request , res:Response) => {
+    try{
+      const userId = (req as CustomRequest).person?.id;
+      const { videoId } = req.body;
+      if(userId){
+        const result = await programServices.markVideoAsWatched(videoId,userId)
+        if(result){
+          res.status(200).json({ message: 'Video marked as watched successfully' });
+        }else{
+          res.status(400).json({ error: 'Failed to mark video as watched' });
+        }
+      }
+    }catch(error:any){
+      res.status(500).json({ error: 'Server error' });
+    }
+  }
+
+  const getProgramProgress = async(req:Request , res:Response) => {
+    try{
+      const userId = (req as CustomRequest).person?.id;
+      if(userId){
+        const programProgress = await programServices.getProgramProgress(userId)
+        res.status(200).json({programProgress})
+      }
+    }catch(error:any){
+      res.status(500).json({error:"Internal server error"})
+    }
+  }
+
+  const postNewComment = async(req:Request , res:Response) => {
+    try{
+      const authorId = (req as CustomRequest).person?.id;
+      const authorType = (req as CustomRequest).person?.role;
+      console.log('author type',authorType)
+      const { videoId , newComment } = req.body;
+      if(authorId && authorType){
+        console.log('inside conroller')
+        const result = await programServices.postNewComment({ authorId, authorType, videoId, newComment })
+        res.status(200).json({message :"Comment added", result})
+      }
+    }catch(error){
+      res.status(500).json({error:"Intrnal Server Error"})
+    }
+  }
+
+  const getAllCommentsForVideo = async(req:Request , res:Response) =>{
+    console.log('comment called')
+    try{
+      const videoId : string = req.params.videoId;
+      const comments = await programServices.getAllCommentsForVideo(videoId);
+      res.status(200).json({comments})
+    }catch(error){
+      res.status(500).json({error:"Intrnal Server Error"})
+    }
+  }
+
   return {
     getWeightGainPrograms,
     getProgramDetails,
     handlePaymentSuccess,
     createCheckoutSession,
     getEnrolledProgram,
+    markVideoAsWatched,
+    getProgramProgress,
+    postNewComment,
+    getAllCommentsForVideo
   }
 }
 

@@ -27,6 +27,10 @@ const END_POINTS = {
   GET_USER_DETAILS_BY_TOKEN : 'api/user/get-user-deatilsByToken',
   GET_ENROLLED_PROGRAMS : 'api/user/get-enrolled-program',
   CHANGE_PROFILE_IMAGE: 'api/user/change-profile-image',
+  MARK_VIDEO_AS_WATCHED : 'api/user/mark-video-as-watched',
+  GET_PROGRAM_PROGRESS : 'api/user/get-program-progress',
+  POST_NEW_COMMENT : 'api/user/post-new-comment',
+  GET_ALL_COMMENTS : 'api/user/get-all-comments-for-video',
 }
 
 export default END_POINTS

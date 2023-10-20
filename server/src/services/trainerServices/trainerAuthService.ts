@@ -57,7 +57,7 @@ const createAuthService = () => {
         throw new Error("Your account has been rejected.");
       }
 
-      const token = generateJwtToken({ id: trainer._id.toString() , role:'trainer' });
+      const token = generateJwtToken({ id: trainer._id.toString() , role:'trainers' });
       return { token, trainer };
     } catch (error: any) {
       throw error
