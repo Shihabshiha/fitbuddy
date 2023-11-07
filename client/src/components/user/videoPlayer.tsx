@@ -13,7 +13,7 @@ import { fetchUserDetails } from "../../utils/userUtils";
 import { selectIsLoggedIn } from "../../redux/reducers/userSlice";
 import { formatDistanceToNow , parseISO} from 'date-fns';
 import { getAllCommentsById } from "../../api/endpoints/user";
-
+import { ReplyType } from "../../types/courseType";
 
 
 
@@ -33,6 +33,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoData , markVideoAsWatche
   const [isCommenting, setCommenting] = useState(false);
   const [newComment , setNewComment] = useState('')
   const [comments , setComments] = useState<CommentType[]>([]);
+  const [displayedReplies, setDisplayedReplies] = useState<{ [commentId: string]: boolean }>({});
 
   useEffect(() => {
     const initializePlayer = () => {
@@ -135,6 +136,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoData , markVideoAsWatche
     setNewComment(event.target.value)
   }
 
+  const toggleReplies = (commentId: string) => {
+    setDisplayedReplies((prev) => ({
+      ...prev,
+      [commentId]: !prev[commentId],
+    }));
+  };
+
   
 
   return (
@@ -142,7 +150,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoData , markVideoAsWatche
       <div data-vjs-player>
         <video ref={videoRef} className="vjs-matrix video-js w-full h-[35vh] md:w-2/3 md:h-[75vh] rounded-xl" />
       </div>
-      <div className="w-full md:w-1/3 md:ml-4 overflow-auto h-[75vh]"> 
+      <div className="w-full md:w-1/3 md:ml-4"> 
         <h2 className="text-md font-semibold bg-blue-gray-50 py-2">{videoData.caption}</h2>
         <p>Description : <span className="text-sm md:text-base">{videoData.description}</span></p>
         <div className="mt-3">  
@@ -169,34 +177,58 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoData , markVideoAsWatche
             </div>
           )}
         </div>
-        {comments ? (
-          (comments.map((comment)=>{
-            const dateString = comment.createdAt.toString();
-            const createdAtUTC = parseISO(dateString);
-            const timeAgo = formatDistanceToNow(createdAtUTC, { addSuffix: true });
-            return (
-              <div className="mt-5 text-sm font-medium pl-2 flex">
-                <div className="grid">
-                  <img
-                  src={comment.userDetails[0].profileImage || USER_AVATHAR} 
-                  alt="" 
-                  className="h-10 w-10 object-cover rounded-full"
-                  />
-                </div>
-                <div className="w-4/5 ml-1">
-                  <div className="flex gap-2">
-                    <p className="font-semibold">@{comment.userDetails[0].firstName}{comment.userDetails[0].lastName}</p>
-                    <span className="font-thin">{timeAgo}</span>
+        <div className="h-[50vh] overflow-auto">
+          {comments ? (
+            (comments.map((comment)=>{
+              const dateString = comment.createdAt.toString();
+              const createdAtUTC = parseISO(dateString);
+              const timeAgo = formatDistanceToNow(createdAtUTC, { addSuffix: true });
+              const hasReplies = comment.replies && comment.replies.length > 0;
+              return (
+                <div key={comment._id} className="mt-5 text-sm font-medium pl-2 flex">
+                  <div className="grid">
+                    <img
+                    src={comment.userDetails[0].profileImage || USER_AVATHAR} 
+                    alt="" 
+                    className="h-10 w-10 object-cover rounded-full"
+                    />
                   </div>
-                <p className="mt-1 font-mono tracking-normal text-base normal-case">{comment.content}</p> 
+                  <div className="w-4/5 ml-1">
+                    <div className="flex gap-2">
+                      <p className="font-semibold">@{comment.userDetails[0].firstName}{comment.userDetails[0].lastName}</p>
+                      <span className="font-thin">{timeAgo}</span>
+                    </div>
+                    <p className="mt-1 font-mono tracking-normal text-sm normal-case">{comment.content}</p> 
+                    
+                    {hasReplies && (
+                      <button
+                        onClick={() => toggleReplies(comment._id)}
+                        className="text-blue-500 hover:underline"
+                      >
+                        {displayedReplies[comment._id] ? 'Hide Replies':'View Replies'}
+                      </button>
+                    )}
+                  {displayedReplies[comment._id] && hasReplies && (
+                    <div className="pl-2">
+                      {comment.replies.map((reply) => (
+                        <>
+                        <div key={reply._id} className="flex">
+                          <p className="font-semibold bg-blue-gray-100 rounded-full pr-2">{reply.authorType === 'trainers' ? '@Author' : '{reply.authorName}'}</p> 
+                        </div>
+                        <p className="pl-1">{reply.content}</p>
+                        </>
+                      ))}
+                    </div>
+                  )}
+                  </div>
                 </div>
-              </div>
-            )
-          }))
-        ):(
-          <>
-          </>
-        )}
+              )
+            }))
+          ):(
+            <>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

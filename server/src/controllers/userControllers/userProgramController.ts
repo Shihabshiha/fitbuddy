@@ -3,6 +3,7 @@ import programService from "../../services/userServices/programService";
 import stripeInstance , { StripePaymentIntent} from "../../config/stripeConfig";
 import config from "../../config/config";
 import { CustomRequest } from "../../types/custom-request";
+import mongoose from "mongoose";
 
 
 const programControllerFunction = () => {
@@ -147,6 +148,45 @@ const programControllerFunction = () => {
     }
   }
 
+  const createChatRoom = async (req:Request, res:Response) => {
+    try{
+      const { trainerId } = req.body;
+      const userId = (req as CustomRequest).person?.id;
+      if(userId){
+        const result = await programServices.createChatRoom(userId , trainerId)
+        res.status(200).json({result})
+      }
+    }catch(error:any){
+      res.status(500).json({error:"Intrnal Server Error"})
+    }
+  }
+
+  const getAllChatList = async (req:Request , res:Response) => {
+    try{
+      const userId = (req as CustomRequest).person?.id;
+      if(userId){
+        const chatList = await programServices.getAllChatList(userId);
+        res.status(200).json({chatList})
+      }
+    }catch(error:any){
+      res.status(500).json({error:"Intrnal Server Error"})
+    }
+  }
+
+  const getChatDetails = async (req:Request , res:Response) => {
+    try{
+      const chatId = req.params.chatId;
+      const {chats , trainerInfo} = await programServices.getChatDetails(chatId);
+      res.status(200).json({chats , trainerInfo})
+    }catch(error:any){
+      res.status(500).json({error:"Intrnal Server Error"})
+    }
+  }
+
+
+
+ 
+
   return {
     getWeightGainPrograms,
     getProgramDetails,
@@ -156,7 +196,10 @@ const programControllerFunction = () => {
     markVideoAsWatched,
     getProgramProgress,
     postNewComment,
-    getAllCommentsForVideo
+    getAllCommentsForVideo,
+    createChatRoom,
+    getAllChatList,
+    getChatDetails,
   }
 }
 

@@ -91,6 +91,7 @@ const CoursesTable: React.FC = () => {
 
   return (
     <div >
+      <h1 className='text-lg md:text-3xl font-bold'>My Courses</h1>
       {loading && (
         <>
           <TableSkeltonShimmer />

@@ -47,6 +47,10 @@ const createAuthService = ()=>{
         throw new Error("User not found");
       }
 
+      if(user.isBlocked){
+        throw new Error("Blocked user")
+      }
+
       const passwordMatch = await bcrypt.compare(password, user.password);
       if (!passwordMatch) {
         throw new Error("Invalid password");
@@ -119,6 +123,10 @@ const createAuthService = ()=>{
     try{
       const { given_name, family_name, email , picture } = userData;
       let user = await UserModel.findOne({ email });
+
+      if(user?.isBlocked){
+        throw new Error("Blocked user")
+      }
 
       if(!user){
         const newUser = await UserModel.create({

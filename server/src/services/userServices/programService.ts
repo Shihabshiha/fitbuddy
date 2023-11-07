@@ -5,10 +5,13 @@ import EnrollmentModel from "../../models/enrollmentModel";
 import UserModel from "../../models/userModel";
 import { Session } from "inspector";
 import { CourseInterface } from "../../types/courseTypes";
-import { CommentDocument, CommentParams, NotificationType } from "../../types/commonTypes";
+import { CommentDocument, CommentParams, NewMessageData, NotificationType } from "../../types/commonTypes";
 import CommentModel from "../../models/commentModel";
 import ChapterModel from "../../models/chapterModel";
 import NotificationModel from "../../models/notificationModel";
+import ChatRoomModel from "../../models/chatRoomModel";
+import MessageModel from "../../models/messageModel";
+import cloudinary from "../../config/cloudinaryConfig";
 
 
 const programService = () => {
@@ -17,6 +20,11 @@ const programService = () => {
   const getWeightGainPrograms = async() => {
     try{
       const programs = await CourseModel.aggregate([
+        {
+          $match: {
+            isListed: true, 
+          },
+        },
         {
           $lookup:{
             from:"trainers",
@@ -43,7 +51,12 @@ const programService = () => {
             createdAt: 1,
             trainerName: "$trainer.firstName" 
           }
-        }
+        },
+        {
+          $sort: {
+            createdAt: -1, 
+          },
+        },
       ])
 
       return programs
@@ -155,8 +168,6 @@ const programService = () => {
         },
       ])
 
-      console.log("programs",program)
-
       if(!program || program.length === 0){
         throw new Error ("Program not found")
       }
@@ -174,8 +185,6 @@ const programService = () => {
           watched:false,
         }))
       }
-
-      console.log('enrollment data',enrollmentData)
 
       await EnrollmentModel.create([enrollmentData],{session})
 
@@ -306,6 +315,10 @@ const programService = () => {
   }
 
   const postNewComment = async ({ authorId, authorType, videoId, newComment }: CommentParams) => {
+    console.log("inside service")
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    console.log('not here')
     try{
       const authorObjectId = new mongoose.Types.ObjectId(authorId);
       const videoObjectId = new mongoose.Types.ObjectId(videoId);
@@ -317,12 +330,12 @@ const programService = () => {
         content : newComment,
         createdAt : currentTimestamp,
       }
-      const commentResult = await CommentModel.create(commentData);
-      
 
-      const relatedCommentId = new mongoose.Types.ObjectId(commentResult._id)
-      const video = await ChapterModel.findById(videoId)
-      if(video){
+      const commentResultArray = await CommentModel.create([commentData] , {session});  
+      const commentResult = commentResultArray[0];    
+      const relatedCommentId = commentResult._id;     
+      const video = await ChapterModel.findById(videoId).session(session)
+      if(video){      
         const trainerObjectId = new mongoose.Types.ObjectId(video.trainerId)
         const notificationData : NotificationType = {
           type: "comment",
@@ -336,15 +349,17 @@ const programService = () => {
           commenterType: authorType, 
           commentContent: newComment, 
           read: false, 
-        }
-        console.log('notificatipon data',notificationData)
-
-        const result = await NotificationModel.create(notificationData);
-        console.log('notificationnn',result)
+        }   
+        const result = await NotificationModel.create([notificationData] , { session });  
       }
+    
+      await session.commitTransaction();
+      session.endSession();
       return commentResult;
 
     }catch(error){
+      await session.abortTransaction();
+      session.endSession();
       throw error;
     }
   }
@@ -374,6 +389,146 @@ const programService = () => {
     }
   }
 
+  const createChatRoom = async (userId:string , trainerId:string) => {
+    try{
+      const userObjectId = new mongoose.Types.ObjectId(userId);
+      const trainerObjectId = new mongoose.Types.ObjectId(trainerId);
+      const existingChatRoom = await ChatRoomModel.findOne({
+        "participants.userId": userObjectId,
+        "participants.trainerId": trainerObjectId,
+      })
+
+      if(existingChatRoom){
+        return existingChatRoom;
+      }
+
+      const newChatRoom = await ChatRoomModel.create({
+        participants : {
+          userId : userObjectId,
+          trainerId : trainerObjectId,
+        },
+        latestMessage : null,
+      })
+      console.log('new chat room', newChatRoom)
+      return newChatRoom;
+
+    }catch(error){
+      throw error
+    }
+  }
+
+  const getAllChatList = async (userId:string) => {
+    try{   
+      const userObjectId = new mongoose.Types.ObjectId(userId);
+      const chatList = await ChatRoomModel.find({
+        "participants.userId" : userObjectId
+      })
+  
+      if(chatList.length > 0){
+        const populatedChatList =await ChatRoomModel.populate(chatList,[
+          { path: 'participants.trainerId', model: 'Trainer' , select: 'firstName lastName '},
+          { path: 'participants.userId', model: 'User' ,select: 'firstName lastName profileImage'},
+        ])
+        return populatedChatList
+      }else{
+        return []
+      }
+      
+    }catch(error){
+      console.error(error)
+      throw error
+    }
+  }
+
+  const getChatDetails = async (chatId:string) => {
+    try{
+      const chatObjectId = new mongoose.Types.ObjectId(chatId)
+      const chats = await MessageModel.find({
+        chatRoomId : chatObjectId
+      })
+
+      const trainerInfo = await ChatRoomModel.findById(chatId)
+        .populate({
+          model: 'Trainer',
+          path: 'participants.trainerId',
+          select: 'firstName lastName ',
+        })
+
+      return { chats , trainerInfo}
+    }catch(error){
+      console.log(error)
+      throw error;
+    }
+  }
+
+  const sendNewMessage = async (userId:mongoose.Types.ObjectId , content:string ,chatId : string) => {
+    try{
+      const userObjectId = userId;
+      const chatObjectId = new mongoose.Types.ObjectId(chatId);
+      const chatRoom = await ChatRoomModel.findById(chatId)
+      const trainerId = chatRoom?.participants.trainerId;
+      const trainerObjectId = new mongoose.Types.ObjectId(trainerId)
+      const newMessageData : NewMessageData = {
+        messageType : "text",
+        content: content, 
+        sender: {
+          senderId: userObjectId, 
+          senderType: "users",
+        },
+        recipient: {
+          recipientId : trainerObjectId, 
+          recipientType: "trainers",
+        },
+        chatRoomId: chatObjectId,
+        isRead: false,
+      }
+      const newMessage = await MessageModel.create(newMessageData)
+      return newMessage;
+    }catch(error){
+      console.error("error in service message :",error)
+      throw error
+    }
+  }
+
+  const sendImageFile = async(userId:mongoose.Types.ObjectId , imageFile :any , chatId:string , mimeType:any) => {
+    try{
+      const userObjectId = userId;
+      const chatObjectId = new mongoose.Types.ObjectId(chatId);
+      const chatRoom = await ChatRoomModel.findById(chatId)
+      const trainerId = chatRoom?.participants.trainerId;
+      const trainerObjectId = new mongoose.Types.ObjectId(trainerId)
+
+      const imageBase64 = imageFile.toString('base64');
+      const uploadResponse = await cloudinary.uploader.upload(
+        `data:${mimeType};base64,${imageBase64}`,
+        {
+          folder: "fitbuddy/chat-image",
+        }
+      );
+      
+      const imageUrl = uploadResponse.secure_url;
+      const newMessageData : NewMessageData = {
+        messageType : "image",
+        content: imageUrl, 
+        sender: {
+          senderId: userObjectId, 
+          senderType: "users",
+        },
+        recipient: {
+          recipientId : trainerObjectId, 
+          recipientType: "trainers",
+        },
+        chatRoomId: chatObjectId,
+        isRead: false,
+      }
+      const newMessage = await MessageModel.create(newMessageData)
+      console.log('new image message', newMessage)
+      return newMessage
+    }catch(error){
+      throw error
+    }
+  }
+
   return {
     getWeightGainPrograms,
     getProgramDetails,
@@ -384,6 +539,11 @@ const programService = () => {
     getProgramProgress,
     postNewComment,
     getAllCommentsForVideo,
+    createChatRoom,
+    getAllChatList,
+    getChatDetails,
+    sendNewMessage,
+    sendImageFile,
   }
 }
 

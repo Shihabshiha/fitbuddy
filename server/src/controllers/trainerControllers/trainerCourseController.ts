@@ -99,6 +99,18 @@ const courseControllerFunctions = () =>{
     }
   }
 
+  const getRevenueData = async (req:Request,res:Response) => {
+    try{
+      const trainerId = (req as CustomRequest).person?.id;
+      if(trainerId){
+        const result = await trainerCourseService.getRevenueData(trainerId);
+        res.status(200).json({result})
+      }
+    }catch(error:any){
+      res.status(500).json({ error:error.message });
+    }
+  }
+
 
 
 
@@ -108,6 +120,7 @@ const courseControllerFunctions = () =>{
     getAllCourses,
     updateCourseStatus,
     deleteCourse,
+    getRevenueData,
   }
 }
 

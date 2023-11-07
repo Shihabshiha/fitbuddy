@@ -1,113 +1,151 @@
+import { lazy , Suspense } from "react"
 import { createBrowserRouter } from "react-router-dom"
-import UserSignupPage from "./components/pages/user-pages/user-signup"
-import UserLoginPage from "./components/pages/user-pages/user-login"
+
 import { Admin , User} from "./App"
+
+const LazyUserHomePage = lazy(() => import("./components/pages/user-pages/user-HomePage"));
+const LazyAllProgramsPage = lazy(() => import("./components/pages/user-pages/allPrograms"));
+const LazyUserInboxPage = lazy(() => import("./components/pages/user-pages/inbox"));
+const LazyProgramDetailPage = lazy(() => import("./components/pages/user-pages/program-datails"));
+const LazyVideoPage = lazy(() => import("./components/pages/user-pages/videoPage"));
+const LazyProfilePage = lazy(() => import("./components/pages/user-pages/profile"));
+import UserLoginPage from "./components/pages/user-pages/user-login"
+import UserSignupPage from "./components/pages/user-pages/user-signup";
 import OtpVerifyComponent from "./components/common/otp-verify-component"
-import AdminHomePage from "./components/pages/admin-pages/adminHome"
+
+const LazyAdminHomePage = lazy(() => import("./components/pages/admin-pages/adminHome"));
+const LazyPendingTrainersTable = lazy(() => import("./components/admin/pendingTrainerVerification"));
+const LazyUsersListPage = lazy(() => import("./components/pages/admin-pages/users-list"));
+const LazyAllCoursePage = lazy(() => import("./components/pages/admin-pages/all-courses"));
+
+
 import TrainerRegister from "./components/pages/trainer-pages/trainer-register"
 import TrainerLogin from "./components/pages/trainer-pages/trainer-login"
-import PendingTrainersTable from "./components/admin/pendingTrainerVerification"
-import TrainerDashboard from "./components/pages/trainer-pages/dashboard"
 import DashboardLayout from "./components/trainer/dashboardLayout"
-import CoursesTable from "./components/pages/trainer-pages/my-courses"
-import AddCoursePage from "./components/pages/trainer-pages/add-course"
-import AddChapterPage from "./components/pages/trainer-pages/add-chapter"
-import CourseManagement from "./components/pages/trainer-pages/course-management"
-import UsersListPage from "./components/pages/admin-pages/users-list"
-import AllCoursePage from "./components/pages/admin-pages/all-courses"
-import UserHomePage from "./components/pages/user-pages/user-HomePage"
-import ProgramDetailPage from "./components/pages/user-pages/program-datails"
-import VideoPage from "./components/pages/user-pages/videoPage"
-import ProfilePage from "./components/pages/user-pages/profile"
+
+const LazyTrainerDashboard = lazy(() => import("./components/pages/trainer-pages/dashboard"));
+const LazyCoursesTable = lazy(() => import("./components/pages/trainer-pages/my-courses"));
+const LazyAddCoursePage = lazy(() => import("./components/pages/trainer-pages/add-course"));
+const LazyAddChapterPage = lazy(() => import("./components/pages/trainer-pages/add-chapter"));
+const LazyCourseManagement = lazy(() => import("./components/pages/trainer-pages/course-management"));
+const LazyNotificationPage = lazy(() => import("./components/pages/trainer-pages/notificationPage"));
+const LazyEnrollmentsPage = lazy(() => import("./components/pages/trainer-pages/enrollments"));
+const LazyInboxPage = lazy(() => import("./components/pages/trainer-pages/inbox"));
+
+
+import ErrorPage from "./components/common/errorPage"
 
 const AppRouter = createBrowserRouter([
   {
     path: "/",
-    element: <User />, 
+    element: <Suspense fallback={<div>Loading...</div>}><User /></Suspense>, 
+    errorElement : <ErrorPage />,
     children:[
       {
         path : "/",
-        element: <UserHomePage />,
+        element: <LazyUserHomePage />,
       },
       {
         path : "/program/:programId",
-        element : <ProgramDetailPage />
+        element : <LazyProgramDetailPage />
       },
       {
         path : "/program/video/:index",
-        element : <VideoPage />
+        element : <LazyVideoPage />
       },
       {
         path : "/profile",
-        element :<ProfilePage />
+        element :<LazyProfilePage />
+      },
+      {
+        path : "/programs",
+        element : <LazyAllProgramsPage />
+      },
+      {
+        path: "/inbox/:chatId?",
+        element : <LazyUserInboxPage />
       }
     ]
   },
   {
     path : "/register-otp-verify",
-    element :<OtpVerifyComponent />
+    element :<Suspense fallback={<div>Loading...</div>}><OtpVerifyComponent /></Suspense>,
   },
   {
     path: "/signup",
-    element:<UserSignupPage />
+    element:<Suspense fallback={<div>Loading...</div>}><UserSignupPage /></Suspense>,
   },
   {
     path: "/login",
-    element :<UserLoginPage />
+    element :<Suspense fallback={<div>Loading...</div>}><UserLoginPage /></Suspense>,
   },
   {
     path: "/admin",
-    element :<Admin />,
+    element : <Suspense fallback={<div>Loading...</div>}><Admin /></Suspense>,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "dashboard",
-        element :<AdminHomePage />
+        element :<LazyAdminHomePage />
       },
       {
         path: "trainers-requests",
-        element :<PendingTrainersTable />
+        element :<LazyPendingTrainersTable />
       },
       {
         path: "users-list",
-        element: <UsersListPage />
+        element: <LazyUsersListPage />
       },
       {
         path: "all-course-list",
-        element: <AllCoursePage />
+        element: <LazyAllCoursePage />
       }
     ]
   },
   {
     path: "/trainer/register",
-    element :<TrainerRegister />
+    element :<Suspense fallback={<div>Loading...</div>}><TrainerRegister /></Suspense>,
   },
   {
     path : "/trainer/login",
-    element :<TrainerLogin />
+    element :<Suspense fallback={<div>Loading...</div>}><TrainerLogin /></Suspense>,
   },
   {
     path : "/trainer",
-    element: <DashboardLayout />,
+    element: <Suspense fallback={<div>Loading...</div>}><DashboardLayout /></Suspense>,
+    errorElement : <ErrorPage />,
     children : [
       {
         path : "",
-        element: <TrainerDashboard />
+        element: <LazyTrainerDashboard />
       },
       {
         path: "my-courses",
-        element: <CoursesTable />
+        element: <LazyCoursesTable />
       },
       {
         path: "add-course",
-        element: <AddCoursePage />
+        element: <LazyAddCoursePage />
       },
       {
         path: "course/add-chapter/:courseId",
-        element: <AddChapterPage />
+        element: <LazyAddChapterPage />
       },
       {
         path:"course/:courseId",
-        element: <CourseManagement />
+        element: <LazyCourseManagement />
+      },
+      {
+        path:"notifications",
+        element: <LazyNotificationPage />
+      },
+      {
+        path: "enrollments",
+        element :<LazyEnrollmentsPage />
+      },
+      {
+        path : "inbox/:chatId?",
+        element : <LazyInboxPage />
       }
       
     ]
@@ -115,3 +153,5 @@ const AppRouter = createBrowserRouter([
 ])
 
 export default AppRouter
+
+

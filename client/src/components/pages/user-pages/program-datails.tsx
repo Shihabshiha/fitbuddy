@@ -15,6 +15,9 @@ import { useDispatch } from 'react-redux';
 import { fetchUserDetails } from "../../../utils/userUtils";
 import { selectIsLoggedIn } from "../../../redux/reducers/userSlice";
 import { Video } from "../../../types/courseType";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMessage } from '@fortawesome/free-solid-svg-icons';
+import { createChatRoom } from "../../../api/endpoints/user";
 
 const ProgramDetailPage: React.FC = () => {
   const navigate = useNavigate();
@@ -28,10 +31,9 @@ const ProgramDetailPage: React.FC = () => {
   const [isPaymentStatusModal , setIsPaymentStatusModal] = useState(false);
   const [paymentModalMessage , setPaymentModalMessage ] = useState('')
   const user = useSelector(selectUser);
-  console.log('userr',user)
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(selectIsLoggedIn);
-  console.log(isLoggedIn)
+  
 
   // const enrolledPrograms = user?.userDetails?.enrolledPrograms;
   // const isEnrolled = enrolledPrograms?.includes(programId)
@@ -98,6 +100,7 @@ const ProgramDetailPage: React.FC = () => {
         }
       }   
     }catch(error:unknown){
+      setIsEnrolling(false)
       if (error instanceof AxiosError && error.response?.data?.error) {
         const errorMessage = error.response.data.error;
         if (errorMessage === "Authentication required") {
@@ -110,8 +113,9 @@ const ProgramDetailPage: React.FC = () => {
           notify(errorMessage, "error");
         }
       } else {
+        setIsEnrolling(false)
         console.error('Error occured',error)
-        notify("An error occurred fetching programs.","error");
+        notify("An error occurred during enroll","error");
       }
     }
   }
@@ -129,6 +133,21 @@ const ProgramDetailPage: React.FC = () => {
     navigate(`/program/video/${index}`,{ state : { videoData } })
   }
 
+  const handleChatClick = async(trainerId:string , programId:string) => {
+    try{
+      console.log('chat room details',trainerId,programId)
+      const response = await createChatRoom(trainerId, programId);
+      const chatId = response.data.result._id;
+      navigate(`/inbox/${chatId}`)
+    }catch(error:unknown){
+      if (error instanceof AxiosError && error.response?.data?.error) {
+        notify(error.response.data.error, "error");
+      } else {
+        notify("An error occurred making chat.", "error");
+      }
+    }
+  }
+
   return (
     <>
       {isLoading ? (
@@ -142,25 +161,36 @@ const ProgramDetailPage: React.FC = () => {
               <h1 className="text-3xl font-bold">{program?.courseName}</h1>
             </div>
             <div className="md:col-span-1 grid justify-center item-center">
-            {isEnrolling ? (
+            {program.price === 0 ? (
               <button
-                className="bg-light-green-700 border border-light-green-700 hover:bg-white hover:text-light-green-700 py-1 px-8 rounded font-semibold uppercase text-white shadow-lg"
+                className="bg-yellow-400 border hover:bg-white hover:text-black py-1 px-8 rounded font-semibold uppercase text-white shadow-lg"
               >
-                Loading..
+                Free
               </button>
-            ) : isEnrolled ? (
-              <p className="font-semibold text-white rounded bg-green-600  px-4 py-2 hover:shadow-md">
-                Enrolled
-              </p>
             ) : (
-              <button
-                onClick={handleEnroll}
-                className="bg-light-green-700 border border-light-green-700 hover:bg-white hover:text-light-green-700 py-1 px-8 rounded font-semibold uppercase text-white shadow-lg"
-              >
-                Enroll
-              </button>
+              <>
+                {isEnrolling ? (
+                  <button
+                    className="bg-light-green-700 border border-light-green-700 hover:bg-white hover:text-light-green-700 py-1 px-8 rounded font-semibold uppercase text-white shadow-lg"
+                  >
+                    Loading..
+                  </button>
+                ) : isEnrolled ? (
+                  <p className="font-semibold text-white rounded bg-green-600 px-4 py-2 hover:shadow-md">
+                    Enrolled
+                  </p>
+                ) : (
+                  <button
+                    onClick={handleEnroll}
+                    className="bg-light-green-700 border border-light-green-700 hover:bg-white hover:text-light-green-700 py-1 px-8 rounded font-semibold uppercase text-white shadow-lg"
+                  >
+                    Enroll
+                  </button>
+                )}
+              </>
             )}
-            </div>
+          </div>
+
           </div>
           <div className="grid md:grid-cols-2 md:gap-20">
             <div className="col-span-1 py-5">
@@ -325,6 +355,14 @@ const ProgramDetailPage: React.FC = () => {
                         fitness influencer
                       </span>
                     </div>
+                    <div>
+                    <FontAwesomeIcon 
+                      icon={faMessage} 
+                      className="text-light-blue-800 text-2xl ml-2 hover:cursor-pointer" 
+                      title="Chat with trainer"
+                      onClick={()=>handleChatClick(program.trainerDetails._id , program._id)}
+                    />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -361,7 +399,7 @@ const ProgramDetailPage: React.FC = () => {
                         <h4 className="text-sm md:text-xl font-medium">{video.caption}</h4>
                       </div>
                     </div>
-                    {isEnrolled ? (
+                    {isEnrolled || program.price ===0 ? (
                       <button onClick={()=> handleWatchClick(video,index+1)} className="block text-xs md:text-md font-bold shadow uppercase bg-red-500 text-white rounded border border-red-500 hover:bg-white hover:shadow-md hover:text-red-500 py-2 px-3">
                         Watch Now
                       </button>

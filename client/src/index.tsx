@@ -7,7 +7,7 @@ import "./index.css";
 import { store } from './redux/store';
 import { Provider } from 'react-redux';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import config from './config';
+import { config } from './config';
 
 
 const root = ReactDOM.createRoot(
@@ -16,7 +16,6 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <>
-    <React.StrictMode>
       <GoogleOAuthProvider clientId={config.GOOGLE_CLIENT_ID}>
         <ThemeProvider>
           <Provider store={store}>
@@ -24,6 +23,5 @@ root.render(
           </Provider> 
         </ThemeProvider>
       </GoogleOAuthProvider>    
-    </React.StrictMode>
   </>
 )

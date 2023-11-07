@@ -10,6 +10,11 @@ import {
   getProgramProgressDetails,
   doPostNewComment,
   getAllCommentsByVideoId,
+  createChatRoomById,
+  allChatList,
+  getAllChatDetailsById,
+  sendNewMessageFromUser,
+  sendImageFileAsMessage,
 } from "../services/user-services";
 
 export const getUserDetailsbyToken = () => {
@@ -50,4 +55,24 @@ export const postNewComment = (videoId:string , newComment:string) => {
 
 export const getAllCommentsById = (videoId:string) => {
   return getAllCommentsByVideoId(END_POINTS.GET_ALL_COMMENTS , videoId);
+}
+
+export const createChatRoom = (trainerId:string , programId:string) => {
+  return createChatRoomById(END_POINTS.CREATE_CHAT_ROOM,trainerId,programId)
+}
+
+export const getAllChatList = () => {
+  return allChatList(END_POINTS.ALL_CHAT_LIST)
+}
+
+export const getChatDetails = (chatId:string) => {
+  return getAllChatDetailsById(END_POINTS.GET_CHAT_DETAILS,chatId)
+}
+
+export const sendNewMessage = (chatId:string , content:string) => {
+  return sendNewMessageFromUser(END_POINTS.SEND_NEW_MESSAGE_FROM_USER,chatId, content)
+}
+
+export const sendImageFile = (image : FormData , chatId:string) => {
+  return sendImageFileAsMessage(END_POINTS.SEND_IMAGE_FILE_AS_MESSAGE , image , chatId);
 }

@@ -71,7 +71,7 @@ const AddCoursePage: React.FC = () => {
         onSubmit={handleSubmit}
       >
         {({ setFieldValue , values }) => (
-          <Form className="flex flex-wrap -mx-4">
+          <Form className="flex flex-wrap -mx-4 ">
             <div className="mb-4 px-4 w-1/2">
               <label htmlFor="courseName" className="block text-sm font-medium text-gray-700">
                 Course Name
@@ -80,21 +80,21 @@ const AddCoursePage: React.FC = () => {
                 type="text"
                 id="courseName"
                 name="courseName"
-                className="form-input"
+                className="form-input rounded shadow-md border-gray-200"
               />
               <ErrorMessage name="courseName" component="div" className="text-red-500" />
             </div>
             <div className="mb-4 px-4 w-1/2">
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-                Description
+              <label htmlFor="duration" className="block text-sm font-medium text-gray-700">
+                Duration (in hours)
               </label>
               <Field
-                as="textarea"
-                id="description"
-                name="description"
-                className="form-textarea h-16"
+                type="number"
+                id="duration"
+                name="duration"
+                className="form-input rounded shadow-md border-gray-200"
               />
-              <ErrorMessage name="description" component="div" className="text-red-500" />
+              <ErrorMessage name="duration" component="div" className="text-red-500" />
             </div>
             <div className="mb-4 px-4 w-1/2">
               <label htmlFor="about" className="block text-sm font-medium text-gray-700">
@@ -104,23 +104,24 @@ const AddCoursePage: React.FC = () => {
                 as="textarea"
                 id="about"
                 name="about"
-                className="form-textarea h-24"
+                className="form-textarea h-24 rounded shadow-md border-gray-200"
               />
               <ErrorMessage name="about" component="div" className="text-red-500" />
             </div>
             {/* Add other form fields using the same structure */}
             <div className="mb-4 px-4 w-1/2">
-              <label htmlFor="duration" className="block text-sm font-medium text-gray-700">
-                Duration (in hours)
+              <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+                Description
               </label>
               <Field
-                type="number"
-                id="duration"
-                name="duration"
-                className="form-input"
+                as="textarea"
+                id="description"
+                name="description"
+                className=" h-16 rounded shadow-md  border-gray-200"
               />
-              <ErrorMessage name="duration" component="div" className="text-red-500" />
+              <ErrorMessage name="description" component="div" className="text-red-500" />
             </div>
+            
             <div className="mb-4 px-4 w-1/2">
               <label htmlFor="category" className="block text-sm font-medium text-gray-700">
                 Category
@@ -129,7 +130,7 @@ const AddCoursePage: React.FC = () => {
                 type="text"
                 id="category"
                 name="category"
-                className="form-input"
+                className="form-input rounded shadow-md border-gray-200"
               />
               <ErrorMessage name="category" component="div" className="text-red-500" />
             </div>
@@ -138,11 +139,18 @@ const AddCoursePage: React.FC = () => {
                 Level
               </label>
               <Field
-                type="text"
-                id="level"
-                name="level"
-                className="form-input"
-              />
+              as="select"
+              id="level"
+              name="level"
+              className="form-input rounded shadow-md border-gray-200"
+              >
+
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Professional">Professional</option>
+              </Field>
+                
+              
               <ErrorMessage name="level" component="div" className="text-red-500" />
             </div>
             <div className="mb-4 px-4 w-1/2 flex items-center">
@@ -153,7 +161,7 @@ const AddCoursePage: React.FC = () => {
                 type="checkbox"
                 id="isPaid"
                 name="isPaid"
-                className="form-checkbox ml-4"
+                className="form-checkbox ml-4 rounded shadow-md border-gray-200"
               />
               <ErrorMessage name="isPaid" component="div" className="text-red-500" />
             </div>
@@ -167,7 +175,7 @@ const AddCoursePage: React.FC = () => {
                   type="number"
                   id="price"
                   name="price"
-                  className="form-input"
+                  className="form-input rounded shadow-md border-gray-200"
                 />
                 <ErrorMessage name="price" component="div" className="text-red-500" />
               </div>
@@ -182,7 +190,7 @@ const AddCoursePage: React.FC = () => {
                 type="file"
                 multiple
                 accept=".jpg,.jpeg,.png"
-                className="block"
+                className="block rounded border-gray-200 shadow-md" 
                 onChange={(event) => {
                   setFieldValue("thumbnail", event.currentTarget.files);
                 }}
@@ -191,7 +199,7 @@ const AddCoursePage: React.FC = () => {
             <div className="block  w-full px-4">
               <button
                 type="submit"
-                className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md"
               >
                 Add Course
               </button>

@@ -105,9 +105,17 @@ export interface CommentType  {
   authorId: string;
   authorType: string;
   content: string;
-  replies: string[]; 
+  replies: ReplyType[]; 
   userDetails: UserDetails[];
   videoId: string;
   createdAt : Date;
   _id: string;
+}
+
+export interface ReplyType {
+  _id: string;
+  authorName: string;
+  authorType: string;
+  content: string;
+  createdAt: string;
 }

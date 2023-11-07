@@ -38,9 +38,7 @@ export const userLoginController = async (req: Request, res: Response) => {
 
 export const sendEmailcontroller = async (req: Request, res: Response) => {
   try {
-    console.log(req.body)
     const { email }: any = req.body;
-    console.log('sendrrr mail',email)
     await authService.sendOtp(email);
     res.status(200).json({ message: "Otp sended to email" });
   } catch (error: any) {
