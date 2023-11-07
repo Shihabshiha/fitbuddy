@@ -43,7 +43,7 @@ const ListUnlistCourseButton: React.FC<ListUnlistCourseButtonProps> = ({ course,
         } text-white px-4 py-2 rounded-md focus:outline-none focus:ring focus:ring-blue-300`}
         disabled={loading}
       >
-        {loading ? <BeatLoader size={8} color="white" /> : course.isListed ? 'Unlist' : 'List'}
+        {loading ? <BeatLoader size={8} color="white" /> : course.isListed ? 'Decline' : 'Accept'}
       </Button>
       
       <ToastContainer />

@@ -53,7 +53,7 @@ const courseSchema = new Schema<CourseInterface>({
     },
     isListed: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     stripePriceId : {
       type : String,

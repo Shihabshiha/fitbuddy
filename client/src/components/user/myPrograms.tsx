@@ -33,9 +33,9 @@ const  MyPrograms : React.FC = () => {
     <div className="w-3 mr-52">
       <Select size="md" label="My programs">  
         {programs && 
-          programs.map((program)=>{
+          programs.map((program , index)=>{
             return (          
-              <Link to={`/program/${program.programId}`}>
+              <Link to={`/program/${program.programId}`} key={index}>
                 <Option key={program.programId}>{program.programName} 
                 <div className='mb-1 flex items-center justify-between text-sm '>
                   <span>Completed</span>

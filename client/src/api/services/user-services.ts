@@ -155,3 +155,83 @@ export const getAllCommentsByVideoId = async (
   }
 }
 
+export const  createChatRoomById = async (
+  endpoint : string,
+  trainerId : string,
+  programId :string,
+) =>{
+  try{
+    const response = userApi.post(
+      `${BASE_URL}/${endpoint}`,
+      {trainerId , programId}
+    );
+    return response
+  }catch(error){
+    console.error('Error during creating chat room:', error);
+    throw error; 
+  }
+}
+
+export const allChatList = async (
+  endpoint : string,
+) =>{
+  try{
+    const response = userApi.get(
+      `${BASE_URL}/${endpoint}`
+    );
+    return response
+  }catch(error){
+    console.error('Error during fetching chat list:', error);
+    throw error; 
+  }
+}
+
+export const  getAllChatDetailsById = async (
+  endpoint : string,
+  chatId : string,
+) =>{
+  try{
+    const response = userApi.get(
+      `${BASE_URL}/${endpoint}/${chatId}`,
+    );
+    return response
+  }catch(error){
+    console.error('Error during fetching chat details:', error);
+    throw error; 
+  }
+}
+
+export const sendNewMessageFromUser = async (
+  endpoint : string,
+  chatId : string,
+  content :string,
+) =>{
+  try{
+    const response = userApi.post(
+      `${BASE_URL}/${endpoint}`,
+      {chatId , content}
+    );
+    return response
+  }catch(error){
+    console.error('Error during sending message:', error);
+    throw error; 
+  }
+}
+
+export const sendImageFileAsMessage = async (
+  endpoint : string,
+  image : FormData,
+  chatId :string
+) =>{
+  try{
+    const response = userApi.post(
+      `${BASE_URL}/${endpoint}/${chatId}`,
+      image,
+    );
+    return response
+  }catch(error){
+    console.error('Error during sending message:', error);
+    throw error; 
+  }
+}
+

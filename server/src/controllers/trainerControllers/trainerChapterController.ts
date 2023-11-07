@@ -61,10 +61,77 @@ const trainerChapterFunction = () => {
     }
   };
 
+  const getAllNotifications = async(req:Request , res:Response) => {
+    try{
+      const trainerId = (req as CustomRequest).person?.id;
+      if(trainerId){
+        const notifications = await trainerChapterService.getAllNotifications(trainerId);
+        res.status(200).json({notifications})
+      }
+    }catch(error:any){
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  const replayToComment = async(req:Request , res: Response) => {
+    try{
+      const authorId = (req as CustomRequest).person?.id;
+      const authorType = (req as CustomRequest).person?.role;
+      const {commentId , replayContent} = req.body;
+      if(authorId && authorType){
+        const replayResponse = await trainerChapterService.replayToComment({commentId , replayContent , authorId, authorType}) 
+        res.status(200).json({replayResponse})
+      }
+    }catch(error:any){
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  const getUnreadNotificationCount = async (req:Request , res: Response) =>{
+    try{
+      const trainerId = (req as CustomRequest).person?.id;
+      if(trainerId){
+        const count = await trainerChapterService.getUnreadNotificationCount(trainerId);
+        res.status(200).json({count})
+      }
+    }catch(error:any){
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  const markNotificationAsRead = async (req:Request , res: Response) => {
+    try{
+      const trainerId = (req as CustomRequest).person?.id;
+      if(trainerId){
+        const result = await trainerChapterService.markNotificationAsRead(trainerId);
+        res.status(200).json({message : "Notifications marked as read "})
+      }
+    }catch(error:any){
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  const getAllEnrollments = async (req:Request , res : Response ) => {
+    try{
+      const trainerId = (req as CustomRequest).person?.id;
+      if(trainerId){
+        const enrollments = await trainerChapterService.getAllEnrollments(trainerId)
+        res.status(200).json({enrollments})
+      }
+    }catch(error:any){
+      res.status(500).json({ error: error.message });
+    }
+  }
+
   return {
     addChapter,
     getChapterByCourseId,
     deleteChapterById,
+    getAllNotifications,
+    replayToComment,
+    getUnreadNotificationCount,
+    markNotificationAsRead,
+    getAllEnrollments,
   };
 };
 

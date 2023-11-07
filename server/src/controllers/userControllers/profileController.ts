@@ -7,7 +7,6 @@ const profileControllerFunction = () => {
   const changeProfileImage = async(req:Request, res:Response) => {
     const userId  = (req as CustomRequest).person?.id;
     const imageFile = req.file as Express.Multer.File;
-    console.log('user called',userId)
     try{
       if(userId){
         const response = await changeProfileImageService(userId,imageFile);

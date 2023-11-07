@@ -1,4 +1,4 @@
-import React, {  useState  } from 'react'
+import React, {  useState , useEffect } from 'react'
 import { Disclosure } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon , PlusCircleIcon } from '@heroicons/react/24/outline'
 import ProfileMenu from './profileMenu'
@@ -21,20 +21,45 @@ const UserHeader : React.FC = () => {
 
   
 
-  const [navigation, setNavigation] = useState([
-    { name: 'Home', href: '/', current: true },
-    { name: 'Trainers', href: '#trainer', current: false },
-    { name: 'Programs', href: '#program', current: false },
-    { name: 'About', href: '#', current: false },
-  ]);
+  const initialNavigation = [
+    { name: 'Home', href: '/', current: false },
+    { name: 'Programs', href: '/programs', current: false },
+    { name: 'Inbox', href: '/inbox/', current: false },
+  ];
 
-  const handleNavigationClick = (clickedItemName: string) => {
+  const [navigation, setNavigation] = useState(initialNavigation);
+
+
+  const handleNavigationClick = (clickedItemName:string) => {
     const updatedNavigation = navigation.map((item) => ({
       ...item,
       current: item.name === clickedItemName,
     }));
     setNavigation(updatedNavigation);
+
+    localStorage.setItem('selectedNavItem', clickedItemName);
   };
+
+  useEffect(() => {
+    const selectedNavItem = localStorage.getItem('selectedNavItem');
+  
+    if (selectedNavItem) {
+      const updatedNavigation = navigation.map((item) => ({
+        ...item,
+        current: item.name === selectedNavItem,
+      }));
+      setNavigation(updatedNavigation);
+    } else {
+      const updatedNavigation = navigation.map((item) => ({
+        ...item,
+        current: item.name === 'Home',
+      }));
+      setNavigation(updatedNavigation);
+  
+      localStorage.setItem('selectedNavItem', 'Home');
+    }
+  }, []);
+  
 
   const handleLogin = () => {
     localStorage.setItem("reffererUrl",window.location.pathname)

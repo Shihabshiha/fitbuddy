@@ -10,7 +10,13 @@ export default withMT(
       'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}'
     ],
     theme: {
-      extend: {},
+      extend: {
+        backgroundColor: {
+          'custom-chat': '#3F4744',
+          'custom-deeper-chat' : '#2F3633',
+          'custom-chat-msg-right' : '#00a884',
+        },
+      },
     },
     plugins: [
       flowbitePlugin

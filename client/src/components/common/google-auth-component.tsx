@@ -36,6 +36,7 @@ const GoogleAuthComponent :  React.FC = () =>{
       },1500)
 
     }catch(error:unknown){
+      setLoading(false)
       if (error instanceof AxiosError && error.response?.data?.error) {
         notify(error.response.data.error, "error");
       } else {

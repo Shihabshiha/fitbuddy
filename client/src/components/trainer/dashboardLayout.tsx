@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { PresentationChartBarIcon, AcademicCapIcon, PowerIcon } from "@heroicons/react/24/solid";
+import { PresentationChartBarIcon, AcademicCapIcon, PowerIcon ,BellIcon ,ClipboardDocumentListIcon , EnvelopeIcon} from "@heroicons/react/24/solid";
 import { HashLoader } from "react-spinners";
+import { AxiosError } from "axios";
+import { notify , ToastContainer } from "../../utils/notificationUtils";
+import { getNotificationCount } from "../../api/endpoints/trainer";
+import { markNotificationRead } from "../../api/endpoints/trainer";
 
 const DashboardLayout: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [count, setCount] = useState(0);
 
   const handleLogout = () => {
     // Clear the adminToken from local storage
@@ -21,6 +26,40 @@ const DashboardLayout: React.FC = () => {
       setLoading(false);
     }
   }, [navigate]);
+  
+  const fetchUnreadNotificationCount = async() => {
+    try{
+      const response = await getNotificationCount();
+      const count = response?.data?.count;
+      setCount(count)
+    }catch(error){
+      if (error instanceof AxiosError && error.response?.data?.error) {
+        notify(error.response.data.error, "error");
+      } else {
+        notify("something went wrong loading notifications.", "error");
+      }
+    }
+  }
+
+  const markNotificationAsRead = async () => {
+    try{
+      const response = await markNotificationRead();
+      if(response.status === 200){
+        setCount(0)
+      }
+    }catch(error){
+      if (error instanceof AxiosError && error.response?.data?.error) {
+        notify(error.response.data.error, "error");
+      } else {
+        notify("something went wrong loading notifications.", "error");
+      }
+    }
+  }
+
+  useEffect(()=>{
+    fetchUnreadNotificationCount()
+    console.log("worked the side bar")
+  },[])
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -43,13 +82,13 @@ const DashboardLayout: React.FC = () => {
             </div>
           </header>
 
-          <div className="flex flex-1">
-            <nav className="w-64 bg-white border-r-2 border-blue-gray-200 overflow-y-auto shadow-md">
+          <div className="flex md:flex-cols-2">
+            <nav className="md:w-64 bg-white border-r-2 h-[86vh] border-blue-gray-200  shadow-md">
               <ul className="space-y-2 py-4">
                 <li className="p-2 flex items-center hover:bg-gray-100 transition-all duration-200">
                   <PresentationChartBarIcon className="h-5 w-5 mr-2" />
                   <span>
-                    <Link to="/dashboard" className="hover:underline">
+                    <Link to="/trainer" className="hover:underline">
                       Dashboard
                     </Link>
                   </span>
@@ -63,8 +102,33 @@ const DashboardLayout: React.FC = () => {
                   </span>
                 </li>
                 <li className="p-2 flex items-center hover:bg-gray-100 transition-all duration-200">
-                  <PowerIcon className="h-5 w-5 mr-2" />
-                  <span className="text-gray-600 cursor-pointer" onClick={handleLogout}>
+                  <BellIcon className="h-5 w-5 mr-2" />
+                  <span>
+                    <Link to="/trainer/notifications" className="hover:underline" onClick={markNotificationAsRead}>
+                      Notifications
+                    </Link>
+                  </span>
+                  <span className="ml-3 bg-blue-gray-200 rounded-full px-2 text-sm">{count}</span>
+                </li>
+                <li className="p-2 flex items-center hover:bg-gray-100 transition-all duration-200">
+                  <ClipboardDocumentListIcon className="h-5 w-5 mr-2" />
+                  <span>
+                    <Link to="/trainer/enrollments" className="hover:underline">
+                      Enrollments
+                    </Link>
+                  </span>
+                </li>
+                <li className="p-2 flex items-center hover:bg-gray-100 transition-all duration-200">
+                  <EnvelopeIcon className="h-5 w-5 mr-2" />
+                  <span>
+                    <Link to="/trainer/inbox/" className="hover:underline">
+                      Inbox
+                    </Link>
+                  </span>
+                </li>
+                <li className="p-2 flex items-center hover:bg-black transition-all duration-200">
+                  <PowerIcon className="h-5 w-5 mr-2 text-red-700" />
+                  <span className="text-red-600 cursor-pointer " onClick={handleLogout}>
                     <span>Logout</span>
                   </span>
                 </li>
@@ -77,6 +141,7 @@ const DashboardLayout: React.FC = () => {
           </div>
         </>
       )}
+      <ToastContainer />
     </div>
   );
 };

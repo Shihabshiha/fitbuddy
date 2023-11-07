@@ -59,4 +59,11 @@ router.post("/post-new-comment", authenticateJwtToken , programController.postNe
 
 router.get("/get-all-comments-for-video/:videoId" , authenticateJwtToken , programController.getAllCommentsForVideo)
 
+router.post("/create-chat-room" , authenticateJwtToken , programController.createChatRoom)
+
+router.get("/get-all-chat-list" , authenticateJwtToken , programController.getAllChatList)
+
+router.get("/get-chat-details/:chatId" , authenticateJwtToken , programController.getChatDetails)
+
+
 export default router;

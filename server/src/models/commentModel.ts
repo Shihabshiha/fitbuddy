@@ -23,8 +23,21 @@ const commentSchema = new Schema ({
     refPath : 'authorType',
   },
   replies : [{
-    type: Schema.Types.ObjectId,
-    ref: 'comments'
+    authorName : {
+      type:String,
+      required :true
+    },
+    authorType :{
+      type: String,
+      required :true,
+    },
+    content : {
+      type: String,
+      required :true,
+    },
+    createdAt : {
+      type : Date,
+    }
   }],
   createdAt : {
     type : Date,

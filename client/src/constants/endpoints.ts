@@ -31,6 +31,21 @@ const END_POINTS = {
   GET_PROGRAM_PROGRESS : 'api/user/get-program-progress',
   POST_NEW_COMMENT : 'api/user/post-new-comment',
   GET_ALL_COMMENTS : 'api/user/get-all-comments-for-video',
-}
+  GET_ALL_NOTIFICATIONS : 'api/trainer/get-all-notification',
+  REPLAY_TO_COMMENT : 'api/trainer/replay-to-comment',
+  GET_NOTIFICATION_COUNT : 'api/trainer/get-notification-count',
+  MARK_NOTIFICATION_AS_READ : 'api/trainer/mark-notification-as-read',
+  GET_ENROLLMENTS_DATA : 'api/trainer/get-enrollments-data',
+  CREATE_CHAT_ROOM : 'api/user/create-chat-room',
+  ALL_CHAT_LIST : 'api/user/get-all-chat-list',
+  GET_CHAT_DETAILS : 'api/user/get-chat-details',
+  SEND_NEW_MESSAGE_FROM_USER : 'api/user/send-new-message',
+  SEND_IMAGE_FILE_AS_MESSAGE : 'api/user/send-image-AsMessage',
+  GET_CHATLIST_FOR_TRAINER : 'api/trainer/get-chat-list',
+  GET_CHAT_DETAILS_TRAINER : 'api/trainer/get-chat-details',
+  SEND_NEW_MESSAGE_TRAINER : 'api/trainer/send_new_message',
+  SEND_IMAGE_FILE_TRAINER : 'api/trainer/send-image-file',
+  GET_REVENUE_BY_PROGRAM : 'api/trainer/get-revenue-by-program'
+ }
 
 export default END_POINTS

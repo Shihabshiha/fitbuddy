@@ -115,7 +115,7 @@ const createAdminServices = () => {
 
   const getAllCourses = async () => {
     try{
-      const courses = await CourseModel.find()
+      const courses = await CourseModel.find().sort({ createdAt: -1 });
       return courses
     }catch(error:any){
       throw error

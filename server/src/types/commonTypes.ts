@@ -14,12 +14,19 @@ export interface LoginRequestBody {
   password: string;
 }
 
+type Replies = {
+  authorName : string,
+  authorType : string,
+  content : string,
+  createdAt : Date,
+}
+
 export interface CommentDocument extends Document{
   content : string;
   authorId : mongoose.Types.ObjectId;
   authorType : string;
   videoId : mongoose.Types.ObjectId;
-  replies : mongoose.Types.ObjectId[];
+  replies : Replies;
   createdAt : Date;
 }
 
@@ -58,3 +65,51 @@ export type NotificationType = {
   read: boolean;
 }
 
+export type ReplayParams = {
+  authorId: string;
+  authorType: string;
+  commentId: string;
+  replayContent: string;
+}
+
+
+
+export interface ChatRoomDocument extends Document{
+  participants:{
+    userId : mongoose.Types.ObjectId;
+    trainerId : mongoose.Types.ObjectId;
+  };
+  latestMessage : mongoose.Types.ObjectId;
+  unreadMessages : number;
+}
+
+
+export interface MessageDocument extends Document{
+  messageType : string;
+  content : string;
+  sender : {
+    senderId: mongoose.Types.ObjectId;
+    senderType : string;
+  };
+  recipient : {
+    recipientId: mongoose.Types.ObjectId;
+    recipientType : string;
+  }
+  chatRoomId : mongoose.Types.ObjectId;
+  isRead : boolean;
+}
+
+export type NewMessageData = {
+  messageType :string;
+  content : string;
+  sender : {
+    senderId: mongoose.Types.ObjectId;
+    senderType : string;
+  };
+  recipient : {
+    recipientId: mongoose.Types.ObjectId;
+    recipientType : string;
+  }
+  chatRoomId : mongoose.Types.ObjectId;
+  isRead : boolean;
+}
