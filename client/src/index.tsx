@@ -1,5 +1,4 @@
 import ReactDOM from 'react-dom/client'
-import React from 'react'
 import { RouterProvider } from 'react-router-dom';
 import AppRouter from './routes';
 import { ThemeProvider } from "@material-tailwind/react";

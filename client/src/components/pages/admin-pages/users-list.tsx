@@ -1,5 +1,5 @@
 import React, { useState , useEffect } from "react";
-import { IuserList } from "../../../types/adminTypes";
+import { userDetails } from "../../../types/userType";
 import { notify, ToastContainer } from "../../../utils/notificationUtils";
 import { AxiosError } from "axios";
 import { getUserList } from "../../../api/endpoints/admin";
@@ -8,7 +8,7 @@ import BlockUnblockButton from "../../admin/blockUnblockButton";
 import ReactPaginate from 'react-paginate';
 
 const UsersListPage : React.FC = () => {
-  const [users,setUsers] = useState<IuserList[]>([])
+  const [users,setUsers] = useState<userDetails[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage : number = 4; 
@@ -32,7 +32,7 @@ const UsersListPage : React.FC = () => {
     fetchUsersList()
   },[])
 
-  const handleUpdateUser = (updatedUser:IuserList) => {
+  const handleUpdateUser = (updatedUser:userDetails) => {
     setUsers((prevUsers) =>
     prevUsers.map((user) =>
       user._id === updatedUser._id ? updatedUser : user

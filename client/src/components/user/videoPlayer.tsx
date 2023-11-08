@@ -7,13 +7,12 @@ import { notify } from "../../utils/notificationUtils";
 import { postNewComment } from "../../api/endpoints/user";
 import { AxiosError } from "axios";
 import { useSelector , useDispatch } from "react-redux";
-import { selectUser } from "../../redux/reducers/userSlice";
 import { USER_AVATHAR } from "../../constants/common";
 import { fetchUserDetails } from "../../utils/userUtils";
 import { selectIsLoggedIn } from "../../redux/reducers/userSlice";
 import { formatDistanceToNow , parseISO} from 'date-fns';
 import { getAllCommentsById } from "../../api/endpoints/user";
-import { ReplyType } from "../../types/courseType";
+
 
 
 
@@ -25,7 +24,6 @@ interface VideoPlayerProps {
 
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoData , markVideoAsWatched }) => {
-  const user = useSelector(selectUser)
   const isLoggedIn = useSelector(selectIsLoggedIn)
   const dispatch = useDispatch()
   const videoRef = useRef<HTMLVideoElement | null>(null);

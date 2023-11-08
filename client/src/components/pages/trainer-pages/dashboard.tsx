@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { AxiosError } from 'axios';
 import { notify, ToastContainer } from '../../../utils/notificationUtils';
 import { getRevenueByProgram } from '../../../api/endpoints/trainer';
-import { Bar } from 'react-chartjs-2';
 import { RevenueData } from '../../../types/trainerTypes';
 import Chart from 'chart.js/auto';
 
@@ -69,6 +68,7 @@ const TrainerDashboard: React.FC = () => {
       <div className='mx-auto mt-4 w-3/4'>
         <canvas ref={canvasRef}></canvas>
       </div>
+      <ToastContainer />
     </div>
   )
 }

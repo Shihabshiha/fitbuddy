@@ -66,7 +66,7 @@ const PendingTrainersTable: React.FC = () => {
 
   const handleAcceptConfirmation = async () => {
     try{
-      setLoading(true)
+      setIsLoading(true)
       if (selectedTrainerForAccept?.email) {
         
         await sendRequestAcceptedMail(selectedTrainerForAccept.email);
@@ -75,15 +75,15 @@ const PendingTrainersTable: React.FC = () => {
         setPendingTrainers(prevTrainers =>
           prevTrainers.filter(trainer => trainer._id !== selectedTrainerForAccept?._id)
         );
-        setLoading(false)
+        setIsLoading(false)
         setShowAcceptModal(false);
       } else {
-        setLoading(false)
+        setIsLoading(false)
         notify("Email address not available for selected trainer.", "error")
         setShowAcceptModal(false);
       }
     }catch(error:unknown){
-      setLoading(false)
+      setIsLoading(false)
       console.error("Error during sending mail:", error);
         if (error instanceof AxiosError && error.response?.data?.error) {
           notify(error.response.data.error, "error");
@@ -95,22 +95,22 @@ const PendingTrainersTable: React.FC = () => {
 
   const handleRejectConfirmation = async (reason: string) => {
     try {
-      setLoading(true)
+      setIsLoading(true)
       if (selectedTrainerForRejection?.email) {
         await sendRequestRejectedMail(selectedTrainerForRejection.email, reason);
         notify("Trainer rejected and mail sent successfully", "success");
         setPendingTrainers(prevTrainers =>
           prevTrainers.filter(trainer => trainer._id !== selectedTrainerForRejection?._id)
         );
-        setLoading(false)
+        setIsLoading(false)
         setShowRejectionModal(false);
       } else {
-        setLoading(false)
+        setIsLoading(false)
         notify("Email address not available for selected trainer.", "error");
         setShowRejectionModal(false);
       }
     } catch (error: unknown) {
-      setLoading(false)
+      setIsLoading(false)
       console.error("Error during sending rejection mail:", error);
       if (error instanceof AxiosError && error.response?.data?.error) {
         notify(error.response.data.error, "error");
