@@ -1,1 +1,0 @@
-import{J as o,K as r}from"./index-70172670.js";const i=async t=>{var s;if(localStorage.getItem("userToken")){const e=await o(),a=(s=e==null?void 0:e.data)==null?void 0:s.user;t(r(a))}};export{i as f};
