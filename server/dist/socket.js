@@ -23,15 +23,11 @@ const setupSocketIO = (server) => {
         },
     });
     io.on("connection", (socket) => {
-        console.log("connected to socket.io", socket.id);
         socket.on("join_chat", (data) => {
             socket.join(data);
-            console.log(`User with Id : ${socket.id} join with ${data}`);
         });
         socket.on("send_message", (data) => __awaiter(void 0, void 0, void 0, function* () {
-            console.log("chat data", data);
             const res = yield utilFunctions.addMessage(data);
-            console.log('data from db', res);
             socket.to(data.chatId).emit("receive_message", res);
         }));
     });

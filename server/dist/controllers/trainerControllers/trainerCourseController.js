@@ -64,8 +64,6 @@ const courseControllerFunctions = () => {
     const updateCourseStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const courseId = req.params.courseId;
         const { isListed } = req.body;
-        console.log('satausss', isListed);
-        console.log('courseid', courseId);
         try {
             const updatedCourse = yield trainerCourseService.updateCourseStatus(courseId, isListed);
             res.status(200).json(updatedCourse);

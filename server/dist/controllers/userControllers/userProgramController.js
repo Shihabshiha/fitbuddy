@@ -133,10 +133,8 @@ const programControllerFunction = () => {
         try {
             const authorId = (_d = req.person) === null || _d === void 0 ? void 0 : _d.id;
             const authorType = (_e = req.person) === null || _e === void 0 ? void 0 : _e.role;
-            console.log('author type', authorType);
             const { videoId, newComment } = req.body;
             if (authorId && authorType) {
-                console.log('inside conroller');
                 const result = yield programServices.postNewComment({ authorId, authorType, videoId, newComment });
                 res.status(200).json({ message: "Comment added", result });
             }
@@ -146,7 +144,6 @@ const programControllerFunction = () => {
         }
     });
     const getAllCommentsForVideo = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log('comment called');
         try {
             const videoId = req.params.videoId;
             const comments = yield programServices.getAllCommentsForVideo(videoId);

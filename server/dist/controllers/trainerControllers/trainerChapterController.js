@@ -56,7 +56,6 @@ const trainerChapterFunction = () => {
     });
     const deleteChapterById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const chapterId = req.params.chapterId;
-        console.log(chapterId);
         try {
             const result = yield trainerChapterService.deleteChapter(chapterId);
             res.status(200).json(result);

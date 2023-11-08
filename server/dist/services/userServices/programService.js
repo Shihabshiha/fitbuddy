@@ -289,10 +289,8 @@ const programService = () => {
         }
     });
     const postNewComment = ({ authorId, authorType, videoId, newComment }) => __awaiter(void 0, void 0, void 0, function* () {
-        console.log("inside service");
         const session = yield mongoose_1.default.startSession();
         session.startTransaction();
-        console.log('not here');
         try {
             const authorObjectId = new mongoose_1.default.Types.ObjectId(authorId);
             const videoObjectId = new mongoose_1.default.Types.ObjectId(videoId);
@@ -377,7 +375,6 @@ const programService = () => {
                 },
                 latestMessage: null,
             });
-            console.log('new chat room', newChatRoom);
             return newChatRoom;
         }
         catch (error) {
@@ -421,7 +418,6 @@ const programService = () => {
             return { chats, trainerInfo };
         }
         catch (error) {
-            console.log(error);
             throw error;
         }
     });
@@ -481,7 +477,6 @@ const programService = () => {
                 isRead: false,
             };
             const newMessage = yield messageModel_1.default.create(newMessageData);
-            console.log('new image message', newMessage);
             return newMessage;
         }
         catch (error) {

@@ -31,7 +31,6 @@ const signupTrainerController = (req, res) => __awaiter(void 0, void 0, void 0, 
             });
             return cloudinaryResponse.secure_url;
         })));
-        console.log('cloudinaaa', cloudinaryResponses);
         const newTrainer = yield authService.signupTrainer(firstName, lastName, email, password, cloudinaryResponses);
         res
             .status(201)

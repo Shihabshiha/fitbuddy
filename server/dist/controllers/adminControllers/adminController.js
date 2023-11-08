@@ -54,7 +54,6 @@ exports.getPendingTrainerVerificationController = getPendingTrainerVerificationC
 const sendAcceptedMailController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email } = req.body;
-        console.log('recipient mail', email);
         yield adminService.sendAcceptanceMail(email);
         res.status(200).json({ message: 'Email sent successfully' });
     }
@@ -79,7 +78,6 @@ exports.sendRejectedMailController = sendRejectedMailController;
 const blockUnblockUserController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const userId = req.params.userId;
-        console.log(userId);
         const { isBlocked } = req.body;
         const updatedUser = yield adminService.blockUnblockUser(userId, isBlocked);
         res.status(200).json({ updatedUser });

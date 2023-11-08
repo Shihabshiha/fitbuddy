@@ -107,7 +107,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoData , markVideoAsWatche
     try{
       if(newComment.length > 2){
         const videoId = videoData._id;
-        const response = await postNewComment(videoId,newComment)
+        await postNewComment(videoId,newComment)
         notify("Comment added successfully", "success")
         setNewComment('')
       }else{
