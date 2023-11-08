@@ -3,9 +3,8 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const config = {
-  database: {
-    connectionString: process.env.DATABASE_CONNECTION_STRING || '',
-  },
+  
+  DB_CONNECTION_STRING : process.env.DATABASE_CONNECTION_STRING as string,
   PORT : process.env.PORT,
   jwtSecret: process.env.JWT_SECRET_KEY || '',
   EMAIL_NODE_MAILER : process.env.EMAIL_NODE_MAILER,

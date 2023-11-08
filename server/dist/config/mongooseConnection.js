@@ -18,7 +18,7 @@ const config_1 = __importDefault(require("./config"));
 const dbName = 'fitbuddy';
 const connectDatabase = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield mongoose_1.default.connect(config_1.default.database.connectionString, { dbName });
+        yield mongoose_1.default.connect(config_1.default.DB_CONNECTION_STRING, { dbName });
         console.log('Connected to MongoDB');
     }
     catch (error) {

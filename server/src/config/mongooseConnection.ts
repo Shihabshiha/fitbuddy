@@ -6,7 +6,7 @@ const dbName='fitbuddy'
 
 const connectDatabase = async () => {
   try {
-    await mongoose.connect(config.database.connectionString,{dbName});
+    await mongoose.connect(config.DB_CONNECTION_STRING,{dbName});
     console.log('Connected to MongoDB');
   } catch (error: any) {
     console.error('Error connecting to MongoDB:', error.message);
