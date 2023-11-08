@@ -1,9 +1,8 @@
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config({path:'.env'});
 
 const config = {
-  
   DB_CONNECTION_STRING : process.env.DATABASE_CONNECTION_STRING as string || '',
   PORT : process.env.PORT,
   jwtSecret: process.env.JWT_SECRET_KEY || '',
@@ -21,5 +20,7 @@ const config = {
   STRIPE_API_SECRET_KEY : process.env.SRIPE_API_SECRET_KEY as string,
   FRONT_END_BASE_URL : process.env.FRONT_END_URL,
 };
+
+console.log('config',config)
 
 export default config;
