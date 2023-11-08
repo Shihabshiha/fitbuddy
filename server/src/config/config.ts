@@ -4,7 +4,7 @@ dotenv.config();
 
 const config = {
   
-  DB_CONNECTION_STRING : process.env.DATABASE_CONNECTION_STRING as string,
+  DB_CONNECTION_STRING : process.env.DATABASE_CONNECTION_STRING as string || '',
   PORT : process.env.PORT,
   jwtSecret: process.env.JWT_SECRET_KEY || '',
   EMAIL_NODE_MAILER : process.env.EMAIL_NODE_MAILER,
