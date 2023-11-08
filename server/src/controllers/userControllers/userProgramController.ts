@@ -125,10 +125,8 @@ const programControllerFunction = () => {
     try{
       const authorId = (req as CustomRequest).person?.id;
       const authorType = (req as CustomRequest).person?.role;
-      console.log('author type',authorType)
       const { videoId , newComment } = req.body;
       if(authorId && authorType){
-        console.log('inside conroller')
         const result = await programServices.postNewComment({ authorId, authorType, videoId, newComment })
         res.status(200).json({message :"Comment added", result})
       }
@@ -138,7 +136,6 @@ const programControllerFunction = () => {
   }
 
   const getAllCommentsForVideo = async(req:Request , res:Response) =>{
-    console.log('comment called')
     try{
       const videoId : string = req.params.videoId;
       const comments = await programServices.getAllCommentsForVideo(videoId);

@@ -14,10 +14,7 @@ const VideoPage : React.FC = () =>{
 
   const markVideoAsWatchedById = async(videoId:string) => {
     try{
-      console.log('watch progress called')
-      console.log('videos id',videoId)
-      const response = await markVideoAsWatched(videoId);
-      console.log(response)
+      await markVideoAsWatched(videoId);
       notify("Video is marked as watched"," success")
     }catch(error:unknown){
       if (error instanceof AxiosError && error.response?.data?.error) {

@@ -48,7 +48,6 @@ const trainerChapterFunction = () => {
 
   const deleteChapterById = async (req: Request, res: Response) => {
     const chapterId = req.params.chapterId;
-    console.log(chapterId);
     try {
       const result = await trainerChapterService.deleteChapter(chapterId);
       res.status(200).json(result);

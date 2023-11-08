@@ -27,7 +27,6 @@ const AddChapterPage: React.FC = () => {
       if(values.videoFile){
         formData.append('videoFile',values.videoFile[0]); 
       }
-      console.log(courseId)
       // Make an API call to add a new chapter to the course with the video file
       if(courseId){  
         await addNewChapter( formData , courseId);

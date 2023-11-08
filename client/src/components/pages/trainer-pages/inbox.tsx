@@ -84,7 +84,6 @@ const InboxPage: React.FC = () => {
   const handleChatSelection = async (chatId: string) =>{
     socket.emit("join_chat", chatId);
     socket.on("receive_message", (message)=>{
-      console.log("incoming messagr",message)
       if (!messages.some((msg) => msg._id !== message._id)) {
         dispatch(addMessage(message));
       }

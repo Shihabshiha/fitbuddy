@@ -49,7 +49,6 @@ export const sendAcceptedMailController = async (
 ) => {
   try {
     const { email } = req.body;
-    console.log('recipient mail',email)
     await adminService.sendAcceptanceMail(email)
     res.status(200).json({ message: 'Email sent successfully' })
   }catch(error:any){
@@ -72,7 +71,6 @@ export const sendRejectedMailController = async(req:Request, res:Response) =>{
 export const blockUnblockUserController = async (req:Request,res:Response) => {
   try{
     const userId :string = req.params.userId;
-    console.log(userId)
     const { isBlocked }  = req.body;
     const updatedUser = await adminService.blockUnblockUser(userId,isBlocked);
     res.status(200).json({updatedUser})

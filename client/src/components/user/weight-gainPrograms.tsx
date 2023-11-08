@@ -15,7 +15,6 @@ const WeightGainPrograms : React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
   const programs : ProgramApiResponse[] | null = useSelector(selectCourse)
-  console.log('programs',programs)
 
   const fetchAllPrograms = async () => {
     try{

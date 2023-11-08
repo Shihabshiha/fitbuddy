@@ -28,7 +28,6 @@ export const signupTrainerController = async (req: Request, res: Response) => {
         return cloudinaryResponse.secure_url
       })
     );
-    console.log('cloudinaaa',cloudinaryResponses)
     const newTrainer = await authService.signupTrainer( firstName , lastName, email, password , cloudinaryResponses );
 
     res

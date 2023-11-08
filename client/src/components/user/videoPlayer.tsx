@@ -84,7 +84,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoData , markVideoAsWatche
   const fetchCommentsForVideo = async(videoId:string) => {
     try{
       const response = await getAllCommentsById(videoId)
-      console.log(response.data.comments)
       setComments(response?.data?.comments)
     }catch(error){
       if (error instanceof AxiosError && error.response?.data?.error) {
@@ -101,7 +100,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoData , markVideoAsWatche
   },[newComment])
 
   const handleCommentFocus = () => {
-    console.log('Focused on input');
     setCommenting(true);
   };
 
@@ -110,7 +108,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ videoData , markVideoAsWatche
       if(newComment.length > 2){
         const videoId = videoData._id;
         const response = await postNewComment(videoId,newComment)
-        console.log('comment response',response)
         notify("Comment added successfully", "success")
         setNewComment('')
       }else{

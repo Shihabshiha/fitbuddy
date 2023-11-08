@@ -315,10 +315,8 @@ const programService = () => {
   }
 
   const postNewComment = async ({ authorId, authorType, videoId, newComment }: CommentParams) => {
-    console.log("inside service")
     const session = await mongoose.startSession();
     session.startTransaction();
-    console.log('not here')
     try{
       const authorObjectId = new mongoose.Types.ObjectId(authorId);
       const videoObjectId = new mongoose.Types.ObjectId(videoId);
@@ -409,7 +407,6 @@ const programService = () => {
         },
         latestMessage : null,
       })
-      console.log('new chat room', newChatRoom)
       return newChatRoom;
 
     }catch(error){
@@ -456,7 +453,6 @@ const programService = () => {
 
       return { chats , trainerInfo}
     }catch(error){
-      console.log(error)
       throw error;
     }
   }
@@ -522,7 +518,6 @@ const programService = () => {
         isRead: false,
       }
       const newMessage = await MessageModel.create(newMessageData)
-      console.log('new image message', newMessage)
       return newMessage
     }catch(error){
       throw error

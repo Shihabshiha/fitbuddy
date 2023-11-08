@@ -23,7 +23,6 @@ const NotificationPage : React.FC = () => {
     setLoading(true)
     try{
       const response = await getAllNotifications()
-      console.log(response.data.notifications)
       setNotifications(response.data?.notifications)
       setLoading(false)
     }catch(error){
@@ -49,8 +48,7 @@ const NotificationPage : React.FC = () => {
     if (selectedNotification && replyContent) {
     const relatedCommentId = selectedNotification.relatedCommentId;
       try{
-        const response = await replayToComment(relatedCommentId,replyContent)
-        console.log('replay response',response)
+        await replayToComment(relatedCommentId,replyContent)
         notify("Replied successfully","success")
         setIsReplaying(false)
         setReplyContent('');

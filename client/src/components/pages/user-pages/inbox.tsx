@@ -75,7 +75,6 @@ const UserInboxPage: React.FC = () => {
     try{
       socket?.emit("join_chat", chatId);
       socket?.on("receive_message", (message)=>{
-        console.log("incoming Messages",message)
         if (!messages.some((msg) => msg._id !== message._id)) {
           dispatch(addMessage(message));
         }
@@ -141,11 +140,8 @@ const UserInboxPage: React.FC = () => {
   const handleTextSubmit = async() => {
     const content = textMessage
     try{
-      console.log(chatId,socket)
 
       if(chatId && socket){
-        
-        console.log("inside handl submit")
         const messageData = {
           content : content,
           sender : 'user',

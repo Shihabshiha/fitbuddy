@@ -135,7 +135,6 @@ const ProgramDetailPage: React.FC = () => {
 
   const handleChatClick = async(trainerId:string , programId:string) => {
     try{
-      console.log('chat room details',trainerId,programId)
       const response = await createChatRoom(trainerId, programId);
       const chatId = response.data.result._id;
       navigate(`/inbox/${chatId}`)

@@ -13,7 +13,6 @@ const TrainerDashboard: React.FC = () => {
   const fetchRevenueByProgram = async () => {
     try {
       const response = await getRevenueByProgram();
-      console.log(response.data.result);
       setRevenueData(response.data.result);
     } catch (error) {
       if (error instanceof AxiosError && error.response?.data?.error) {

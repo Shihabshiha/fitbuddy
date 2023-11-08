@@ -13,7 +13,6 @@ const  MyPrograms : React.FC = () => {
     try{
       const response = await getProgramProgress()
       const programDetails = response.data?.programProgress;
-      console.log(response.data.programProgress)
       setPrograms(programDetails)
     }catch(error:unknown){
       if (error instanceof AxiosError && error.response?.data?.error) {

@@ -15,7 +15,6 @@ const EnrollmentsPage : React.FC = () => {
   const fetchEnrollemtdata = async() => {
     try{
       const response = await getAllEnrollments()
-      console.log('enrollemt',response.data.enrollments)
       setEnrollments(response.data?.enrollments)
     }catch(error){
       if (error instanceof AxiosError && error.response?.data?.error) {

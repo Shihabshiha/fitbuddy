@@ -71,8 +71,6 @@ const courseControllerFunctions = () =>{
   const updateCourseStatus = async (req:Request,res:Response) => {
     const courseId = req.params.courseId;
     const { isListed } = req.body;
-    console.log('satausss',isListed)
-    console.log('courseid',courseId)
     try{
       const updatedCourse = await trainerCourseService.updateCourseStatus(courseId,isListed)
       res.status(200).json(updatedCourse)

@@ -58,7 +58,6 @@ const DashboardLayout: React.FC = () => {
 
   useEffect(()=>{
     fetchUnreadNotificationCount()
-    console.log("worked the side bar")
   },[])
 
   return (

@@ -15,7 +15,6 @@ const UserSignupPage: React.FC = () => {
     try {
       setLoading(true);
       const email = userInfo.email
-      console.log('useerr mail',email)
       const res = await sendOtpToMail(email)
       setLoading(false)
       if(res?.status == 200){
@@ -25,7 +24,6 @@ const UserSignupPage: React.FC = () => {
         navigate("/register-otp-verify",{ state : userInfo })
       },1500)
     } catch (error: unknown) {
-      console.log(error)
       notify('something went wrong!','error')
       console.error(error);
     }
