@@ -21,6 +21,5 @@ const config = {
   FRONT_END_BASE_URL : process.env.FRONT_END_URL,
 };
 
-console.log('config',config)
 
 export default config;

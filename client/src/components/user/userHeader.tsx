@@ -2,7 +2,7 @@ import React, {  useState , useEffect } from 'react'
 import { Disclosure } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon , PlusCircleIcon } from '@heroicons/react/24/outline'
 import ProfileMenu from './profileMenu'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import MyPrograms from './myPrograms'
 import { useSelector } from 'react-redux'
 import { selectUser } from '../../redux/reducers/userSlice'
@@ -24,7 +24,7 @@ const UserHeader : React.FC = () => {
   const initialNavigation = [
     { name: 'Home', href: '/', current: false },
     { name: 'Programs', href: '/programs', current: false },
-    { name: 'Inbox', href: '/inbox/', current: false },
+    { name: 'About us', href: '/about', current: false }
   ];
 
   const [navigation, setNavigation] = useState(initialNavigation);
@@ -59,6 +59,10 @@ const UserHeader : React.FC = () => {
       localStorage.setItem('selectedNavItem', 'Home');
     }
   }, []);
+
+  const handleLogoSelection = () => {
+    navigate("/")
+  }
   
 
   const handleLogin = () => {
@@ -90,14 +94,15 @@ const UserHeader : React.FC = () => {
                   <img
                     className="h-10 w-auto hover:cursor-pointer"
                     src="https://res.cloudinary.com/duuwbsmdu/image/upload/c_thumb,w_200,g_face/v1695378550/fitbuddy/fitbuddy-white-transparent_logo_c4peq4.svg"
+                    onClick={handleLogoSelection}
                   />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <Link
                         key={item.name}
-                        href={item.href}
+                        to={item.href}
                         className={classNames(
                           item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                           'rounded-md px-3 py-2 text-sm font-medium'
@@ -106,24 +111,12 @@ const UserHeader : React.FC = () => {
                         onClick={() => handleNavigationClick(item.name)}
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-              
-                {/* <button
-                  type="button"
-                  className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                >
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button> */}
-                
-
-                {/* Profile dropdown */}
                <div className="sm:hidden ml-2">
                 {isLoggedIn ? (
                   <ProfileMenu />

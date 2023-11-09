@@ -46,7 +46,7 @@ const WeightGainPrograms : React.FC = () => {
         All Programs
       </Typography>
     </div>
-    <div className='grid ml-5 py-4 md:grid-cols-3 items-center px-10'>
+    <div className='grid  py-4 md:grid-cols-3 items-center px-10'>
       {isLoading ? (
         Array.from({ length: 4 }).map((_, index) => (
           <div key={index}>

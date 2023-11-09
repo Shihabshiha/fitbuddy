@@ -9,11 +9,14 @@ import { ProgramApiResponse } from '../../../types/courseType';
 import { getAllProgram } from '../../../api/endpoints/user';
 import { AxiosError } from 'axios';
 import { notify,ToastContainer } from '../../../utils/notificationUtils';
+import { selectIsLoggedIn } from '../../../redux/reducers/userSlice'
+import { fetchUserDetails } from '../../../utils/userUtils'
 
 const AllProgramsPage : React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const programs : ProgramApiResponse[] | null = useSelector(selectCourse)
-  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(selectIsLoggedIn)
+  const dispatch = useDispatch()
 
   const fetchAllPrograms = async () => {
     try{
@@ -35,10 +38,16 @@ const AllProgramsPage : React.FC = () => {
     fetchAllPrograms();
   },[])
 
+  useEffect(()=>{
+    if(isLoggedIn){
+      fetchUserDetails(dispatch) 
+    } 
+  },[])
+
   return (
-    <div className='mt-20 px-32 mb-10 container'>
-      <h1 className='text-2xl ml-3 font-semibold mb-3 capitalize'>ALL PROGRAMS</h1>
-      <div className='grid md:grid-cols-3'>
+    <div className='mt-20 lg:px-32 px-8  container'>
+      <h1 className='md:text-2xl text-base ml-3 font-semibold mb-3 capitalize'>ALL PROGRAMS</h1>
+      <div className='grid md:grid-cols-2 lg:grid-cols-3'>
       {isLoading ? (
         Array.from({ length: 6 }).map((_, index) => (
           <div key={index}>

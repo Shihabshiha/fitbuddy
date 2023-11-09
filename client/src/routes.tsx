@@ -9,6 +9,7 @@ const LazyUserInboxPage = lazy(() => import("./components/pages/user-pages/inbox
 const LazyProgramDetailPage = lazy(() => import("./components/pages/user-pages/program-datails"));
 const LazyVideoPage = lazy(() => import("./components/pages/user-pages/videoPage"));
 const LazyProfilePage = lazy(() => import("./components/pages/user-pages/profile"));
+const LazyAboutPage = lazy(() => import("./components/pages/user-pages/about"))
 import UserLoginPage from "./components/pages/user-pages/user-login"
 import UserSignupPage from "./components/pages/user-pages/user-signup";
 import OtpVerifyComponent from "./components/common/otp-verify-component"
@@ -64,7 +65,11 @@ const AppRouter = createBrowserRouter([
       {
         path: "/inbox/:chatId?",
         element : <LazyUserInboxPage />
-      }
+      },
+      {
+        path: "/about",
+        element : <LazyAboutPage />
+      },
     ]
   },
   {

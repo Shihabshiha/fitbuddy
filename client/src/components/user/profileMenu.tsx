@@ -1,32 +1,30 @@
-import React  , { Fragment } from 'react'
-import { useSelector , useDispatch } from 'react-redux'
-import { selectUser } from '../../redux/reducers/userSlice'
-import {  Menu, Transition } from '@headlessui/react'
-import { clearUser } from '../../redux/reducers/userSlice'
-import { USER_AVATHAR } from '../../constants/common'
-import { notify , ToastContainer } from '../../utils/notificationUtils'
-import { useNavigate } from 'react-router-dom'
-
+import React, { Fragment } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { selectUser } from "../../redux/reducers/userSlice";
+import { Menu, Transition } from "@headlessui/react";
+import { clearUser } from "../../redux/reducers/userSlice";
+import { USER_AVATHAR } from "../../constants/common";
+import { notify, ToastContainer } from "../../utils/notificationUtils";
+import { useNavigate, Link } from "react-router-dom";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function classNames(...classes:any) {
-  return classes.filter(Boolean).join(' ')
+function classNames(...classes: any) {
+  return classes.filter(Boolean).join(" ");
 }
 
-const ProfileMenu : React.FC = () => {
-
-  const user = useSelector(selectUser)
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
+const ProfileMenu: React.FC = () => {
+  const user = useSelector(selectUser);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSignOut = () => {
-    localStorage.removeItem('userToken');
-    dispatch(clearUser()) 
-    notify("logged out successfully","success")
-    setTimeout(()=>{
-      navigate('/')
-    },1500)
-  }
+    localStorage.removeItem("userToken");
+    dispatch(clearUser());
+    notify("logged out successfully", "success");
+    setTimeout(() => {
+      navigate("/");
+    }, 1500);
+  };
 
   return (
     <Menu as="div" className="relative ml-3">
@@ -34,7 +32,11 @@ const ProfileMenu : React.FC = () => {
         <Menu.Button className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
           <span className="absolute -inset-1.5" />
           <span className="sr-only">Open user menu</span>
-          <img className="h-8 w-8 rounded-full" src={user.userDetails?.profileImage || USER_AVATHAR } alt="" /> 
+          <img
+            className="h-8 w-8 rounded-full"
+            src={user.userDetails?.profileImage || USER_AVATHAR}
+            alt=""
+          />
         </Menu.Button>
       </div>
       <Transition
@@ -49,29 +51,38 @@ const ProfileMenu : React.FC = () => {
         <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           <Menu.Item>
             {({ active }) => (
-              <a
-                href="/profile"
-                className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+              <Link
+                to="/profile"
+                className={classNames(
+                  active ? "bg-gray-100" : "",
+                  "block px-4 py-2 text-sm text-gray-700"
+                )}
               >
                 Your Profile
-              </a>
+              </Link>
             )}
           </Menu.Item>
-          {/* <Menu.Item>
+          <Menu.Item>
             {({ active }) => (
-              <a
-                href="#"
-                className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+              <Link
+                to={"/inbox"}
+                className={classNames(
+                  active ? "bg-gray-100" : "",
+                  "block px-4 py-2 text-sm text-gray-700"
+                )}
               >
-                Settings
-              </a>
+                Inbox
+              </Link>
             )}
-          </Menu.Item> */}
+          </Menu.Item>
           <Menu.Item>
             {({ active }) => (
               <button
-                onClick={handleSignOut} // Call the handleSignOut function on click
-                className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                onClick={handleSignOut}
+                className={classNames(
+                  active ? "bg-gray-100" : "",
+                  "flex w-full px-4 py-2 text-sm text-gray-700"
+                )}
               >
                 Sign out
               </button>
@@ -81,7 +92,7 @@ const ProfileMenu : React.FC = () => {
       </Transition>
       <ToastContainer />
     </Menu>
-  )
-}
+  );
+};
 
 export default ProfileMenu;
