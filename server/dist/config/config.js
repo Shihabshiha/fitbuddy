@@ -43,5 +43,5 @@ const config = {
     STRIPE_API_SECRET_KEY: process.env.SRIPE_API_SECRET_KEY,
     FRONT_END_BASE_URL: process.env.FRONT_END_URL,
 };
-console.log('config', config);
+console.log("config", config);
 exports.default = config;
