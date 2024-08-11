@@ -8,6 +8,7 @@ const courseControllerFunctions = () =>{
   const trainerCourseService = courseService()
 
   const addCourse = async (req:Request , res:Response) => {
+    console.log('called add course')
     try{
       
       const trainerId = (req as CustomRequest).person?.id;
@@ -47,10 +48,10 @@ const courseControllerFunctions = () =>{
         isPaid,
         duration,
       }, trainerId, thumbnailFile);
-
+      console.log('add course result',result)
        res.status(200).json({ result });
     }catch(error:any){
-      console.error(error);
+      console.log(error);
       res.status(400).json({ error:error.message });
     }
   }

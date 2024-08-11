@@ -1,5 +1,5 @@
 
-export const BASE_URL = "https://fitbuddyhere.online";
+export const BASE_URL = "https://fitbuddy-server.onrender.com";
 
 export const USER_AVATHAR = 'https://res.cloudinary.com/duuwbsmdu/image/upload/v1698045845/fitbuddy/images_2_d4e6fp_siwirt.jpg'
 

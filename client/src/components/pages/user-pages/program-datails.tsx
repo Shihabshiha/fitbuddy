@@ -3,7 +3,7 @@ import { useParams , useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { notify, ToastContainer } from "../../../utils/notificationUtils";
 import { USER_AVATHAR } from "../../../constants/common";
-import { getProgramDetailById } from "../../../api/endpoints/user";
+import { getProgramDetailById, getUserDetailsbyToken } from "../../../api/endpoints/user";
 import ProgramDetailShimmer from "../../shimmers/programDetailPage";
 import { ProgramDetailInterface } from "../../../types/courseType";
 import { enrollCheckout } from "../../../api/endpoints/user";
@@ -42,6 +42,7 @@ const ProgramDetailPage: React.FC = () => {
   user?.userDetails?.enrolledPrograms && programId
     ? user.userDetails.enrolledPrograms.includes(programId)
     : false;
+
 
 
 
@@ -129,8 +130,31 @@ const ProgramDetailPage: React.FC = () => {
     setIsPaymentStatusModal(false)
   }
 
-  const handleWatchClick = (videoData : Video, index:number) =>{
-    navigate(`/program/video/${index}`,{ state : { videoData } })
+  const handleWatchClick = async(videoData : Video, index:number) =>{
+    try{
+      const response =await getUserDetailsbyToken()
+      if(response.status === 200){
+        navigate(`/program/video/${index}`,{ state : { videoData } })
+      }
+    }catch(error:unknown){
+      if (error instanceof AxiosError && error.response?.data?.error) {
+        const errorMessage = error.response.data.error;
+        if (errorMessage === "Authentication required") {
+          setIsModalOpen(true);
+          setModalMessage("For watching the program, you need to log in first.");
+        }  else if (errorMessage === "Token has expired") {
+          setIsModalOpen(true);
+          setModalMessage("Your session has expired. Please log in again.")
+        } else {
+          notify(errorMessage, "error");
+        }
+      } else {
+        setIsEnrolling(false)
+        console.error('Error occured',error)
+        notify("An error occurred during enroll","error");
+      }
+    }
+      
   }
 
   const handleChatClick = async(trainerId:string , programId:string) => {
@@ -140,7 +164,12 @@ const ProgramDetailPage: React.FC = () => {
       navigate(`/inbox/${chatId}`)
     }catch(error:unknown){
       if (error instanceof AxiosError && error.response?.data?.error) {
-        notify(error.response.data.error, "error");
+        const errorMessage = error.response.data.error;
+        if(errorMessage ===  "Authentication required"){
+          notify("Must be logged in" , "error")
+        }else{
+          notify(error.response.data.error, "error");
+        }
       } else {
         notify("An error occurred making chat.", "error");
       }

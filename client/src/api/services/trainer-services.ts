@@ -13,6 +13,7 @@ export const addCourse = async (
         'Content-Type': 'multipart/form-data',
       },
     };
+    console.log('new course',newCourse)
     const response = trainerApi.post(
       `${BASE_URL}/${endpoint}`,
        newCourse ,config
